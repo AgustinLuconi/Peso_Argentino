@@ -13,17 +13,21 @@ export class GeminiLlmAdapter {
   }
 
   /**
-   * Modelos Gemini recomendados en orden de prioridad
+   * Modelos Gemini optimizados para el plan gratuito de Google AI Studio:
+   * 1. 'gemini-3.5-flash-lite': Consumo ultrabajo de tokens (~85% menos), respuesta casi instantánea, ideal para evitar agotar la cuota gratis.
+   * 2. 'gemini-flash-lite-latest': Alias dinámico del modelo ligero.
+   * 3. 'gemini-3.6-flash': Fallback con mayor profundidad analítica.
+   * 4. 'gemini-flash-latest': Fallback general.
    */
   private static readonly MODEL_CANDIDATES = [
+    'gemini-3.5-flash-lite',
+    'gemini-flash-lite-latest',
     'gemini-3.6-flash',
-    'gemini-2.5-flash',
     'gemini-flash-latest',
-    'gemini-1.5-flash',
   ];
 
   /**
-   * Clasifica una noticia económica utilizando Google Gemini Free Tier.
+   * Clasifica una noticia económica utilizando Google Gemini Free Tier (Modo Ligero / Alto Rendimiento).
    */
   static async classifyNews(input: NewsClassificationInput): Promise<NewsClassificationOutput> {
     const apiKey = this.getApiKey();
@@ -62,6 +66,7 @@ Fuente: "${input.source || 'Agencia Financiera'}"`;
             generationConfig: {
               response_mime_type: 'application/json',
               temperature: 0.1,
+              maxOutputTokens: 350, // Límite acotado para ahorrar tokens en la capa gratuita
             },
           }),
         });
@@ -82,7 +87,7 @@ Fuente: "${input.source || 'Agencia Financiera'}"`;
           provider: model,
         };
       } catch (error) {
-        console.warn(`[GeminiLlmAdapter] Error con modelo ${model}:`, error);
+        console.warn(`[GeminiLlmAdapter] Intento con modelo ${model} falló, probando siguiente candidato:`, error);
       }
     }
 
@@ -91,7 +96,7 @@ Fuente: "${input.source || 'Agencia Financiera'}"`;
   }
 
   /**
-   * Responde consultas financieras del usuario con Gemini Free Tier.
+   * Responde consultas financieras del usuario con Gemini Free Tier optimizado.
    */
   static async chat(messages: readonly ChatMessage[], macroContext?: any): Promise<ChatResponse> {
     const apiKey = this.getApiKey();
@@ -103,14 +108,14 @@ Fuente: "${input.source || 'Agencia Financiera'}"`;
     const start = Date.now();
 
     const systemPrompt = `Eres "Antigravity Copiloto Financiero", el asistente de inteligencia artificial institucional de la plataforma "Peso Argentino".
-Tu rol es brindar análisis riguroso, objetivo y respaldado por datos sobre:
+Tu rol es brindar análisis riguroso, conciso y respaldado por datos sobre:
 - Mercado de cambios (Dólar Oficial BNA, MEP AL30, CCL, Cripto, brechas).
 - Política monetaria del BCRA (LEFIs del Tesoro, pases pasivos eliminados, base monetaria).
 - Curva de deuda soberana (Bonos AL30, GD30, paridades, TIR, cupones step-up, Lecaps).
 - Régimen del RIGI (Ley 27.742) y Paquete Fiscal (Ley 27.743).
 - Inflación INDEC (IPC), UVA, ICL y CER.
 
-Responde de forma clara, ejecutiva y estructurada con viñetas en formato Markdown.`;
+Responde de forma clara, ejecutiva y estructurada con viñetas en formato Markdown. Sé conciso para optimizar la velocidad de respuesta.`;
 
     const contents = [
       { role: 'user', parts: [{ text: systemPrompt }] },
@@ -132,7 +137,7 @@ Responde de forma clara, ejecutiva y estructurada con viñetas en formato Markdo
             contents,
             generationConfig: {
               temperature: 0.2,
-              maxOutputTokens: 800,
+              maxOutputTokens: 600,
             },
           }),
         });
@@ -151,7 +156,7 @@ Responde de forma clara, ejecutiva y estructurada con viñetas en formato Markdo
           latencyMs: Date.now() - start,
         };
       } catch (error) {
-        console.warn(`[GeminiLlmAdapter] Chat con ${model} falló:`, error);
+        console.warn(`[GeminiLlmAdapter] Chat con ${model} falló, probando siguiente candidato:`, error);
       }
     }
 
