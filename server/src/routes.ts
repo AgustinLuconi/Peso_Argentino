@@ -1,0 +1,171 @@
+import { Router } from 'express';
+import { DolarService } from './modules/dolar/DolarService';
+import { MacroService } from './modules/macro/MacroService';
+import { RatesService } from './modules/rates/RatesService';
+import { MarketsService } from './modules/markets/MarketsService';
+import { BondDetailService } from './modules/bonds/BondDetailService';
+import { PoliticalService } from './modules/political/PoliticalService';
+import { NewsService } from './modules/news/NewsService';
+import { LlmService } from './modules/llm/application/LlmService';
+import { globalCache } from './core/cache/MemoryCache';
+
+export const v1Router = Router();
+
+// Health Check & Cache Telemetry
+v1Router.get('/health', (req, res) => {
+  res.json({
+    status: 'ok',
+    service: 'Peso Argentino Core API v1',
+    uptimeSeconds: Math.round(process.uptime()),
+    timestamp: new Date().toISOString(),
+    cache: globalCache.getStats(),
+    llm: LlmService.getEngineStatus(),
+  });
+});
+
+// 1. Dashboard Metrics (Unified Endpoint)
+v1Router.get('/dashboard/metrics', async (req, res) => {
+  try {
+    const [quotes, macro] = await Promise.all([
+      DolarService.getQuotes(),
+      MacroService.getOverview(),
+    ]);
+
+    const oficial = quotes.find((q) => q.type === 'oficial');
+    const ccl = quotes.find((q) => q.type === 'ccl');
+    let dynamicBreach = 14.08;
+    if (oficial && ccl && oficial.sellPrice > 0) {
+      dynamicBreach = Number((((ccl.sellPrice - oficial.sellPrice) / oficial.sellPrice) * 100).toFixed(2));
+    }
+
+    res.json({
+      success: true,
+      data: {
+        quotes,
+        riesgoPais: macro.riesgoPais,
+        inflation: macro.inflation,
+        contracts: macro.contracts,
+        monetary: macro.monetary,
+        dynamicBreachPercent: dynamicBreach,
+        lastUpdated: new Date().toLocaleTimeString('es-AR', {
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+        }),
+      },
+    });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// 2. Dólar Spot
+v1Router.get('/dolar/quotes', async (req, res) => {
+  try {
+    const data = await DolarService.getQuotes();
+    res.json({ success: true, count: data.length, data });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// 3. Macro Indicadores
+v1Router.get('/macro/overview', async (req, res) => {
+  try {
+    const data = await MacroService.getOverview();
+    res.json({ success: true, data });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// 4. Tasas de Interés
+v1Router.get('/rates/plazos-fijos', async (req, res) => {
+  try {
+    const data = await RatesService.getPlazosFijos();
+    res.json({ success: true, count: data.length, data });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+v1Router.get('/rates/wallets', async (req, res) => {
+  try {
+    const data = await RatesService.getWallets();
+    res.json({ success: true, count: data.length, data });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// 5. Mercado de Capitales
+v1Router.get('/markets/assets', async (req, res) => {
+  try {
+    const data = await MarketsService.getMarketOverview();
+    res.json({ success: true, data });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// 6. Detalle de Bonos (AL30 / GD30)
+v1Router.get('/bonds/:ticker', async (req, res) => {
+  try {
+    const ticker = req.params.ticker || 'AL30';
+    const data = await BondDetailService.getBondDetail(ticker);
+    res.json({ success: true, data });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// 7. Político & RIGI
+v1Router.get('/political/overview', async (req, res) => {
+  try {
+    const data = await PoliticalService.getOverview();
+    res.json({ success: true, data });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// 8. Intelligence & Noticias
+v1Router.get('/news/feed', async (req, res) => {
+  try {
+    const data = await NewsService.getNewsFeed();
+    res.json({ success: true, count: data.length, data });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// 9. Inteligencia Artificial Gratuita (LLM / NLP)
+v1Router.get('/llm/status', (req, res) => {
+  res.json({ success: true, data: LlmService.getEngineStatus() });
+});
+
+v1Router.post('/llm/classify', async (req, res) => {
+  try {
+    const { title, summary, source } = req.body || {};
+    if (!title) {
+      return res.status(400).json({ success: false, error: 'Título requerido para clasificación' });
+    }
+    const result = await LlmService.classify({ title, summary: summary || '', source });
+    res.json({ success: true, data: result });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+v1Router.post('/llm/chat', async (req, res) => {
+  try {
+    const { messages, macroContext } = req.body || {};
+    if (!messages || !Array.isArray(messages)) {
+      return res.status(400).json({ success: false, error: 'Array de mensajes requerido' });
+    }
+    const response = await LlmService.chat(messages, macroContext);
+    res.json({ success: true, data: response });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});

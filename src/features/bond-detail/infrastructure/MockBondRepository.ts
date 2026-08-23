@@ -1,0 +1,170 @@
+import { BondRepositoryPort } from '../application/BondRepositoryPort';
+import { BondDetail } from '../domain/BondDetail';
+
+export class MockBondRepository implements BondRepositoryPort {
+  async getAllAvailableBonds(): Promise<Array<{ ticker: string; name: string }>> {
+    return [
+      { ticker: 'AL30', name: 'Bonos Rep. Argentina USD 2030 (Ley Argentina)' },
+      { ticker: 'GD30', name: 'Bonos Globales Rep. Arg. USD 2030 (Ley NY)' },
+      { ticker: 'AL35', name: 'Bonos Rep. Argentina USD 2035 (Ley Argentina)' },
+      { ticker: 'GD35', name: 'Bonos Globales Rep. Arg. USD 2035 (Ley NY)' },
+    ];
+  }
+
+  async getBondByTicker(ticker: string): Promise<BondDetail | null> {
+    const isGd30 = ticker.toUpperCase().includes('GD30');
+
+    return new BondDetail({
+      ticker: isGd30 ? 'GD30' : 'AL30',
+      isin: isGd30 ? 'US040114HX11' : 'ARARGE3209Y4',
+      name: isGd30
+        ? 'Bono Global de la República Argentina USD 2030 (Ley Extranjera)'
+        : 'Bono de la República Argentina en USD Step-Up 2030 (Ley Argentina)',
+      issuer: 'República Argentina - Ministerio de Economía',
+      law: isGd30 ? 'Ley Extranjera (Nueva York)' : 'Ley Nacional (República Argentina)',
+      issueDate: '04/09/2020',
+      maturityDate: '09/07/2030',
+      priceArs: isGd30 ? 81200 : 77250,
+      priceMep: isGd30 ? 68.1 : 64.8,
+      priceCable: isGd30 ? 68.5 : 65.1,
+      parity: isGd30 ? 68.1 : 64.8,
+      tir: isGd30 ? 13.5 : 14.2,
+      modifiedDuration: 2.35,
+      couponRate: 0.75, // Step up coupon
+      technicalValue: 100.0,
+      accruedInterest: 0.12,
+      cashFlows: [
+        {
+          paymentDate: '09/07/2024',
+          interestRate: 0.75,
+          interestAmountUsd: 0.375,
+          amortizationPercent: 4.0,
+          amortizationAmountUsd: 4.0,
+          totalCashFlowUsd: 4.375,
+          remainingCapitalPercent: 96.0,
+          status: 'paid',
+        },
+        {
+          paymentDate: '09/01/2025',
+          interestRate: 0.75,
+          interestAmountUsd: 0.36,
+          amortizationPercent: 4.0,
+          amortizationAmountUsd: 4.0,
+          totalCashFlowUsd: 4.36,
+          remainingCapitalPercent: 92.0,
+          status: 'paid',
+        },
+        {
+          paymentDate: '09/07/2025',
+          interestRate: 1.75,
+          interestAmountUsd: 0.805,
+          amortizationPercent: 8.0,
+          amortizationAmountUsd: 8.0,
+          totalCashFlowUsd: 8.805,
+          remainingCapitalPercent: 84.0,
+          status: 'upcoming',
+        },
+        {
+          paymentDate: '09/01/2026',
+          interestRate: 1.75,
+          interestAmountUsd: 0.735,
+          amortizationPercent: 8.0,
+          amortizationAmountUsd: 8.0,
+          totalCashFlowUsd: 8.735,
+          remainingCapitalPercent: 76.0,
+          status: 'future',
+        },
+        {
+          paymentDate: '09/07/2026',
+          interestRate: 1.75,
+          interestAmountUsd: 0.665,
+          amortizationPercent: 8.0,
+          amortizationAmountUsd: 8.0,
+          totalCashFlowUsd: 8.665,
+          remainingCapitalPercent: 68.0,
+          status: 'future',
+        },
+        {
+          paymentDate: '09/01/2027',
+          interestRate: 1.75,
+          interestAmountUsd: 0.595,
+          amortizationPercent: 8.0,
+          amortizationAmountUsd: 8.0,
+          totalCashFlowUsd: 8.595,
+          remainingCapitalPercent: 60.0,
+          status: 'future',
+        },
+        {
+          paymentDate: '09/07/2027',
+          interestRate: 1.75,
+          interestAmountUsd: 0.525,
+          amortizationPercent: 8.0,
+          amortizationAmountUsd: 8.0,
+          totalCashFlowUsd: 8.525,
+          remainingCapitalPercent: 52.0,
+          status: 'future',
+        },
+        {
+          paymentDate: '09/01/2028',
+          interestRate: 1.75,
+          interestAmountUsd: 0.455,
+          amortizationPercent: 8.0,
+          amortizationAmountUsd: 8.0,
+          totalCashFlowUsd: 8.455,
+          remainingCapitalPercent: 44.0,
+          status: 'future',
+        },
+        {
+          paymentDate: '09/07/2028',
+          interestRate: 1.75,
+          interestAmountUsd: 0.385,
+          amortizationPercent: 8.0,
+          amortizationAmountUsd: 8.0,
+          totalCashFlowUsd: 8.385,
+          remainingCapitalPercent: 36.0,
+          status: 'future',
+        },
+        {
+          paymentDate: '09/01/2029',
+          interestRate: 1.75,
+          interestAmountUsd: 0.315,
+          amortizationPercent: 8.0,
+          amortizationAmountUsd: 8.0,
+          totalCashFlowUsd: 8.315,
+          remainingCapitalPercent: 28.0,
+          status: 'future',
+        },
+        {
+          paymentDate: '09/07/2029',
+          interestRate: 1.75,
+          interestAmountUsd: 0.245,
+          amortizationPercent: 8.0,
+          amortizationAmountUsd: 8.0,
+          totalCashFlowUsd: 8.245,
+          remainingCapitalPercent: 20.0,
+          status: 'future',
+        },
+        {
+          paymentDate: '09/01/2030',
+          interestRate: 1.75,
+          interestAmountUsd: 0.175,
+          amortizationPercent: 10.0,
+          amortizationAmountUsd: 10.0,
+          totalCashFlowUsd: 10.175,
+          remainingCapitalPercent: 10.0,
+          status: 'future',
+        },
+        {
+          paymentDate: '09/07/2030',
+          interestRate: 1.75,
+          interestAmountUsd: 0.087,
+          amortizationPercent: 10.0,
+          amortizationAmountUsd: 10.0,
+          totalCashFlowUsd: 10.087,
+          remainingCapitalPercent: 0.0,
+          status: 'future',
+        },
+      ],
+    });
+  }
+}

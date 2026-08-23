@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Peso Argentino - Análisis Político</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&amp;family=Hanken+Grotesk:wght@400;500;600&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "inverse-primary": "#adc8f5",
+                "background": "#f8f9fa",
+                "secondary-fixed": "#ffdea5",
+                "on-primary": "#ffffff",
+                "on-surface-variant": "#43474e",
+                "on-tertiary-fixed-variant": "#44474a",
+                "on-primary-container": "#718bb5",
+                "on-tertiary": "#ffffff",
+                "surface": "#f8f9fa",
+                "inverse-surface": "#2e3132",
+                "tertiary-fixed": "#e0e2e6",
+                "primary": "#000d21",
+                "outline-variant": "#c4c6cf",
+                "bullish-green": "#115E59",
+                "error-container": "#ffdad6",
+                "on-background": "#191c1d",
+                "surface-dim": "#d9dadb",
+                "inverse-on-surface": "#f0f1f2",
+                "surface-container-lowest": "#ffffff",
+                "on-secondary-fixed": "#261900",
+                "outline": "#74777f",
+                "secondary-fixed-dim": "#e9c176",
+                "surface-tint": "#455f87",
+                "primary-container": "#002347",
+                "surface-container-high": "#e7e8e9",
+                "surface-bright": "#f8f9fa",
+                "on-secondary-fixed-variant": "#5d4201",
+                "surface-container-highest": "#e1e3e4",
+                "secondary": "#775a19",
+                "surface-container": "#edeeef",
+                "surface-container-low": "#f3f4f5",
+                "surface-variant": "#e1e3e4",
+                "tertiary-fixed-dim": "#c4c7ca",
+                "bearish-red": "#991B1B",
+                "champagne-light": "#F1E9DB",
+                "on-primary-fixed-variant": "#2c486d",
+                "on-error-container": "#93000a",
+                "on-tertiary-container": "#878a8e",
+                "secondary-container": "#fed488",
+                "primary-fixed": "#d4e3ff",
+                "on-secondary": "#ffffff",
+                "on-secondary-container": "#785a1a",
+                "on-primary-fixed": "#001c3a",
+                "primary-fixed-dim": "#adc8f5",
+                "error": "#ba1a1a",
+                "on-tertiary-fixed": "#191c1f",
+                "tertiary-container": "#202326",
+                "on-error": "#ffffff",
+                "tertiary": "#0a0d10",
+                "on-surface": "#191c1d"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.125rem",
+                "lg": "0.25rem",
+                "xl": "0.5rem",
+                "full": "0.75rem"
+        },
+        "spacing": {
+                "margin-mobile": "20px",
+                "container-max": "1440px",
+                "gutter": "32px",
+                "unit": "8px",
+                "margin-desktop": "64px"
+        },
+        "fontFamily": {
+                "display-lg-mobile": [
+                        "\"Source Serif 4\""
+                ],
+                "data-mono": [
+                        "JetBrains Mono"
+                ],
+                "body-md": [
+                        "Hanken Grotesk"
+                ],
+                "headline-xl": [
+                        "\"Source Serif 4\""
+                ],
+                "body-lg": [
+                        "Hanken Grotesk"
+                ],
+                "headline-md": [
+                        "\"Source Serif 4\""
+                ],
+                "display-lg": [
+                        "\"Source Serif 4\""
+                ],
+                "label-caps": [
+                        "Hanken Grotesk"
+                ]
+        },
+        "fontSize": {
+                "display-lg-mobile": [
+                        "36px",
+                        {
+                                "lineHeight": "44px",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "700"
+                        }
+                ],
+                "data-mono": [
+                        "14px",
+                        {
+                                "lineHeight": "20px",
+                                "fontWeight": "500"
+                        }
+                ],
+                "body-md": [
+                        "16px",
+                        {
+                                "lineHeight": "24px",
+                                "fontWeight": "400"
+                        }
+                ],
+                "headline-xl": [
+                        "40px",
+                        {
+                                "lineHeight": "48px",
+                                "fontWeight": "600"
+                        }
+                ],
+                "body-lg": [
+                        "18px",
+                        {
+                                "lineHeight": "28px",
+                                "fontWeight": "400"
+                        }
+                ],
+                "headline-md": [
+                        "28px",
+                        {
+                                "lineHeight": "36px",
+                                "fontWeight": "600"
+                        }
+                ],
+                "display-lg": [
+                        "56px",
+                        {
+                                "lineHeight": "64px",
+                                "letterSpacing": "-0.03em",
+                                "fontWeight": "700"
+                        }
+                ],
+                "label-caps": [
+                        "12px",
+                        {
+                                "lineHeight": "16px",
+                                "letterSpacing": "0.1em",
+                                "fontWeight": "600"
+                        }
+                ]
+        }
+},
+    },
+  }
+</script>
+<style>
+        body { font-family: 'Hanken Grotesk', sans-serif; background-color: #f8f9fa; }
+        h1, h2, h3, h4, h5, h6, .font-serif { font-family: 'Source Serif 4', serif; }
+        .data-font { font-family: 'JetBrains Mono', monospace; }
+        
+        /* Subtle scanline effect for headers */
+        .scanline-bg {
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.02) 50%, rgba(0,0,0,0.02));
+            background-size: 100% 4px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background h-full overflow-hidden flex flex-col md:flex-row">
+<!-- TopAppBar (Mobile & Shared Desktop Header Logic) -->
+<header class="md:hidden bg-surface flex justify-between items-center px-4 py-2 w-full max-w-container-max mx-auto border-b border-outline-variant z-50">
+<!-- Search left -->
+<button class="text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-full p-2 cursor-pointer active:opacity-80 transition-opacity">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</button>
+<!-- Brand Center -->
+<h1 class="font-display-lg-mobile text-display-lg-mobile font-bold text-primary">Peso Argentino</h1>
+<!-- Trailing Actions -->
+<div class="flex gap-2">
+<button class="text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-full p-2 cursor-pointer active:opacity-80 transition-opacity">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-full p-2 cursor-pointer active:opacity-80 transition-opacity">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</header>
+<!-- SideNavBar (Desktop) -->
+<nav class="hidden md:flex flex-col bg-surface-container-lowest w-[280px] h-full border-r border-outline-variant p-6 gap-2 z-40 flex-shrink-0">
+<div class="mb-8">
+<h1 class="font-headline-md text-headline-md font-bold text-primary">Peso Argentino</h1>
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider mt-1">Institutional Intelligence</p>
+</div>
+<div class="flex-1 flex flex-col gap-2">
+<a class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-all cursor-pointer active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-body-md text-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-all cursor-pointer active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined" data-icon="trending_up">trending_up</span>
+<span class="font-body-md text-body-md">Markets</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-all cursor-pointer active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined" data-icon="query_stats">query_stats</span>
+<span class="font-body-md text-body-md">Inflation</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-all cursor-pointer active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined" data-icon="newspaper">newspaper</span>
+<span class="font-body-md text-body-md">News</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-secondary-container text-on-secondary-container font-semibold rounded cursor-pointer active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined" data-icon="policy">policy</span>
+<span class="font-body-md text-body-md">Politics</span>
+</a>
+</div>
+<div class="mt-auto flex flex-col gap-2 border-t border-outline-variant pt-4">
+<div class="px-4 py-2 mb-2">
+<span class="inline-flex items-center gap-2 font-data-mono text-data-mono text-secondary">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+                    Market Status: Open
+                </span>
+</div>
+<a class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-all cursor-pointer active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-body-md text-body-md">Settings</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-all cursor-pointer active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span class="font-body-md text-body-md">Support</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto w-full h-full p-6 md:p-10">
+<!-- Desktop Header within content area to match top app bar functional requirement if search/profile aren't in sidebar -->
+<header class="hidden md:flex justify-between items-center mb-10 w-full max-w-container-max mx-auto border-b border-outline-variant pb-6">
+<div class="relative w-96">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="search">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container-lowest border border-outline-variant rounded focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary font-body-md text-body-md text-on-surface placeholder:text-on-surface-variant" placeholder="Buscar decretos, figuras políticas..." type="text"/>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-full p-2 cursor-pointer active:opacity-80 transition-opacity">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<div class="w-10 h-10 rounded-full bg-surface-variant border border-outline overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a financial analyst in a modern office, wearing a dark navy suit against a bright white background, high contrast, clean corporate style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-JpxTIHneKpuZq5Jh2LM5uVfIzkpRUw_SvfI6GhohPRBR0A3TNWbNA4XlO4-dBg282-FFDat0iX1v-zV3zDCUOUO0N09IFOS7quyveNGk0MgNPQBE28Y7g0q8mHGAG0MRpRKusmmameshVWbmwvzDyNuxXTuBOcKL33a5hRDL0HZZ1vxuNi8wciKnyPhm4AMN5xvdxfKpg0n9qmAJ2pvTGIsVX9Of46-Xoctt07EOPUB3yWK-DRR3ng"/>
+</div>
+</div>
+</header>
+<div class="max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Main Editorial Feed (8 Columns on Desktop) -->
+<div class="col-span-1 md:col-span-8 flex flex-col gap-10">
+<!-- Page Title -->
+<div class="mb-4 border-b-2 border-primary pb-4">
+<h2 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-primary mb-2">Análisis Político</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant font-serif italic">Impacto legislativo y decisiones ejecutivas en el panorama económico nacional.</p>
+</div>
+<!-- Featured Article (Bento/Hero) -->
+<article class="bg-surface-container-lowest border border-outline-variant rounded group cursor-pointer hover:shadow-lg transition-shadow duration-300">
+<div class="relative h-64 md:h-96 w-full overflow-hidden border-b-4 border-primary">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 grayscale group-hover:grayscale-0" data-alt="A dramatic view of the Argentine Congress building at dusk, illuminated with bright white lights against a dark blue sky, corporate editorial style, high contrast, sharp details." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZnSOeTY6og-q0H3Qk47WNCVlrmAixxFtm1o9VNNLAww-ZzuamAteJTCUPRiFpyw0BbbKhz_fpRcZerfKE_3Apoz6k7-LHOO7boVaU-FxL90LpSMcPC6bUrac08u82LugCOOKs8UqZTkzTYUpmycMbA1cASK0vIUCivncpd4TIkFbISOyUhKqNKGjAfOxhg1L5L8VripnXLiGK8Xq0--rj0mT8-H_OyMT1YuYCPaqXdBHw6wuBfq5Axg"/>
+<div class="absolute top-4 left-4 bg-primary text-on-primary px-3 py-1 rounded-sm font-label-caps text-label-caps uppercase tracking-widest border border-on-primary">
+                            Decreto Ejecutivo
+                        </div>
+</div>
+<div class="p-8">
+<div class="flex items-center gap-4 mb-6 border-b border-outline-variant pb-4">
+<div class="w-10 h-10 rounded-full bg-surface-variant overflow-hidden border border-outline">
+<img class="w-full h-full object-cover grayscale" data-alt="A small profile photo of a serious middle-aged man with glasses in a formal white shirt, clean lighting, corporate style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWL83khihNE9XBMveC8tWtDn9FdOVeXTbY-vDoPzIsUsoJatdy07wNH6YMDWvlAXzRnd-n1bZOMIayTtJgOVGs3eXssNme0g7Z8IieCGzpkxoMEbMb3EN2TPn2XkIomLQCZ6fNS9VtbHeBVog6yf3ZnBVPRaDl02uPuKeYYFD22DxoUjVJaLT5xqo-W4fiPXs7-mz7HE8jUrlLJ0QMxUq9cj1dkv71uz2Ntfr_hT3WA-G5ylFZYE093w"/>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface uppercase tracking-wider">Por Lic. Martín Pérez</p>
+<p class="font-data-mono text-data-mono text-on-surface-variant mt-1">HOY, 08:30 AM</p>
+</div>
+</div>
+<h3 class="font-headline-xl text-headline-xl text-primary mb-4 group-hover:text-secondary transition-colors">Reforma Fiscal: El impacto del nuevo DNU en las retenciones agropecuarias</h3>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-8 leading-relaxed">Un análisis profundo sobre las implicancias legales y económicas del reciente decreto de necesidad y urgencia. Cómo afectará a la liquidación de divisas en el próximo trimestre y las posibles trabas judiciales.</p>
+<div class="flex items-center justify-between border-t border-outline-variant pt-6">
+<span class="font-data-mono text-data-mono text-secondary flex items-center gap-2 uppercase tracking-wider font-bold">
+<span class="material-symbols-outlined" data-icon="monitoring" style="font-size: 20px;">monitoring</span>
+                                Impacto: Alto
+                            </span>
+<span class="font-label-caps text-label-caps text-primary flex items-center gap-2 hover:underline uppercase tracking-widest border border-primary px-4 py-2 rounded-sm transition-colors hover:bg-primary hover:text-on-primary">
+                                Leer artículo completo
+                                <span class="material-symbols-outlined" data-icon="arrow_forward" style="font-size: 16px;">arrow_forward</span>
+</span>
+</div>
+</div>
+</article>
+<!-- Grid of Secondary Articles -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Article 1 -->
+<article class="bg-surface-container-lowest border border-outline-variant rounded p-6 hover:border-secondary transition-colors cursor-pointer group flex flex-col h-full">
+<div class="flex justify-between items-start mb-4 border-b border-outline-variant pb-2">
+<span class="text-secondary font-label-caps text-label-caps uppercase tracking-widest">Legislativo</span>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-secondary transition-colors" data-icon="bookmark">bookmark</span>
+</div>
+<h4 class="font-headline-md text-headline-md leading-tight text-primary mb-3">Debate en el Senado: Ley Bases entra en fase decisiva</h4>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6 line-clamp-3 flex-grow">El oficialismo busca los votos necesarios para aprobar el capítulo fiscal. Negociaciones con gobernadores marcan la agenda del día.</p>
+<div class="flex items-center gap-3 mt-auto border-t border-outline-variant pt-4">
+<div class="w-8 h-8 rounded-full bg-surface-variant overflow-hidden border border-outline">
+<img class="w-full h-full object-cover grayscale" data-alt="Profile photo of a professional woman with dark hair in a corporate setting, looking analytical." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDV7BKQXu6KXJTXsK39QeF8SWdtc_dEPZq8rWx2svgDfwwQ7xR-Lz1UlvX6weMC6o-_5BDxnUL2VsCQo4uXYz_TBiK8tQX6lBvkXV5XDYkzhjbEmb_rkyaQ3FJx8-5c5tRdjeZF-VIYJon2m-AYNxiRZgk459zdqhSDxYKR5MOwI-w98UJjR0vadTdZUDUush5M3v2b9zy-2XxgM8Sph8NQajP39IVK0s6dMUImF80kXQcxndnBqPcQXQ"/>
+</div>
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Dra. Laura Gómez</span>
+</div>
+</article>
+<!-- Article 2 -->
+<article class="bg-surface-container-lowest border border-outline-variant rounded p-6 hover:border-secondary transition-colors cursor-pointer group flex flex-col h-full">
+<div class="flex justify-between items-start mb-4 border-b border-outline-variant pb-2">
+<span class="text-secondary font-label-caps text-label-caps uppercase tracking-widest">Relaciones Exteriores</span>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-secondary transition-colors" data-icon="bookmark">bookmark</span>
+</div>
+<h4 class="font-headline-md text-headline-md leading-tight text-primary mb-3">Acuerdo con el FMI: Nuevas metas de acumulación de reservas</h4>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6 line-clamp-3 flex-grow">El directorio del Fondo aprobó la última revisión. Qué compromisos políticos asume el gobierno para cumplir las pautas del segundo semestre.</p>
+<div class="flex items-center gap-3 mt-auto border-t border-outline-variant pt-4">
+<div class="w-8 h-8 rounded-full bg-surface-variant overflow-hidden border border-outline">
+<img class="w-full h-full object-cover grayscale" data-alt="Profile photo of an older gentleman with grey hair, wearing a suit and tie, looking serious." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzaIj3OzsDaD6YoWYJSnisKmVmBZ9SJfcmRqzMLxqQNmaKDKeBNVLJX4T4dhTwcOyc5NeNVxelJjKTe46taJc-dytEkb_snR_xcme3ppVgbDec1Mo16PX_WdrgTXmXdfik-NtR41y85XQZ6Mr9qwMBJffEQRpNaejLllyWXBnTbXKSILiEUHAw8xuqY5kRN3eJej4eIS3JP3PBtf42_7v_FrPrgRwX12HVciJFp15kRtCzayuZJEbz8A"/>
+</div>
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Lic. Carlos Silva</span>
+</div>
+</article>
+</div>
+</div>
+<!-- Right Sidebar: Political Calendar & Widgets (4 Columns on Desktop) -->
+<aside class="col-span-1 md:col-span-4 flex flex-col gap-10">
+<!-- Political Calendar Widget -->
+<div class="bg-surface-container-lowest border-2 border-primary rounded flex flex-col h-[500px]">
+<div class="bg-surface-container-low p-6 border-b-2 border-primary flex justify-between items-center">
+<h3 class="font-headline-md text-headline-md text-primary flex items-center gap-3 uppercase tracking-wide">
+<span class="material-symbols-outlined" data-icon="account_balance">account_balance</span>
+                            Agenda Oficial
+                        </h3>
+<button class="text-primary hover:bg-surface-container p-2 rounded transition-colors">
+<span class="material-symbols-outlined" data-icon="more_horiz">more_horiz</span>
+</button>
+</div>
+<div class="p-6 flex-1 overflow-y-auto flex flex-col gap-8">
+<!-- Event 1 -->
+<div class="relative pl-8 border-l border-primary pb-2">
+<div class="absolute w-4 h-4 bg-primary rounded-full -left-[8px] top-0 border-4 border-surface-container-lowest"></div>
+<p class="font-data-mono text-data-mono text-secondary mb-2 tracking-widest uppercase">Mañana, 14:00 hrs</p>
+<h4 class="font-headline-md text-[20px] leading-tight font-semibold text-primary mb-2">Votación Ley Bases (Senado)</h4>
+<p class="font-body-md text-on-surface-variant">Tratamiento en particular de los artículos fiscales.</p>
+</div>
+<!-- Event 2 -->
+<div class="relative pl-8 border-l border-outline-variant pb-2">
+<div class="absolute w-4 h-4 bg-outline-variant rounded-full -left-[8px] top-0 border-4 border-surface-container-lowest"></div>
+<p class="font-data-mono text-data-mono text-on-surface-variant mb-2 tracking-widest uppercase">Jueves 15, 10:00 hrs</p>
+<h4 class="font-headline-md text-[20px] leading-tight font-semibold text-on-surface mb-2">Dato de Inflación INDEC</h4>
+<p class="font-body-md text-on-surface-variant">Publicación del IPC correspondiente al mes anterior.</p>
+</div>
+<!-- Event 3 -->
+<div class="relative pl-8 border-l border-outline-variant pb-2">
+<div class="absolute w-4 h-4 bg-outline-variant rounded-full -left-[8px] top-0 border-4 border-surface-container-lowest"></div>
+<p class="font-data-mono text-data-mono text-on-surface-variant mb-2 tracking-widest uppercase">Lunes 19, Todo el día</p>
+<h4 class="font-headline-md text-[20px] leading-tight font-semibold text-on-surface mb-2">Feriado Nacional</h4>
+<p class="font-body-md text-on-surface-variant">Mercados locales cerrados.</p>
+</div>
+</div>
+<div class="p-4 border-t-2 border-primary bg-surface-bright text-center">
+<button class="font-label-caps text-label-caps text-primary hover:underline w-full uppercase tracking-widest font-bold">Consultar Registro Completo</button>
+</div>
+</div>
+<!-- Sentiment Data Card -->
+<div class="bg-primary text-on-primary rounded border border-outline p-8 relative overflow-hidden shadow-xl">
+<div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjIiIGZpbGw9InJnYmEoMjU1LCAyNTUsIDI1NSwgMC4wNSkiLz48L3N2Zz4=')] opacity-30"></div>
+<div class="relative z-10">
+<h3 class="font-headline-md text-headline-md mb-6 border-b border-on-primary/20 pb-4 uppercase tracking-widest">Termómetro Legislativo</h3>
+<div class="flex flex-col gap-6">
+<div>
+<div class="flex justify-between font-label-caps text-label-caps uppercase tracking-wider mb-2 text-on-primary/80">
+<span>Apoyo Oficialista</span>
+<span class="font-data-mono text-on-primary font-bold text-lg">38%</span>
+</div>
+<div class="w-full bg-primary-container h-3 border border-on-primary/20 rounded-sm overflow-hidden">
+<div class="bg-secondary h-full rounded-sm" style="width: 38%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between font-label-caps text-label-caps uppercase tracking-wider mb-2 text-on-primary/80">
+<span>Oposición Dialoguista</span>
+<span class="font-data-mono text-on-primary font-bold text-lg">25%</span>
+</div>
+<div class="w-full bg-primary-container h-3 border border-on-primary/20 rounded-sm overflow-hidden">
+<div class="bg-surface-variant h-full rounded-sm" style="width: 25%"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</main>
+</body></html>

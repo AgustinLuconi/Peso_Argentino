@@ -1,0 +1,252 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-primary: #000d21;
+    --color-primary-container: #002347;
+    --color-gold: #c5a059;
+    --color-gold-light: #f1e9db;
+    --color-surface: #f8f9fa;
+    --color-surface-card: #ffffff;
+    --color-surface-border: #e1e3e4;
+    --app-container-max: 2400px;
+  }
+
+  .dark {
+    --color-primary: #f8f9fa;
+    --color-primary-container: #001738;
+    --color-gold: #e2be78;
+    --color-gold-light: #2b2314;
+    --color-surface: #040914;
+    --color-surface-card: #081124;
+    --color-surface-border: #1a2744;
+  }
+
+  html {
+    min-height: 100%;
+    min-height: -webkit-fill-available;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-surface text-on-surface font-sans transition-colors duration-300 min-h-screen text-[13px] leading-relaxed;
+    min-height: 100dvh;
+    letter-spacing: -0.011em;
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+
+  .dark body {
+    background-color: #040914;
+    color: #e2e8f0;
+  }
+
+  .dark .bg-surface {
+    background-color: #040914 !important;
+  }
+
+  .dark .bg-white {
+    background-color: #081124 !important;
+    border-color: #1a2744 !important;
+  }
+
+  .dark .bg-surface-container-low {
+    background-color: #0c1730 !important;
+    border-color: #1a2744 !important;
+  }
+
+  .dark .bg-surface-container {
+    background-color: #101e3d !important;
+  }
+
+  .dark .text-primary {
+    color: #f1f5f9 !important;
+  }
+
+  .dark .text-on-surface-variant {
+    color: #94a3b8 !important;
+  }
+
+  .dark .border-surface-container-highest,
+  .dark .border-surface-container-high {
+    border-color: #1a2744 !important;
+  }
+
+  /* ========================================================================
+     Unified Typographic Hierarchy
+     ======================================================================== */
+  h1, .font-h1 {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    font-weight: 800;
+    font-size: clamp(1.4rem, 1.1rem + 1.2vw, 2.25rem);
+    line-height: 1.15;
+    letter-spacing: -0.025em;
+    color: var(--color-primary);
+  }
+
+  h2, .font-h2 {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.2rem, 1rem + 0.8vw, 1.65rem);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--color-primary);
+  }
+
+  h3, .font-h3 {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    font-weight: 600;
+    font-size: clamp(1.05rem, 0.95rem + 0.4vw, 1.35rem);
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+    color: var(--color-primary);
+  }
+
+  .font-subtitle {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    font-size: clamp(0.85rem, 0.8rem + 0.2vw, 0.95rem);
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: -0.01em;
+    color: #43474e;
+  }
+
+  .font-eyebrow {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #74777f;
+  }
+
+  .font-data {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+}
+
+/* ==========================================================================
+   Page Transitions & Motion Effects
+   ========================================================================== */
+
+@keyframes pageEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.995);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.animate-page-enter {
+  animation: pageEnter 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Interactive Card Motion */
+.card-interactive {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
+}
+
+.card-interactive:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px -4px rgba(0, 35, 71, 0.08), 0 4px 12px -2px rgba(0, 35, 71, 0.04);
+}
+
+.dark .card-interactive:hover {
+  box-shadow: 0 12px 30px -4px rgba(0, 0, 0, 0.4), 0 0 15px rgba(197, 160, 89, 0.15);
+  border-color: rgba(197, 160, 89, 0.4) !important;
+}
+
+/* Smooth button feedback */
+button {
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+button:active {
+  transform: scale(0.97);
+}
+
+/* Rounded Accents */
+.stroke-of-value {
+  position: relative;
+}
+.stroke-of-value::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #c5a059 0%, rgba(197, 160, 89, 0.2) 100%);
+  border-top-left-radius: inherit;
+  border-top-right-radius: inherit;
+}
+
+.stroke-of-value-navy::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #002347 0%, rgba(0, 35, 71, 0.2) 100%);
+  border-top-left-radius: inherit;
+  border-top-right-radius: inherit;
+}
+
+/* Custom smooth scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f3f5;
+  border-radius: 9999px;
+}
+.dark ::-webkit-scrollbar-track {
+  background: #081124;
+}
+::-webkit-scrollbar-thumb {
+  background: #c4c6cf;
+  border-radius: 9999px;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: #253352;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #74777f;
+}
+
+/* Ticker continuous marquee animation */
+@keyframes ticker {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.animate-ticker {
+  display: flex;
+  width: max-content;
+  animation: ticker 45s linear infinite;
+}
+
+.animate-ticker:hover {
+  animation-play-state: paused;
+}
+
+/* Range input styling */
+input[type='range'] {
+  accent-color: #c5a059;
+}

@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Peso Argentino - Intelligence Feed</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "inverse-primary": "#adc8f5",
+                "background": "#f8f9fa",
+                "secondary-fixed": "#ffdea5",
+                "on-primary": "#ffffff",
+                "on-surface-variant": "#43474e",
+                "on-tertiary-fixed-variant": "#44474a",
+                "on-primary-container": "#718bb5",
+                "on-tertiary": "#ffffff",
+                "surface": "#f8f9fa",
+                "inverse-surface": "#2e3132",
+                "tertiary-fixed": "#e0e2e6",
+                "primary": "#000d21",
+                "outline-variant": "#c4c6cf",
+                "bullish-green": "#115E59",
+                "error-container": "#ffdad6",
+                "on-background": "#191c1d",
+                "surface-dim": "#d9dadb",
+                "inverse-on-surface": "#f0f1f2",
+                "surface-container-lowest": "#ffffff",
+                "on-secondary-fixed": "#261900",
+                "outline": "#74777f",
+                "secondary-fixed-dim": "#e9c176",
+                "surface-tint": "#455f87",
+                "primary-container": "#002347",
+                "surface-container-high": "#e7e8e9",
+                "surface-bright": "#f8f9fa",
+                "on-secondary-fixed-variant": "#5d4201",
+                "surface-container-highest": "#e1e3e4",
+                "secondary": "#775a19",
+                "surface-container": "#edeeef",
+                "surface-container-low": "#f3f4f5",
+                "surface-variant": "#e1e3e4",
+                "tertiary-fixed-dim": "#c4c7ca",
+                "bearish-red": "#991B1B",
+                "champagne-light": "#F1E9DB",
+                "on-primary-fixed-variant": "#2c486d",
+                "on-error-container": "#93000a",
+                "on-tertiary-container": "#878a8e",
+                "secondary-container": "#fed488",
+                "primary-fixed": "#d4e3ff",
+                "on-secondary": "#ffffff",
+                "on-secondary-container": "#785a1a",
+                "on-primary-fixed": "#001c3a",
+                "primary-fixed-dim": "#adc8f5",
+                "error": "#ba1a1a",
+                "on-tertiary-fixed": "#191c1f",
+                "tertiary-container": "#202326",
+                "on-error": "#ffffff",
+                "tertiary": "#0a0d10",
+                "on-surface": "#191c1d"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.125rem",
+                "lg": "0.25rem",
+                "xl": "0.5rem",
+                "full": "0.75rem"
+        },
+        "spacing": {
+                "margin-mobile": "20px",
+                "container-max": "1440px",
+                "gutter": "32px",
+                "unit": "8px",
+                "margin-desktop": "64px",
+                "xs": "8px",
+                "base": "4px",
+                "md": "24px",
+                "xl": "64px",
+                "lg": "40px",
+                "sm": "16px"
+        },
+        "fontFamily": {
+                "display-lg-mobile": [
+                        "\"Source Serif 4\""
+                ],
+                "data-mono": [
+                        "JetBrains Mono"
+                ],
+                "body-md": [
+                        "Hanken Grotesk"
+                ],
+                "headline-xl": [
+                        "\"Source Serif 4\""
+                ],
+                "body-lg": [
+                        "Hanken Grotesk"
+                ],
+                "headline-md": [
+                        "\"Source Serif 4\""
+                ],
+                "display-lg": [
+                        "\"Source Serif 4\""
+                ],
+                "label-caps": [
+                        "Hanken Grotesk"
+                ]
+        },
+        "fontSize": {
+                "display-lg-mobile": [
+                        "36px",
+                        {
+                                "lineHeight": "44px",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "700"
+                        }
+                ],
+                "data-mono": [
+                        "14px",
+                        {
+                                "lineHeight": "20px",
+                                "fontWeight": "500"
+                        }
+                ],
+                "body-md": [
+                        "16px",
+                        {
+                                "lineHeight": "24px",
+                                "fontWeight": "400"
+                        }
+                ],
+                "headline-xl": [
+                        "40px",
+                        {
+                                "lineHeight": "48px",
+                                "fontWeight": "600"
+                        }
+                ],
+                "body-lg": [
+                        "18px",
+                        {
+                                "lineHeight": "28px",
+                                "fontWeight": "400"
+                        }
+                ],
+                "headline-md": [
+                        "28px",
+                        {
+                                "lineHeight": "36px",
+                                "fontWeight": "600"
+                        }
+                ],
+                "display-lg": [
+                        "56px",
+                        {
+                                "lineHeight": "64px",
+                                "letterSpacing": "-0.03em",
+                                "fontWeight": "700"
+                        }
+                ],
+                "label-caps": [
+                        "12px",
+                        {
+                                "lineHeight": "16px",
+                                "letterSpacing": "0.1em",
+                                "fontWeight": "600"
+                        }
+                ]
+        }
+},
+    },
+  }
+</script>
+<style>
+        .material-symbols-outlined {
+          font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill-icon {
+          font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Custom scrollbar for a cleaner look */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #c4c6cf; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #74777f; }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased selection:bg-secondary-container selection:text-on-secondary-container">
+<!-- Mobile Top App Bar (Visible only on mobile) -->
+<header class="md:hidden bg-surface-container-lowest text-primary fixed top-0 w-full z-50 border-b border-outline-variant flex justify-between items-center px-margin-mobile py-xs">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-headline-md cursor-pointer active:opacity-80 transition-opacity hover:bg-surface-container-low transition-colors p-xs rounded-full">menu</span>
+<span class="font-display-lg-mobile text-[24px] leading-[32px] font-bold text-primary">Peso Argentino</span>
+</div>
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-[24px] cursor-pointer active:opacity-80 transition-opacity hover:bg-surface-container-low transition-colors p-xs rounded-full">search</span>
+<span class="material-symbols-outlined text-[24px] cursor-pointer active:opacity-80 transition-opacity hover:bg-surface-container-low transition-colors p-xs rounded-full">notifications</span>
+<span class="material-symbols-outlined text-[24px] cursor-pointer active:opacity-80 transition-opacity hover:bg-surface-container-low transition-colors p-xs rounded-full">account_circle</span>
+</div>
+</header>
+<div class="flex h-screen overflow-hidden">
+<!-- Desktop Sidebar (Hidden on mobile) -->
+<aside class="hidden md:flex bg-surface-container-lowest text-secondary font-body-md fixed left-0 top-0 h-full w-[280px] z-40 border-r border-outline-variant flex-col p-md gap-xs">
+<div class="mb-xl flex flex-col gap-base">
+<span class="font-display-lg-mobile text-[28px] leading-[36px] font-bold text-primary tracking-tight">Peso Argentino</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">Institutional Intelligence</span>
+<div class="mt-sm inline-flex items-center gap-base font-label-caps text-[10px] text-primary px-sm py-base bg-surface-container rounded-full w-max border border-outline-variant uppercase tracking-wider">
+<span class="w-2 h-2 rounded-full bg-bullish-green"></span>
+                    Market Status: Open
+                </div>
+</div>
+<nav class="flex-1 flex flex-col gap-base">
+<a class="flex items-center gap-sm px-sm py-xs scale-100 active:scale-[0.98] transition-transform text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-all rounded-DEFAULT font-medium" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+                    Dashboard
+                </a>
+<a class="flex items-center gap-sm px-sm py-xs scale-100 active:scale-[0.98] transition-transform text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-all rounded-DEFAULT font-medium" href="#">
+<span class="material-symbols-outlined">trending_up</span>
+                    Markets
+                </a>
+<a class="flex items-center gap-sm px-sm py-xs scale-100 active:scale-[0.98] transition-transform text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-all rounded-DEFAULT font-medium" href="#">
+<span class="material-symbols-outlined">query_stats</span>
+                    Inflation
+                </a>
+<a class="flex items-center gap-sm px-sm py-xs scale-100 active:scale-[0.98] transition-transform bg-primary-container text-on-primary-container font-semibold rounded-lg hover:bg-primary hover:text-on-primary transition-all" href="#">
+<span class="material-symbols-outlined fill-icon">newspaper</span>
+                    News
+                </a>
+<a class="flex items-center gap-sm px-sm py-xs scale-100 active:scale-[0.98] transition-transform text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-all rounded-DEFAULT font-medium" href="#">
+<span class="material-symbols-outlined">policy</span>
+                    Politics
+                </a>
+</nav>
+<div class="mt-auto border-t border-outline-variant pt-md flex flex-col gap-base">
+<a class="flex items-center gap-sm px-sm py-xs scale-100 active:scale-[0.98] transition-transform text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-all rounded-DEFAULT font-medium" href="#">
+<span class="material-symbols-outlined">settings</span>
+                    Settings
+                </a>
+<a class="flex items-center gap-sm px-sm py-xs scale-100 active:scale-[0.98] transition-transform text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-all rounded-DEFAULT font-medium" href="#">
+<span class="material-symbols-outlined">help</span>
+                    Support
+                </a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto mt-[64px] md:mt-0 md:ml-[280px] bg-background">
+<!-- Desktop Top Utility Bar -->
+<div class="hidden md:flex justify-between items-center px-margin-desktop py-sm border-b border-outline-variant bg-surface-container-lowest sticky top-0 z-30">
+<div class="relative w-80">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">search</span>
+<input class="w-full pl-xl pr-sm py-xs border border-outline-variant rounded-full bg-surface-container-lowest text-body-md text-on-surface focus:outline-none focus:border-secondary focus:ring-1 focus:ring-secondary transition-colors font-body-md placeholder:text-outline" placeholder="Search tickers, figures..." type="text"/>
+</div>
+<div class="flex items-center gap-sm">
+<button class="p-xs text-on-surface-variant hover:bg-surface-container-low rounded-full transition-colors active:opacity-80">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-xs text-on-surface-variant hover:bg-surface-container-low rounded-full transition-colors active:opacity-80">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</div>
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-md md:py-lg flex flex-col gap-gutter">
+<!-- Breaking News Ticker -->
+<div class="flex items-center bg-surface-container-lowest border border-outline-variant rounded-DEFAULT overflow-hidden shadow-sm">
+<div class="bg-bearish-red text-white font-label-caps text-label-caps px-md py-sm flex items-center gap-base uppercase tracking-widest whitespace-nowrap">
+<span class="material-symbols-outlined text-[18px]">campaign</span> URGENTE
+                    </div>
+<div class="px-md py-sm overflow-hidden whitespace-nowrap text-body-md font-body-md text-on-surface font-medium">
+<marquee class="w-full" scrollamount="5">El BCRA anuncia nuevas medidas sobre encajes bancarios efectivos a partir del próximo lunes. Los mercados reaccionan con volatilidad en la apertura.</marquee>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Main News Feed (8 columns) -->
+<div class="lg:col-span-8 flex flex-col gap-gutter">
+<!-- Hero Editorial Card -->
+<article class="bg-surface-container-lowest border border-outline-variant rounded-DEFAULT overflow-hidden group hover:shadow-md transition-shadow cursor-pointer flex flex-col">
+<div class="h-[320px] md:h-[480px] w-full relative overflow-hidden bg-surface-container-highest">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" data-alt="A highly detailed, professional journalistic photograph of the Argentine Central Bank facade in Buenos Aires, taken at dusk with dramatic lighting highlighting the neoclassical architecture." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwl7hfa1igRn7Dg7mK27zJZcDT4lJMHIidlvXSjfHSNhlJkKbJucF3TprkgMJIk2aorfftZ-PlM7Mi9GYAoKwPfxiZoudPHIW3Wu-9qe0mp0ZQOxyISDLsJH3zDpj0PPe66oA2UoPdCS-xGDIlayzkbd79VrOaCEQGgcumhXd3YnahPguzYeCWuwNr5Ryy7md42UmMJD3Bmym4A49WvAhEYtS5ph2svI4nwTNCNEcSz4A_rqN2siT3tA"/>
+<div class="absolute top-md left-md bg-primary text-on-primary font-label-caps text-label-caps px-sm py-xs rounded-sm uppercase tracking-widest backdrop-blur-sm bg-opacity-90">
+                                    Economía
+                                </div>
+</div>
+<div class="p-lg flex flex-col gap-sm">
+<div class="flex items-center gap-sm font-data-mono text-data-mono text-on-surface-variant">
+<span>Hace 2 horas</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span class="flex items-center gap-xs"><span class="material-symbols-outlined text-[16px]">schedule</span> 5 min lectura</span>
+</div>
+<h1 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg text-primary leading-tight group-hover:text-secondary-fixed-dim transition-colors">
+                                    Fuerte reestructuración en el Ministerio de Economía tras el salto de los dólares financieros
+                                </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mt-sm max-w-3xl">
+                                    El equipo económico prepara un paquete de medidas ortodoxas para contener la brecha cambiaria. Se esperan anuncios oficiales después del cierre de los mercados, apuntando a absorber liquidez.
+                                </p>
+<a class="font-label-caps text-label-caps text-secondary-fixed-dim mt-md inline-flex items-center gap-xs hover:text-secondary transition-colors w-max group/link uppercase tracking-widest border-b border-transparent hover:border-secondary-fixed-dim pb-1" href="#">
+                                    Leer análisis completo <span class="material-symbols-outlined text-[18px] group-hover/link:translate-x-2 transition-transform">arrow_forward</span>
+</a>
+</div>
+</article>
+<!-- Editorial Grid News -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter border-t border-outline-variant pt-gutter">
+<article class="group cursor-pointer flex flex-col gap-sm">
+<div class="h-[200px] w-full relative overflow-hidden bg-surface-container-highest rounded-DEFAULT">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" data-alt="A close-up, sharp image of an institutional trading desk screen showing generic financial charts with downward trending red lines and upward green lines." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEnUTyvXzBoBhduJl5UondRAGrV_7W7vT5FEf24S-2ylUgChO6OG-lzhIqNjF4rixdCxx9u4D1oqH7tuUqnYPj1Wz4HyZfVyGCt9wG2JKTz6g6RStkuMVpDuoGmI0QGxdm-1_SQ9begNcIMxhVvPAE5oUFV1imyS095bdfIbJ_TwuASo9tKra0mgH35EXMWgA3Q28FA-JUOUiYi-_PinnZ0NUI_tb7k9EbPDul0o_b-zCsZwWlqgYdpg"/>
+<div class="absolute top-sm left-sm bg-primary-container text-on-primary-container font-label-caps text-label-caps px-sm py-xs rounded-sm uppercase tracking-widest backdrop-blur-sm bg-opacity-90">
+                                        Mercados
+                                    </div>
+</div>
+<div class="flex flex-col gap-xs pt-xs">
+<div class="font-data-mono text-data-mono text-on-surface-variant">Hace 4 horas</div>
+<h2 class="font-headline-md text-headline-md text-primary leading-tight group-hover:text-secondary-fixed-dim transition-colors">
+                                        Bonos soberanos operan mixtos a la espera de la licitación del Tesoro
+                                    </h2>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-3">
+                                        Los títulos en dólares muestran leve recuperación, mientras la deuda en pesos ajusta tasas de cara al roll-over mensual.
+                                    </p>
+</div>
+</article>
+<article class="group cursor-pointer flex flex-col gap-sm">
+<div class="h-[200px] w-full relative overflow-hidden bg-surface-container-highest rounded-DEFAULT">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" data-alt="A wide angle shot of the Argentine Congress building (Congreso de la Nación Argentina) during a daytime session, showing the exterior facade." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCazNs5Ypt2oNifgdUJtaL3gG9r2bbdPzduglBMpCPzqLdVScvVlQJp756LCYBQlIt2Vo9IA2oNJoX9uz09qenHPJQKkCtJfWZ1qbQdNJ6-0R5oHlN5rdMbSdFpz_wSTYQz2-pHvKtLdmFA2QDcuWWn9BxTxecnO1ruWq5c4W0z5kXROuKeMVG1RQMoQfsXAh0Qw9UycM3oDhpSe3StLBvl6VVfKY6vrZCw6g356h6uET4RPkUGMLICpA"/>
+<div class="absolute top-sm left-sm bg-tertiary-container text-on-tertiary-container font-label-caps text-label-caps px-sm py-xs rounded-sm uppercase tracking-widest backdrop-blur-sm bg-opacity-90">
+                                        Política
+                                    </div>
+</div>
+<div class="flex flex-col gap-xs pt-xs">
+<div class="font-data-mono text-data-mono text-on-surface-variant">Hace 5 horas</div>
+<h2 class="font-headline-md text-headline-md text-primary leading-tight group-hover:text-secondary-fixed-dim transition-colors">
+                                        Debate legislativo: Tensión por el presupuesto en las comisiones del Senado
+                                    </h2>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-3">
+                                        La oposición plantea reparos sobre las estimaciones de inflación y déficit proyectadas para el próximo ejercicio fiscal.
+                                    </p>
+</div>
+</article>
+</div>
+</div>
+<!-- Market Pulse Sidebar (4 columns) -->
+<div class="lg:col-span-4 flex flex-col gap-gutter">
+<!-- Financial Data Card - Institutional Style -->
+<div class="bg-primary border border-outline-variant rounded-DEFAULT overflow-hidden shadow-sm">
+<div class="px-lg py-md border-b border-outline-variant flex items-center justify-between">
+<h3 class="font-headline-md text-headline-md font-bold text-secondary-fixed-dim">Pulso del Mercado</h3>
+<span class="material-symbols-outlined text-secondary-fixed-dim text-[24px]">monitoring</span>
+</div>
+<div class="flex flex-col">
+<!-- Dólar Blue -->
+<div class="flex items-center justify-between px-lg py-md hover:bg-primary-container transition-colors cursor-default border-b border-outline-variant/30">
+<div class="flex flex-col gap-xs">
+<span class="font-body-lg text-body-lg font-medium text-on-primary">Dólar Blue</span>
+<span class="font-label-caps text-label-caps text-outline uppercase tracking-wider">Compra/Venta</span>
+</div>
+<div class="flex flex-col items-end gap-xs">
+<span class="font-data-mono text-[18px] leading-[24px] font-bold text-on-primary tracking-tight">$1.020 / $1.040</span>
+<span class="font-data-mono text-data-mono text-bullish-green flex items-center gap-base bg-bullish-green/10 px-xs py-1 rounded-sm">
+<span class="material-symbols-outlined text-[16px]">arrow_upward</span> +1.5%
+                                        </span>
+</div>
+</div>
+<!-- Riesgo País -->
+<div class="flex items-center justify-between px-lg py-md hover:bg-primary-container transition-colors cursor-default border-b border-outline-variant/30">
+<div class="flex flex-col gap-xs">
+<span class="font-body-lg text-body-lg font-medium text-on-primary">Riesgo País</span>
+<span class="font-label-caps text-label-caps text-outline uppercase tracking-wider">JP Morgan</span>
+</div>
+<div class="flex flex-col items-end gap-xs">
+<span class="font-data-mono text-[18px] leading-[24px] font-bold text-on-primary tracking-tight">1.850 pb</span>
+<span class="font-data-mono text-data-mono text-bearish-red flex items-center gap-base bg-bearish-red/10 px-xs py-1 rounded-sm">
+<span class="material-symbols-outlined text-[16px]">arrow_downward</span> -0.2%
+                                        </span>
+</div>
+</div>
+<!-- Merval -->
+<div class="flex items-center justify-between px-lg py-md hover:bg-primary-container transition-colors cursor-default">
+<div class="flex flex-col gap-xs">
+<span class="font-body-lg text-body-lg font-medium text-on-primary">S&amp;P Merval</span>
+<span class="font-label-caps text-label-caps text-outline uppercase tracking-wider">Índice Bursátil</span>
+</div>
+<div class="flex flex-col items-end gap-xs">
+<span class="font-data-mono text-[18px] leading-[24px] font-bold text-on-primary tracking-tight">1.045.230</span>
+<span class="font-data-mono text-data-mono text-bullish-green flex items-center gap-base bg-bullish-green/10 px-xs py-1 rounded-sm">
+<span class="material-symbols-outlined text-[16px]">arrow_upward</span> +0.8%
+                                        </span>
+</div>
+</div>
+</div>
+</div>
+<!-- Opinion/Analysis List - Editorial Style -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-DEFAULT overflow-hidden shadow-sm">
+<div class="px-lg py-md border-b border-outline-variant">
+<h3 class="font-headline-xl text-[32px] leading-[40px] font-bold text-primary">Análisis Exclusivo</h3>
+</div>
+<div class="flex flex-col divide-y divide-outline-variant">
+<a class="p-lg flex flex-col gap-sm hover:bg-surface-container-low transition-colors group" href="#">
+<span class="font-label-caps text-label-caps text-secondary-fixed-dim uppercase tracking-widest">Columna</span>
+<h4 class="font-headline-md text-headline-md font-semibold text-primary group-hover:text-secondary-fixed-dim transition-colors leading-tight">El dilema de las LELIQ: Impacto en la hoja de balance del Banco Central</h4>
+<span class="font-data-mono text-data-mono text-on-surface-variant italic">Por Juan Pérez - Economista Jefe</span>
+</a>
+<a class="p-lg flex flex-col gap-sm hover:bg-surface-container-low transition-colors group" href="#">
+<span class="font-label-caps text-label-caps text-secondary-fixed-dim uppercase tracking-widest">Perspectiva</span>
+<h4 class="font-headline-md text-headline-md font-semibold text-primary group-hover:text-secondary-fixed-dim transition-colors leading-tight">Exportaciones del agro: Proyecciones para la próxima cosecha gruesa</h4>
+<span class="font-data-mono text-data-mono text-on-surface-variant italic">Por María García - Analista de Mercados</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class="mt-xl border-t border-outline-variant bg-surface-container-lowest py-xl">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop text-center text-on-surface-variant font-data-mono text-data-mono">
+<p>© 2024 Peso Argentino - Institutional Intelligence. Todos los derechos reservados.</p>
+</div>
+</footer>
+</main>
+</div>
+</body></html>
