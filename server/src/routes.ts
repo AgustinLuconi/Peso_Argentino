@@ -8,8 +8,12 @@ import { PoliticalService } from './modules/political/PoliticalService';
 import { NewsService } from './modules/news/NewsService';
 import { LlmService } from './modules/llm/application/LlmService';
 import { globalCache } from './core/cache/MemoryCache';
+import { globalApiRateLimiter, llmApiRateLimiter } from './core/middleware/RateLimiter';
 
 export const v1Router = Router();
+
+// Apply global rate limiting to all standard v1 endpoints (120 req/min)
+v1Router.use(globalApiRateLimiter);
 
 // Health Check & Cache Telemetry
 v1Router.get('/health', (req, res) => {
@@ -20,6 +24,10 @@ v1Router.get('/health', (req, res) => {
     timestamp: new Date().toISOString(),
     cache: globalCache.getStats(),
     llm: LlmService.getEngineStatus(),
+    rateLimiting: {
+      globalLimit: '120 req/min',
+      llmLimit: '15 req/min',
+    },
   });
 });
 
@@ -139,12 +147,12 @@ v1Router.get('/news/feed', async (req, res) => {
   }
 });
 
-// 9. Inteligencia Artificial Gratuita (LLM / NLP)
+// 9. Inteligencia Artificial (LLM / NLP) con Rate Limiting Estricto (15 req/min)
 v1Router.get('/llm/status', (req, res) => {
   res.json({ success: true, data: LlmService.getEngineStatus() });
 });
 
-v1Router.post('/llm/classify', async (req, res) => {
+v1Router.post('/llm/classify', llmApiRateLimiter, async (req, res) => {
   try {
     const { title, summary, source } = req.body || {};
     if (!title) {
@@ -157,7 +165,7 @@ v1Router.post('/llm/classify', async (req, res) => {
   }
 });
 
-v1Router.post('/llm/chat', async (req, res) => {
+v1Router.post('/llm/chat', llmApiRateLimiter, async (req, res) => {
   try {
     const { messages, macroContext } = req.body || {};
     if (!messages || !Array.isArray(messages)) {

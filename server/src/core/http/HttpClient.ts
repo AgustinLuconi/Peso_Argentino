@@ -4,7 +4,7 @@ export interface RequestOptions extends RequestInit {
 
 export class HttpClient {
   static async get<T>(url: string, options: RequestOptions = {}): Promise<T> {
-    const { timeoutMs = 8000, ...fetchOptions } = options;
+    const { timeoutMs = 15000, ...fetchOptions } = options;
 
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), timeoutMs);
