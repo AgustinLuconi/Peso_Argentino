@@ -13,6 +13,16 @@ export class GeminiLlmAdapter {
   }
 
   /**
+   * Modelos Gemini recomendados en orden de prioridad
+   */
+  private static readonly MODEL_CANDIDATES = [
+    'gemini-3.6-flash',
+    'gemini-2.5-flash',
+    'gemini-flash-latest',
+    'gemini-1.5-flash',
+  ];
+
+  /**
    * Clasifica una noticia económica utilizando Google Gemini Free Tier.
    */
   static async classifyNews(input: NewsClassificationInput): Promise<NewsClassificationOutput> {
@@ -23,8 +33,7 @@ export class GeminiLlmAdapter {
       return LocalFinancialNlpAdapter.classifyNews(input);
     }
 
-    try {
-      const prompt = `Eres un analista macroeconómico institucional para la plataforma "Peso Argentino".
+    const prompt = `Eres un analista macroeconómico institucional para la plataforma "Peso Argentino".
 Analiza la siguiente noticia financiera y clasifícala devolviendo estrictamente un JSON válido con este esquema:
 {
   "sentiment": "bullish" | "bearish" | "neutral",
@@ -41,39 +50,44 @@ Título: "${input.title}"
 Resumen: "${input.summary}"
 Fuente: "${input.source || 'Agencia Financiera'}"`;
 
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+    for (const model of this.MODEL_CANDIDATES) {
+      try {
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
 
-      const response = await HttpClient.get<any>(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: {
-            response_mime_type: 'application/json',
-            temperature: 0.1,
-          },
-        }),
-      });
+        const response = await HttpClient.get<any>(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: {
+              response_mime_type: 'application/json',
+              temperature: 0.1,
+            },
+          }),
+        });
 
-      const textResponse = response?.candidates?.[0]?.content?.parts?.[0]?.text;
-      if (!textResponse) throw new Error('Empty Gemini response');
+        const textResponse = response?.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (!textResponse) continue;
 
-      const parsed = JSON.parse(textResponse);
+        const parsed = JSON.parse(textResponse);
 
-      return {
-        sentiment: parsed.sentiment || 'neutral',
-        impactLevel: parsed.impactLevel || 'moderado',
-        affectedAssets: parsed.affectedAssets || ['Mercado'],
-        transmissionChannel: parsed.transmissionChannel || 'Canal macroeconómico estándar.',
-        marketConsensus: parsed.marketConsensus || 'Consenso de analistas en desarrollo.',
-        executiveSummary: parsed.executiveSummary || input.summary,
-        confidenceScore: parsed.confidenceScore || 0.95,
-        provider: 'gemini-1.5-flash-free',
-      };
-    } catch (error) {
-      console.warn('[GeminiLlmAdapter] Error en llamada a Gemini Free API, usando fallback local:', error);
-      return LocalFinancialNlpAdapter.classifyNews(input);
+        return {
+          sentiment: parsed.sentiment || 'neutral',
+          impactLevel: parsed.impactLevel || 'moderado',
+          affectedAssets: parsed.affectedAssets || ['Mercado'],
+          transmissionChannel: parsed.transmissionChannel || 'Canal macroeconómico estándar.',
+          marketConsensus: parsed.marketConsensus || 'Consenso de analistas en desarrollo.',
+          executiveSummary: parsed.executiveSummary || input.summary,
+          confidenceScore: parsed.confidenceScore || 0.95,
+          provider: model,
+        };
+      } catch (error) {
+        console.warn(`[GeminiLlmAdapter] Error con modelo ${model}:`, error);
+      }
     }
+
+    console.warn('[GeminiLlmAdapter] Usando fallback local para clasificación.');
+    return LocalFinancialNlpAdapter.classifyNews(input);
   }
 
   /**
@@ -88,8 +102,7 @@ Fuente: "${input.source || 'Agencia Financiera'}"`;
 
     const start = Date.now();
 
-    try {
-      const systemPrompt = `Eres "Antigravity Copiloto Financiero", el asistente de inteligencia artificial institucional de la plataforma "Peso Argentino".
+    const systemPrompt = `Eres "Antigravity Copiloto Financiero", el asistente de inteligencia artificial institucional de la plataforma "Peso Argentino".
 Tu rol es brindar análisis riguroso, objetivo y respaldado por datos sobre:
 - Mercado de cambios (Dólar Oficial BNA, MEP AL30, CCL, Cripto, brechas).
 - Política monetaria del BCRA (LEFIs del Tesoro, pases pasivos eliminados, base monetaria).
@@ -99,45 +112,50 @@ Tu rol es brindar análisis riguroso, objetivo y respaldado por datos sobre:
 
 Responde de forma clara, ejecutiva y estructurada con viñetas en formato Markdown.`;
 
-      const contents = [
-        { role: 'user', parts: [{ text: systemPrompt }] },
-        { role: 'model', parts: [{ text: 'Entendido. Estoy listo para brindar análisis financiero institucional de la República Argentina.' }] },
-        ...messages.map((m) => ({
-          role: m.role === 'assistant' ? 'model' : 'user',
-          parts: [{ text: m.content }],
-        })),
-      ];
+    const contents = [
+      { role: 'user', parts: [{ text: systemPrompt }] },
+      { role: 'model', parts: [{ text: 'Entendido. Estoy listo para brindar análisis financiero institucional de la República Argentina.' }] },
+      ...messages.map((m) => ({
+        role: m.role === 'assistant' ? 'model' : 'user',
+        parts: [{ text: m.content }],
+      })),
+    ];
 
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+    for (const model of this.MODEL_CANDIDATES) {
+      try {
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
 
-      const response = await HttpClient.get<any>(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          contents,
-          generationConfig: {
-            temperature: 0.2,
-            maxOutputTokens: 600,
-          },
-        }),
-      });
+        const response = await HttpClient.get<any>(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents,
+            generationConfig: {
+              temperature: 0.2,
+              maxOutputTokens: 800,
+            },
+          }),
+        });
 
-      const textResponse = response?.candidates?.[0]?.content?.parts?.[0]?.text;
-      if (!textResponse) throw new Error('Empty Gemini chat response');
+        const textResponse = response?.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (!textResponse) continue;
 
-      return {
-        reply: textResponse,
-        suggestions: [
-          '¿Cuál es la diferencia entre AL30 y GD30?',
-          '¿Cómo impacta la baja de tasas en el dólar MEP?',
-          '¿Qué proyectos lideran las inversiones del RIGI?',
-        ],
-        provider: 'gemini-1.5-flash-free',
-        latencyMs: Date.now() - start,
-      };
-    } catch (error) {
-      console.warn('[GeminiLlmAdapter] Chat Gemini error, fallback local:', error);
-      return LocalFinancialNlpAdapter.answerFinancialQuery(messages, macroContext);
+        return {
+          reply: textResponse,
+          suggestions: [
+            '¿Cuál es la diferencia entre AL30 y GD30?',
+            '¿Cómo impacta la baja de tasas en el dólar MEP?',
+            '¿Qué proyectos lideran las inversiones del RIGI?',
+          ],
+          provider: model,
+          latencyMs: Date.now() - start,
+        };
+      } catch (error) {
+        console.warn(`[GeminiLlmAdapter] Chat con ${model} falló:`, error);
+      }
     }
+
+    console.warn('[GeminiLlmAdapter] Chat fallback local.');
+    return LocalFinancialNlpAdapter.answerFinancialQuery(messages, macroContext);
   }
 }

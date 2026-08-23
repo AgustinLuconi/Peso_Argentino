@@ -1,7 +1,29 @@
+import fs from 'fs';
+import path from 'path';
 import express from 'express';
 import cors from 'cors';
 import { v1Router } from './src/routes';
 import { SyncWorker } from './src/jobs/SyncWorker';
+
+// Load .env file into process.env if present
+try {
+  const envPath = path.resolve(process.cwd(), '.env');
+  if (fs.existsSync(envPath)) {
+    const envContent = fs.readFileSync(envPath, 'utf-8');
+    envContent.split('\n').forEach((line) => {
+      const trimmed = line.trim();
+      if (trimmed && !trimmed.startsWith('#')) {
+        const [key, ...rest] = trimmed.split('=');
+        if (key && rest.length > 0) {
+          const val = rest.join('=').trim();
+          process.env[key.trim()] = val;
+        }
+      }
+    });
+  }
+} catch {
+  // Ignored in environments where process.env is preloaded
+}
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -39,6 +61,7 @@ const server = app.listen(PORT, () => {
   console.log(`🚀 Peso Argentino Backend API activo en: http://localhost:${PORT}`);
   console.log(`📡 Ingesta Pública: DolarApi + ArgentinaDatos + Argly`);
   console.log(`⚡ Caché en memoria de alta velocidad & Background Sync Worker`);
+  console.log(`🤖 Motor IA: ${process.env.GEMINI_API_KEY ? 'Google Gemini Flash Free' : 'Local Financial NLP Engine'}`);
   console.log(`================================================================\n`);
 
   // Start background periodic sync worker
