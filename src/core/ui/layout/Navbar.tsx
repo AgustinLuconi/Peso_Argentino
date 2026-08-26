@@ -41,18 +41,25 @@ export const Navbar: React.FC<NavbarProps> = ({
             <Menu size={20} />
           </button>
 
-          <div className="flex flex-col">
-            <div className="flex items-center gap-1.5 sm:gap-2">
-              <span className="font-sans font-extrabold text-base sm:text-xl text-primary tracking-tight uppercase truncate">
-                PESO ARGENTINO
+          <div className="flex items-center gap-2 sm:gap-2.5">
+            <img
+              src="/favicon.svg"
+              alt="Peso Argentino - Sol de Mayo"
+              className="w-7 h-7 sm:w-8 sm:h-8 rounded-full shadow-soft shrink-0"
+            />
+            <div className="flex flex-col">
+              <div className="flex items-center gap-1.5 sm:gap-2">
+                <span className="font-sans font-extrabold text-base sm:text-xl text-primary tracking-tight uppercase truncate">
+                  PESO ARGENTINO
+                </span>
+                <Badge variant="gold" size="sm" className="hidden sm:inline-flex">
+                  INSTITUTIONAL
+                </Badge>
+              </div>
+              <span className="text-[10px] sm:text-[11px] font-sans text-on-surface-variant hidden md:inline capitalize">
+                {currentDate} · Bolsa & Mercados Argentinos
               </span>
-              <Badge variant="gold" size="sm" className="hidden sm:inline-flex">
-                INSTITUTIONAL
-              </Badge>
             </div>
-            <span className="text-[10px] sm:text-[11px] font-sans text-on-surface-variant hidden md:inline capitalize">
-              {currentDate} · Bolsa & Mercados Argentinos
-            </span>
           </div>
         </div>
 

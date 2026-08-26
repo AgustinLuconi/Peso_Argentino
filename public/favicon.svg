@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <defs>
+    <!-- Radial & Linear Gradients for Institutional Gold & Navy -->
+    <radialGradient id="sunGoldGrad" cx="50%" cy="50%" r="50%" fx="40%" fy="40%">
+      <stop offset="0%" stop-color="#FFF2A3" />
+      <stop offset="45%" stop-color="#F5BA42" />
+      <stop offset="85%" stop-color="#D49B24" />
+      <stop offset="100%" stop-color="#9E6E10" />
+    </radialGradient>
+
+    <radialGradient id="bgNavyGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#0E1A38" />
+      <stop offset="75%" stop-color="#060C1B" />
+      <stop offset="100%" stop-color="#02050D" />
+    </radialGradient>
+
+    <filter id="goldGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="2.5" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Dark Institutional Navy Base Circle -->
+  <circle cx="64" cy="64" r="62" fill="url(#bgNavyGrad)" stroke="#C5A059" stroke-width="2.5" />
+  <circle cx="64" cy="64" r="58" fill="none" stroke="#C5A059" stroke-width="0.75" stroke-dasharray="2,3" opacity="0.6" />
+
+  <!-- Sol de Mayo 16 Rayos Flamígeros y Rectos Alternados -->
+  <g transform="translate(64,64)" filter="url(#goldGlow)">
+    <!-- 16 Straight Triangular Rays -->
+    <g fill="url(#sunGoldGrad)">
+      <!-- 0 deg -->
+      <polygon points="0,-48 -3.5,-25 3.5,-25" />
+      <!-- 22.5 deg -->
+      <polygon points="0,-48 -3.5,-25 3.5,-25" transform="rotate(22.5)" />
+      <!-- 45 deg -->
+      <polygon points="0,-48 -3.5,-25 3.5,-25" transform="rotate(45)" />
+      <!-- 67.5 deg -->
+      <polygon points="0,-48 -3.5,-25 3.5,-25" transform="rotate(67.5)" />
+      <!-- 90 deg -->
+      <polygon points="0,-48 -3.5,-25 3.5,-25" transform="rotate(90)" />
+      <!-- 112.5 deg -->
+      <polygon points="0,-48 -3.5,-25 3.5,-25" transform="rotate(112.5)" />
+      <!-- 135 deg -->
+      <polygon points="0,-48 -3.5,-25 3.5,-25" transform="rotate(135)" />
+      <!-- 157.5 deg -->
+      <polygon points="0,-48 -3.5,-25 3.5,-25" transform="rotate(157.5)" />
+      <!-- 180 deg -->
+      <polygon points="0,-48 -3.5,-25 3.5,-25" transform="rotate(180)" />
+      <!-- 202.5 deg -->
+      <polygon points="0,-48 -3.5,-25 3.5,-25" transform="rotate(202.5)" />
+      <!-- 225 deg -->
+      <polygon points="0,-48 -3.5,-25 3.5,-25" transform="rotate(225)" />
+      <!-- 247.5 deg -->
+      <polygon points="0,-48 -3.5,-25 3.5,-25" transform="rotate(247.5)" />
+      <!-- 270 deg -->
+      <polygon points="0,-48 -3.5,-25 3.5,-25" transform="rotate(270)" />
+      <!-- 292.5 deg -->
+      <polygon points="0,-48 -3.5,-25 3.5,-25" transform="rotate(292.5)" />
+      <!-- 315 deg -->
+      <polygon points="0,-48 -3.5,-25 3.5,-25" transform="rotate(315)" />
+      <!-- 337.5 deg -->
+      <polygon points="0,-48 -3.5,-25 3.5,-25" transform="rotate(337.5)" />
+    </g>
+
+    <!-- 16 Ondulados / Flamígeros Rays -->
+    <g fill="url(#sunGoldGrad)" opacity="0.95">
+      <!-- 11.25 deg offset -->
+      <path d="M0,-24 Q-5,-35 0,-46 Q5,-35 2,-24 Z" transform="rotate(11.25)" />
+      <path d="M0,-24 Q-5,-35 0,-46 Q5,-35 2,-24 Z" transform="rotate(33.75)" />
+      <path d="M0,-24 Q-5,-35 0,-46 Q5,-35 2,-24 Z" transform="rotate(56.25)" />
+      <path d="M0,-24 Q-5,-35 0,-46 Q5,-35 2,-24 Z" transform="rotate(78.75)" />
+      <path d="M0,-24 Q-5,-35 0,-46 Q5,-35 2,-24 Z" transform="rotate(101.25)" />
+      <path d="M0,-24 Q-5,-35 0,-46 Q5,-35 2,-24 Z" transform="rotate(123.75)" />
+      <path d="M0,-24 Q-5,-35 0,-46 Q5,-35 2,-24 Z" transform="rotate(146.25)" />
+      <path d="M0,-24 Q-5,-35 0,-46 Q5,-35 2,-24 Z" transform="rotate(168.75)" />
+      <path d="M0,-24 Q-5,-35 0,-46 Q5,-35 2,-24 Z" transform="rotate(191.25)" />
+      <path d="M0,-24 Q-5,-35 0,-46 Q5,-35 2,-24 Z" transform="rotate(213.75)" />
+      <path d="M0,-24 Q-5,-35 0,-46 Q5,-35 2,-24 Z" transform="rotate(236.25)" />
+      <path d="M0,-24 Q-5,-35 0,-46 Q5,-35 2,-24 Z" transform="rotate(258.75)" />
+      <path d="M0,-24 Q-5,-35 0,-46 Q5,-35 2,-24 Z" transform="rotate(281.25)" />
+      <path d="M0,-24 Q-5,-35 0,-46 Q5,-35 2,-24 Z" transform="rotate(303.75)" />
+      <path d="M0,-24 Q-5,-35 0,-46 Q5,-35 2,-24 Z" transform="rotate(326.25)" />
+      <path d="M0,-24 Q-5,-35 0,-46 Q5,-35 2,-24 Z" transform="rotate(348.75)" />
+    </g>
+
+    <!-- Sun Core Disk -->
+    <circle cx="0" cy="0" r="23" fill="url(#sunGoldGrad)" stroke="#9E6E10" stroke-width="1.2" />
+    <circle cx="0" cy="0" r="20.5" fill="none" stroke="#FFF2A3" stroke-width="0.8" opacity="0.7" />
+
+    <!-- Sol de Mayo Facial Elements (Eyes, Nose, Serene Smile) -->
+    <!-- Eyes -->
+    <ellipse cx="-7" cy="-3.5" rx="3.2" ry="1.8" fill="#5A3E08" />
+    <circle cx="-7" cy="-3.5" r="1.1" fill="#FFF2A3" />
+    <ellipse cx="7" cy="-3.5" rx="3.2" ry="1.8" fill="#5A3E08" />
+    <circle cx="7" cy="-3.5" r="1.1" fill="#FFF2A3" />
+
+    <!-- Eyebrows -->
+    <path d="M-11,-7 Q-7,-9.5 -3,-7" fill="none" stroke="#5A3E08" stroke-width="1.1" stroke-linecap="round" />
+    <path d="M3,-7 Q7,-9.5 11,-7" fill="none" stroke="#5A3E08" stroke-width="1.1" stroke-linecap="round" />
+
+    <!-- Nose -->
+    <path d="M0,-4 L-1.5,4 L2,4" fill="none" stroke="#5A3E08" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" />
+
+    <!-- Lips / Serene Expression -->
+    <path d="M-6.5,9 Q0,13.5 6.5,9" fill="none" stroke="#5A3E08" stroke-width="1.3" stroke-linecap="round" />
+    <path d="M-4,8.5 Q0,11 4,8.5" fill="none" stroke="#5A3E08" stroke-width="0.8" stroke-linecap="round" />
+
+    <!-- Cheeks / Solar Radiant Accents -->
+    <circle cx="-11" cy="4" r="2.5" fill="#ECA62A" opacity="0.6" />
+    <circle cx="11" cy="4" r="2.5" fill="#ECA62A" opacity="0.6" />
+  </g>
+</svg>
