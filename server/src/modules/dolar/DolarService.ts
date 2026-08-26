@@ -1,5 +1,6 @@
 import { globalCache } from '../../core/cache/MemoryCache';
 import { HttpClient } from '../../core/http/HttpClient';
+import { QuotesHistoryRepository } from '../../core/database/repositories/QuotesHistoryRepository';
 
 export interface DollarQuoteDto {
   type: string;
@@ -82,6 +83,11 @@ export class DolarService {
             }
           }
 
+          // Persistir snapshot en la base de datos SQLite para histórico
+          if (quotes.length > 0) {
+            QuotesHistoryRepository.saveSnapshot(quotes as any);
+          }
+
           return quotes;
         } catch (error) {
           console.error('[DolarService] Error fetching live dollar quotes:', error);
@@ -90,5 +96,9 @@ export class DolarService {
       },
       DolarService.TTL_MS
     );
+  }
+
+  static getHistory(type: string, limit: number = 30) {
+    return QuotesHistoryRepository.getHistory(type, limit);
   }
 }

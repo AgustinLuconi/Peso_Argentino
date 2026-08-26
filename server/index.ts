@@ -4,6 +4,8 @@ import express from 'express';
 import cors from 'cors';
 import { v1Router } from './src/routes';
 import { SyncWorker } from './src/jobs/SyncWorker';
+import { DatabaseMigrations } from './src/core/database/DatabaseMigrations';
+import { DatabaseConnection } from './src/core/database/DatabaseConnection';
 
 // Load .env file into process.env if present
 try {
@@ -24,6 +26,9 @@ try {
 } catch {
   // Ignored in environments where process.env is preloaded
 }
+
+// 1. Initialize SQLite Database & Run Migrations
+DatabaseMigrations.runMigrations();
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -60,8 +65,9 @@ const server = app.listen(PORT, () => {
   console.log(`\n================================================================`);
   console.log(`🚀 Peso Argentino Backend API activo en: http://localhost:${PORT}`);
   console.log(`📡 Ingesta Pública: DolarApi + ArgentinaDatos + Argly`);
+  console.log(`🗄️ Base de Datos: SQLite (WAL Mode) en ${DatabaseConnection.getDbPath()}`);
   console.log(`⚡ Caché en memoria de alta velocidad & Background Sync Worker`);
-  console.log(`🤖 Motor IA: ${process.env.GEMINI_API_KEY ? 'Google Gemini Flash Free' : 'Local Financial NLP Engine'}`);
+  console.log(`🤖 Motor IA: ${process.env.GEMINI_API_KEY ? 'Google Gemini Flash Lite Free' : 'Local Financial NLP Engine'}`);
   console.log(`================================================================\n`);
 
   // Start background periodic sync worker
@@ -69,7 +75,14 @@ const server = app.listen(PORT, () => {
 });
 
 // Graceful shutdown
-process.on('SIGTERM', () => {
+const shutdown = () => {
   SyncWorker.stop();
-  server.close(() => console.log('Servidor backend detenido correctamente'));
-});
+  DatabaseConnection.close();
+  server.close(() => {
+    console.log('Servidor backend y base de datos detenidos correctamente.');
+    process.exit(0);
+  });
+};
+
+process.on('SIGTERM', shutdown);
+process.on('SIGINT', shutdown);

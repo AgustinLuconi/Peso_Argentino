@@ -7,6 +7,7 @@ import { InterestRateMetric } from '../domain/InterestRateMetric';
 import { TimeSeries } from '@core/domain/TimeSeries';
 import { smartCache, CACHE_TTL } from '@core/infrastructure/SmartCacheAdapter';
 import { MockInstitutionalStatsRepository } from './MockInstitutionalStatsRepository';
+import { API_CONFIG } from '@core/config/api.config';
 
 export class BackendInstitutionalStatsRepository
   implements InstitutionalStatsRepositoryPort
@@ -23,9 +24,9 @@ export class BackendInstitutionalStatsRepository
           const fallbackData = await this.fallbackRepo.getInstitutionalStats();
 
           // Try fetching live IPC and Plazos Fijos from backend
-          const [ipcRes, ratesRes] = await Promise.all([
-            fetch('http://localhost:3001/api/macro/ipc').catch(() => null),
-            fetch('http://localhost:3001/api/rates/plazos-fijos').catch(() => null),
+          const [macroRes, ratesRes] = await Promise.all([
+            fetch(API_CONFIG.getEndpoint('/api/v1/macro/overview')).catch(() => null),
+            fetch(API_CONFIG.getEndpoint('/api/v1/rates/plazos-fijos')).catch(() => null),
           ]);
 
           let liveRates = fallbackData.rates;
@@ -57,14 +58,14 @@ export class BackendInstitutionalStatsRepository
             }
           }
 
-          if (ipcRes && ipcRes.ok) {
-            const ipcJson = await ipcRes.json();
-            const hist = ipcJson.data?.historicalSeries || [];
+          if (macroRes && macroRes.ok) {
+            const macroJson = await macroRes.json();
+            const hist = macroJson.data?.inflation?.series12Months || [];
             if (hist.length > 0) {
               const points = hist.slice(-8).map((p: any) => ({
-                timestamp: p.date.slice(5, 7) + '/' + p.date.slice(2, 4),
+                timestamp: p.period || 'Mes',
                 value: p.value,
-                label: `${p.value}% (${p.date.slice(0, 7)})`,
+                label: `${p.value}% (${p.period || ''})`,
               }));
               liveInflationSeries = new TimeSeries('Inflación Mensual INDEC (Argly / ArgentinaDatos)', '%', points);
             }

@@ -6,10 +6,11 @@ import {
 import { MarketAsset, AssetCategory } from '../domain/MarketAsset';
 import { smartCache, CACHE_TTL } from '@core/infrastructure/SmartCacheAdapter';
 import { MockMarketRepository } from './MockMarketRepository';
+import { API_CONFIG } from '@core/config/api.config';
 
 export class BackendMarketRepository implements MarketRepositoryPort {
   private fallbackRepo = new MockMarketRepository();
-  private backendUrl = 'http://localhost:3001/api/v1/markets/assets';
+  private backendUrl = API_CONFIG.getEndpoint('/api/v1/markets/assets');
 
   async getMarketData(category?: AssetCategory): Promise<MarketAssetsDto> {
     const cacheKey = `markets_data_backend_${category || 'all'}`;

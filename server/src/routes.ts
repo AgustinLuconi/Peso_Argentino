@@ -9,6 +9,9 @@ import { NewsService } from './modules/news/NewsService';
 import { LlmService } from './modules/llm/application/LlmService';
 import { globalCache } from './core/cache/MemoryCache';
 import { globalApiRateLimiter, llmApiRateLimiter } from './core/middleware/RateLimiter';
+import { QuotesHistoryRepository } from './core/database/repositories/QuotesHistoryRepository';
+import { AiNewsArchiveRepository } from './core/database/repositories/AiNewsArchiveRepository';
+import { DatabaseConnection } from './core/database/DatabaseConnection';
 
 export const v1Router = Router();
 
@@ -23,6 +26,11 @@ v1Router.get('/health', (req, res) => {
     uptimeSeconds: Math.round(process.uptime()),
     timestamp: new Date().toISOString(),
     cache: globalCache.getStats(),
+    database: {
+      engine: 'SQLite (WAL Mode)',
+      totalQuoteRecords: QuotesHistoryRepository.getTotalRecordsCount(),
+      totalClassifiedNews: AiNewsArchiveRepository.getArchiveCount(),
+    },
     llm: LlmService.getEngineStatus(),
     rateLimiting: {
       globalLimit: '120 req/min',
@@ -67,11 +75,22 @@ v1Router.get('/dashboard/metrics', async (req, res) => {
   }
 });
 
-// 2. Dólar Spot
+// 2. Dólar Spot & Histórico Persistente en SQLite
 v1Router.get('/dolar/quotes', async (req, res) => {
   try {
     const data = await DolarService.getQuotes();
     res.json({ success: true, count: data.length, data });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+v1Router.get('/dolar/history/:type', (req, res) => {
+  try {
+    const type = req.params.type || 'blue';
+    const limit = Number(req.query.limit) || 30;
+    const history = DolarService.getHistory(type, limit);
+    res.json({ success: true, count: history.length, quoteType: type, data: history });
   } catch (error: any) {
     res.status(500).json({ success: false, error: error.message });
   }
@@ -176,4 +195,17 @@ v1Router.post('/llm/chat', llmApiRateLimiter, async (req, res) => {
   } catch (error: any) {
     res.status(500).json({ success: false, error: error.message });
   }
+});
+
+// 10. Telemetría de Base de Datos SQLite
+v1Router.get('/database/stats', (req, res) => {
+  res.json({
+    success: true,
+    data: {
+      engine: 'SQLite (WAL Mode)',
+      path: DatabaseConnection.getDbPath(),
+      quotesHistoryCount: QuotesHistoryRepository.getTotalRecordsCount(),
+      aiNewsArchiveCount: AiNewsArchiveRepository.getArchiveCount(),
+    },
+  });
 });

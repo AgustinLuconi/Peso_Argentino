@@ -2,10 +2,11 @@ import { BondRepositoryPort } from '../application/BondRepositoryPort';
 import { BondDetail } from '../domain/BondDetail';
 import { smartCache, CACHE_TTL } from '@core/infrastructure/SmartCacheAdapter';
 import { MockBondRepository } from './MockBondRepository';
+import { API_CONFIG } from '@core/config/api.config';
 
 export class BackendBondRepository implements BondRepositoryPort {
   private fallbackRepo = new MockBondRepository();
-  private backendBaseUrl = 'http://localhost:3001/api/v1/bonds';
+  private backendBaseUrl = API_CONFIG.getEndpoint('/api/v1/bonds');
 
   async getAllAvailableBonds(): Promise<Array<{ ticker: string; name: string }>> {
     return this.fallbackRepo.getAllAvailableBonds();

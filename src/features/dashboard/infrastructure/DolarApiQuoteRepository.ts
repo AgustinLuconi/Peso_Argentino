@@ -8,9 +8,11 @@ import { TimeSeries } from '@core/domain/TimeSeries';
 import { smartCache, CACHE_TTL } from '@core/infrastructure/SmartCacheAdapter';
 import { MockDashboardRepository } from './MockDashboardRepository';
 
+import { API_CONFIG } from '@core/config/api.config';
+
 export class DolarApiQuoteRepository implements DashboardRepositoryPort {
   private fallbackRepo: MockDashboardRepository;
-  private backendUrl = 'http://localhost:3001/api/v1/dashboard/metrics';
+  private backendUrl = API_CONFIG.getEndpoint('/api/v1/dashboard/metrics');
   private directDolarApiUrl = 'https://dolarapi.com/v1/dolares';
 
   constructor() {

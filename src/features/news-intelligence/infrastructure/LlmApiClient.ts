@@ -1,4 +1,5 @@
 import { Prettify } from '@core/types/type-utils';
+import { API_CONFIG } from '@core/config/api.config';
 
 export interface LlmClassificationDto {
   readonly sentiment: 'bullish' | 'bearish' | 'neutral';
@@ -27,7 +28,7 @@ export interface LlmEngineStatusDto {
 }
 
 export class LlmApiClient {
-  private static readonly BASE_URL = 'http://localhost:3001/api/v1/llm';
+  private static readonly BASE_URL = API_CONFIG.getEndpoint('/api/v1/llm');
 
   static async getStatus(): Promise<LlmEngineStatusDto | null> {
     try {

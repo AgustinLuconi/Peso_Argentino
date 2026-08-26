@@ -14,6 +14,8 @@ import {
   Layers,
 } from 'lucide-react';
 
+import { API_CONFIG } from '@core/config/api.config';
+
 interface DataSourceItem {
   id: string;
   name: string;
@@ -110,7 +112,7 @@ export const DataSourcesView: React.FC = () => {
       name: 'Intelligence Feed & Cables Financieros',
       provider: 'Google Gemini Flash Free + Financial NLP Engine',
       type: 'Inferencia IA 100% Gratuita',
-      endpoint: 'http://localhost:3001/api/v1/llm/classify',
+      endpoint: API_CONFIG.getEndpoint('/api/v1/llm/classify'),
       updateFrequency: 'Tiempo real ante eventos clave',
       cacheTtlFormatted: '1 Hora',
       ttlMs: CACHE_TTL.NEWS_INTELLIGENCE,
@@ -135,7 +137,7 @@ export const DataSourcesView: React.FC = () => {
     setTestResult(null);
     try {
       const startTime = performance.now();
-      const res = await fetch('http://localhost:3001/api/v1/health');
+      const res = await fetch(API_CONFIG.getEndpoint('/api/v1/health'));
       const latencyMs = Math.round(performance.now() - startTime);
       if (res.ok) {
         setTestResult(`Conexión exitosa a Backend Core API (${latencyMs}ms). Módulos sincronizados.`);

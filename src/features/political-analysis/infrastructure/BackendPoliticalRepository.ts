@@ -6,10 +6,11 @@ import { PoliticalRiskIndex } from '../domain/PoliticalRiskIndex';
 import { LegislativeItem } from '../domain/LegislativeItem';
 import { smartCache, CACHE_TTL } from '@core/infrastructure/SmartCacheAdapter';
 import { MockPoliticalRepository } from './MockPoliticalRepository';
+import { API_CONFIG } from '@core/config/api.config';
 
 export class BackendPoliticalRepository implements PoliticalRepositoryPort {
   private fallbackRepo = new MockPoliticalRepository();
-  private backendUrl = 'http://localhost:3001/api/v1/political/overview';
+  private backendUrl = API_CONFIG.getEndpoint('/api/v1/political/overview');
 
   async getPoliticalAnalysis(): Promise<PoliticalAnalysisDto> {
     const cacheKey = 'political_analysis_backend';

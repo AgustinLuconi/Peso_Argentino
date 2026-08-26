@@ -9,10 +9,11 @@ import {
 } from '../domain/IntelligenceNews';
 import { smartCache, CACHE_TTL } from '@core/infrastructure/SmartCacheAdapter';
 import { MockNewsRepository } from './MockNewsRepository';
+import { API_CONFIG } from '@core/config/api.config';
 
 export class BackendNewsRepository implements NewsRepositoryPort {
   private fallbackRepo = new MockNewsRepository();
-  private backendUrl = 'http://localhost:3001/api/v1/news/feed';
+  private backendUrl = API_CONFIG.getEndpoint('/api/v1/news/feed');
 
   async getNews(category?: NewsCategory, impact?: ImpactLevel): Promise<NewsIntelligenceDto> {
     const cacheKey = `news_intelligence_backend_${category || 'all'}_${impact || 'all'}`;

@@ -55,3 +55,10 @@ dist-ssr/
 .env.development.local
 .env.test.local
 .env.production.local
+
+# SQLite Local Database files
+server/data/*.db
+server/data/*.db-wal
+server/data/*.db-shm
+*.sqlite
+*.sqlite3
