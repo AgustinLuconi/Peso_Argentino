@@ -4,6 +4,9 @@ import { NavigationFeatureId } from '@core/ui/layout/SidebarNavigation';
 export interface AppContextType {
   activeFeature: NavigationFeatureId;
   setActiveFeature: (feature: NavigationFeatureId) => void;
+  activeSubItem: string | null;
+  setActiveSubItem: (subItem: string | null) => void;
+  navigateTo: (feature: NavigationFeatureId, subItem?: string) => void;
   selectedBondTicker: string;
   setSelectedBondTicker: (ticker: string) => void;
   isRefreshing: boolean;
@@ -22,12 +25,18 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [activeFeature, setActiveFeature] = useState<NavigationFeatureId>('dashboard');
+  const [activeSubItem, setActiveSubItem] = useState<string | null>(null);
   const [selectedBondTicker, setSelectedBondTicker] = useState<string>('AL30');
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
   const [isConverterOpen, setIsConverterOpen] = useState<boolean>(false);
   const [isAiModalOpen, setIsAiModalOpen] = useState<boolean>(false);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
+
+  const navigateTo = (feature: NavigationFeatureId, subItem?: string) => {
+    setActiveFeature(feature);
+    setActiveSubItem(subItem || null);
+  };
 
   // Apply theme to document root
   useEffect(() => {
@@ -69,6 +78,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       value={{
         activeFeature,
         setActiveFeature,
+        activeSubItem,
+        setActiveSubItem,
+        navigateTo,
         selectedBondTicker,
         setSelectedBondTicker,
         isRefreshing,

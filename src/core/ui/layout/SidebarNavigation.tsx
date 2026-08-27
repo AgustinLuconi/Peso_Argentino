@@ -23,7 +23,8 @@ export type NavigationFeatureId =
 
 export interface SidebarNavigationProps {
   activeFeature: NavigationFeatureId;
-  onSelectFeature: (featureId: NavigationFeatureId) => void;
+  activeSubItem?: string | null;
+  onSelectFeature: (featureId: NavigationFeatureId, subItemId?: string) => void;
   isOpen: boolean;
   onClose: () => void;
 }
@@ -44,6 +45,7 @@ interface NavItem {
 
 export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
   activeFeature,
+  activeSubItem,
   onSelectFeature,
   isOpen,
   onClose,
@@ -69,10 +71,15 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
       icon: <TrendingUp size={18} />,
       badge: 'BYMA/NYSE',
       subItems: [
-        { id: 'merval', label: 'Acciones Panel Líder' },
-        { id: 'adrs', label: 'ADRs en Wall Street (USD)' },
-        { id: 'bonds', label: 'Renta Fija Soberana' },
-        { id: 'lecaps', label: 'Curva de Lecaps ARS' },
+        { id: 'panel-lider', label: 'Acciones Panel Líder BYMA' },
+        { id: 'panel-general', label: 'Panel General Secundario' },
+        { id: 'curva-lecaps', label: 'Curva de Lecaps & Boncaps' },
+        { id: 'adrs', label: 'ADRs Wall Street (USD)' },
+        { id: 'cedears', label: 'CEDEARs en BYMA' },
+        { id: 'bonos-usd', label: 'Bonos Soberanos en USD' },
+        { id: 'bonos-pesos', label: 'Bonos Pesos & Curva CER' },
+        { id: 'bonos-extranjeros', label: 'Bonos Extranjeros & Treasuries' },
+        { id: 'commodities', label: 'Commodities Agro & Energía' },
       ],
     },
     {
@@ -126,6 +133,11 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
   const handleItemClick = (id: NavigationFeatureId) => {
     onSelectFeature(id);
     setExpandedMenu((prev) => (prev === id ? null : id));
+  };
+
+  const handleSubItemClick = (featureId: NavigationFeatureId, subItemId: string) => {
+    onSelectFeature(featureId, subItemId);
+    onClose();
   };
 
   return (
@@ -235,19 +247,31 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
                     {/* Expandable Sub-items Accordion */}
                     {isMenuOpen && item.subItems && (
                       <div className="pl-9 pr-2 py-1 space-y-1 animate-in fade-in slide-in-from-top-1 duration-200">
-                        {item.subItems.map((sub) => (
-                          <button
-                            key={sub.id}
-                            onClick={() => {
-                              onSelectFeature(item.id);
-                              onClose();
-                            }}
-                            className="w-full text-left px-2.5 py-1.5 rounded-lg text-xs font-sans text-on-surface-variant hover:text-primary hover:bg-surface-container-low flex items-center gap-2 transition-colors"
-                          >
-                            <CircleDot size={10} className="text-gold shrink-0" />
-                            <span className="truncate">{sub.label}</span>
-                          </button>
-                        ))}
+                        {item.subItems.map((sub) => {
+                          const isSubActive = isActive && activeSubItem === sub.id;
+
+                          return (
+                            <button
+                              key={sub.id}
+                              onClick={() => handleSubItemClick(item.id, sub.id)}
+                              className={clsx(
+                                'w-full text-left px-2.5 py-1.5 rounded-lg text-xs font-sans flex items-center gap-2 transition-all',
+                                isSubActive
+                                  ? 'bg-primary-container/30 text-primary font-bold shadow-sm'
+                                  : 'text-on-surface-variant hover:text-primary hover:bg-surface-container-low'
+                              )}
+                            >
+                              <CircleDot
+                                size={10}
+                                className={clsx(
+                                  'shrink-0',
+                                  isSubActive ? 'text-gold scale-125' : 'text-outline'
+                                )}
+                              />
+                              <span className="truncate">{sub.label}</span>
+                            </button>
+                          );
+                        })}
                       </div>
                     )}
                   </div>

@@ -16,12 +16,25 @@ import { RefreshCw, CheckCircle2 } from 'lucide-react';
 export const DashboardView: React.FC<{
   onNavigateToBondDetail?: () => void;
   onNavigateToMarkets?: () => void;
-}> = ({ onNavigateToBondDetail, onNavigateToMarkets }) => {
+  activeSubItem?: string | null;
+}> = ({ onNavigateToBondDetail, onNavigateToMarkets, activeSubItem }) => {
   const [data, setData] = useState<DashboardMetricsDto | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [selectedQuote, setSelectedQuote] = useState<MarketQuote | null>(null);
   const [lastRefreshedAt, setLastRefreshedAt] = useState<string>('');
+
+  useEffect(() => {
+    if (activeSubItem) {
+      if (activeSubItem === 'quotes') {
+        document.getElementById('quotes-section')?.scrollIntoView({ behavior: 'smooth' });
+      } else if (activeSubItem === 'macro') {
+        document.getElementById('macro-section')?.scrollIntoView({ behavior: 'smooth' });
+      } else if (activeSubItem === 'breach') {
+        document.getElementById('breach-section')?.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  }, [activeSubItem]);
 
   const repo = new DolarApiQuoteRepository();
   const useCase = new GetDashboardMetricsUseCase(repo);
@@ -121,13 +134,15 @@ export const DashboardView: React.FC<{
       </div>
 
       {/* Primary Dollar Quotes Section */}
-      <DollarQuotesCard
-        quotes={data.quotes}
-        onSelectQuote={(quote) => setSelectedQuote(quote)}
-      />
+      <div id="quotes-section">
+        <DollarQuotesCard
+          quotes={data.quotes}
+          onSelectQuote={(quote) => setSelectedQuote(quote)}
+        />
+      </div>
 
       {/* Main Macro KPIs Grid */}
-      <div className="space-y-2.5">
+      <div id="macro-section" className="space-y-2.5">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
           <h2 className="font-h2">
             Variables Monetarias & Deuda Soberana
@@ -146,7 +161,7 @@ export const DashboardView: React.FC<{
       </div>
 
       {/* Breach Chart & Executive Pillars Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 3xl:grid-cols-12 gap-5 sm:gap-6">
+      <div id="breach-section" className="grid grid-cols-1 lg:grid-cols-2 3xl:grid-cols-12 gap-5 sm:gap-6">
         <div className="3xl:col-span-7">
           <BreachHistoryChart timeSeries={data.breachHistory} />
         </div>

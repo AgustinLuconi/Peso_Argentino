@@ -12,10 +12,23 @@ import { ArrowLeft, RefreshCw } from 'lucide-react';
 export const BondDetailView: React.FC<{
   initialTicker?: string;
   onBackToMarkets?: () => void;
-}> = ({ initialTicker = 'AL30', onBackToMarkets }) => {
+  activeSubItem?: string | null;
+}> = ({ initialTicker = 'AL30', onBackToMarkets, activeSubItem }) => {
   const [ticker, setTicker] = useState(initialTicker);
   const [bond, setBond] = useState<BondDetail | null>(null);
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (activeSubItem) {
+      if (activeSubItem === 'calc') {
+        document.getElementById('bond-calc-section')?.scrollIntoView({ behavior: 'smooth' });
+      } else if (activeSubItem === 'waterfall') {
+        document.getElementById('bond-waterfall-section')?.scrollIntoView({ behavior: 'smooth' });
+      } else if (activeSubItem === 'schedule') {
+        document.getElementById('bond-schedule-section')?.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  }, [activeSubItem]);
 
   const fetchBond = async (bondTicker: string) => {
     setLoading(true);
@@ -98,14 +111,16 @@ export const BondDetailView: React.FC<{
       <BondHeaderMetrics bond={bond} />
 
       {/* Interactive Yield Calculator */}
-      <InteractiveYieldCalculator bond={bond} />
+      <div id="bond-calc-section">
+        <InteractiveYieldCalculator bond={bond} />
+      </div>
 
       {/* Secondary Analysis Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-1">
+        <div id="bond-waterfall-section" className="lg:col-span-1">
           <ParitySpreadCard bond={bond} />
         </div>
-        <div className="lg:col-span-2">
+        <div id="bond-schedule-section" className="lg:col-span-2">
           <CashFlowScheduleTable cashFlows={bond.cashFlows} />
         </div>
       </div>

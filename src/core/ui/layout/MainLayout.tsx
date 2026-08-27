@@ -7,7 +7,8 @@ import { Footer } from './Footer';
 export interface MainLayoutProps {
   children: React.ReactNode;
   activeFeature: NavigationFeatureId;
-  onSelectFeature: (featureId: NavigationFeatureId) => void;
+  activeSubItem?: string | null;
+  onSelectFeature: (featureId: NavigationFeatureId, subItemId?: string) => void;
   onRefreshData?: () => void;
   isRefreshing?: boolean;
   activeFeatureTitle?: string;
@@ -17,6 +18,7 @@ export interface MainLayoutProps {
 export const MainLayout: React.FC<MainLayoutProps> = ({
   children,
   activeFeature,
+  activeSubItem,
   onSelectFeature,
   onRefreshData,
   isRefreshing = false,
@@ -44,6 +46,7 @@ export const MainLayout: React.FC<MainLayoutProps> = ({
         {/* Sidebar */}
         <SidebarNavigation
           activeFeature={activeFeature}
+          activeSubItem={activeSubItem}
           onSelectFeature={onSelectFeature}
           isOpen={isSidebarOpen}
           onClose={() => setIsSidebarOpen(false)}

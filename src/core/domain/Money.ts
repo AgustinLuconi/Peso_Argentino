@@ -13,6 +13,14 @@ export class Money {
     return new Money(amount, currency);
   }
 
+  static formatArs(amount: number): string {
+    return Money.of(amount, 'ARS').format();
+  }
+
+  static formatUsd(amount: number): string {
+    return Money.of(amount, 'USD').format();
+  }
+
   static fromString(val: string, currency: CurrencyCode = 'ARS'): Money {
     const cleaned = val.replace(/[^0-9.-]+/g, '');
     const num = parseFloat(cleaned);

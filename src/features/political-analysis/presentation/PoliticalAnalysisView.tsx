@@ -9,10 +9,24 @@ import { Button } from '@core/ui/components/Button';
 import { smartCache } from '@core/infrastructure/SmartCacheAdapter';
 import { RefreshCw } from 'lucide-react';
 
-export const PoliticalAnalysisView: React.FC = () => {
+export const PoliticalAnalysisView: React.FC<{
+  activeSubItem?: string | null;
+}> = ({ activeSubItem }) => {
   const [data, setData] = useState<PoliticalAnalysisDto | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+
+  useEffect(() => {
+    if (activeSubItem) {
+      if (activeSubItem === 'radar') {
+        document.getElementById('radar-section')?.scrollIntoView({ behavior: 'smooth' });
+      } else if (activeSubItem === 'rigi') {
+        document.getElementById('rigi-section')?.scrollIntoView({ behavior: 'smooth' });
+      } else if (activeSubItem === 'laws') {
+        document.getElementById('laws-section')?.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  }, [activeSubItem]);
 
   const repo = new BackendPoliticalRepository();
   const useCase = new GetPoliticalAnalysisUseCase(repo);
@@ -74,16 +88,22 @@ export const PoliticalAnalysisView: React.FC = () => {
       </div>
 
       {/* Governance & Political Risk Radar */}
-      <GovernanceRadarCard riskIndex={data.riskIndex} />
+      <div id="radar-section">
+        <GovernanceRadarCard riskIndex={data.riskIndex} />
+      </div>
 
       {/* RIGI Pipeline & Structural Reform Pillars */}
-      <RigiAndReformPillars
-        rigiSummary={data.rigiSummary}
-        executiveBriefing={data.executiveBriefing}
-      />
+      <div id="rigi-section">
+        <RigiAndReformPillars
+          rigiSummary={data.rigiSummary}
+          executiveBriefing={data.executiveBriefing}
+        />
+      </div>
 
       {/* Legislative & DNU Tracker */}
-      <LegislativeTrackerTable items={data.legislativeItems} />
+      <div id="laws-section">
+        <LegislativeTrackerTable items={data.legislativeItems} />
+      </div>
     </div>
   );
 };

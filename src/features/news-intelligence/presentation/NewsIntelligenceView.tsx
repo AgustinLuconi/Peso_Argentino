@@ -8,11 +8,24 @@ import { Button } from '@core/ui/components/Button';
 import { smartCache } from '@core/infrastructure/SmartCacheAdapter';
 import { RefreshCw, Filter } from 'lucide-react';
 
-export const NewsIntelligenceView: React.FC = () => {
+export const NewsIntelligenceView: React.FC<{
+  activeSubItem?: string | null;
+}> = ({ activeSubItem }) => {
   const [data, setData] = useState<NewsIntelligenceDto | null>(null);
   const [filterImpact, setFilterImpact] = useState<string>('all');
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+
+  useEffect(() => {
+    if (activeSubItem) {
+      if (activeSubItem === 'brief') {
+        document.getElementById('news-brief-section')?.scrollIntoView({ behavior: 'smooth' });
+      } else if (activeSubItem === 'critical') {
+        setFilterImpact('critico');
+        document.getElementById('news-critical-section')?.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  }, [activeSubItem]);
 
   const repo = new BackendNewsRepository();
   const useCase = new GetImpactNewsUseCase(repo);
@@ -79,10 +92,12 @@ export const NewsIntelligenceView: React.FC = () => {
       </div>
 
       {/* Executive AI Briefing */}
-      <ExecutiveBriefCard topAssets={data.topAffectedAssets} />
+      <div id="news-brief-section">
+        <ExecutiveBriefCard topAssets={data.topAffectedAssets} />
+      </div>
 
       {/* News Feed with Impact Filters */}
-      <div className="space-y-4">
+      <div id="news-critical-section" className="space-y-4">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-3.5 rounded-2xl border border-surface-container-highest shadow-soft">
           <div className="flex items-center gap-2">
             <Filter size={16} className="text-gold" />

@@ -10,12 +10,15 @@ import { NewsIntelligenceView } from '@features/news-intelligence/presentation/N
 import { QuickCurrencyConverter } from '@core/ui/components/QuickCurrencyConverter';
 import { FinancialAiModal } from '@core/ui/components/FinancialAiModal';
 import { Modal } from '@core/ui/components/Modal';
-import { Search, ArrowRight, TrendingUp, Landmark, Calculator, Scale, Newspaper, ArrowRightLeft, Sparkles, Bot } from 'lucide-react';
+import { Search, ArrowRight, TrendingUp, Landmark, Calculator, Scale, Newspaper, ArrowRightLeft, Bot } from 'lucide-react';
 
 export const App: React.FC = () => {
   const {
     activeFeature,
     setActiveFeature,
+    activeSubItem,
+    setActiveSubItem,
+    navigateTo,
     selectedBondTicker,
     setSelectedBondTicker,
     isRefreshing,
@@ -44,7 +47,7 @@ export const App: React.FC = () => {
 
   const featureTitles: Record<string, string> = {
     dashboard: 'Dashboard Principal & Cotizaciones Dólar',
-    markets: 'Mercado de Capitales, Merval & ADRs',
+    markets: 'Mercado de Capitales, Merval & Curva de Lecaps',
     'bond-detail': `Ficha Técnica & Renta Fija (${selectedBondTicker})`,
     'institutional-stats': 'Estadísticas BCRA & Series Macro',
     'political-analysis': 'Análisis Político & Regulatorio',
@@ -53,13 +56,14 @@ export const App: React.FC = () => {
 
   const quickNavItems = [
     { title: 'Copiloto Financiero IA (100% Gratis)', feature: 'ai-copilot', icon: <Bot size={16} className="text-gold" />, keywords: 'ia asistente copilot inteligencia artificial gemini chat preguntas' },
-    { title: 'Cotizaciones Dólar (Oficial, Blue, MEP, CCL)', feature: 'dashboard', icon: <TrendingUp size={16} />, keywords: 'dolar mep blue ccl oficial tarjeta cripto cotizacion' },
+    { title: 'Cotizaciones Dólar (Oficial, Blue, MEP, CCL)', feature: 'dashboard', subItem: 'quotes', icon: <TrendingUp size={16} />, keywords: 'dolar mep blue ccl oficial tarjeta cripto cotizacion' },
+    { title: 'Curva de Rendimientos Lecaps & Boncaps ARS', feature: 'markets', subItem: 'curva-lecaps', icon: <TrendingUp size={16} className="text-gold" />, keywords: 'lecap lecaps boncaps letras tasa fija tem tna tea' },
     { title: 'Conversor Rápido de Divisas & Brecha', feature: 'converter', icon: <ArrowRightLeft size={16} />, keywords: 'conversor convertir pesos dolares calculador' },
-    { title: 'Panel Líder Merval & ADRs Wall Street', feature: 'markets', icon: <TrendingUp size={16} />, keywords: 'merval acciones ggal ypf pamp bma adrs nyse' },
-    { title: 'Calculadora de Rendimiento & Flujo AL30 / GD30', feature: 'bond-detail', icon: <Calculator size={16} />, keywords: 'bonos al30 gd30 renta fija tir paridad cupones' },
-    { title: 'Balance General BCRA & Tasas de Interés', feature: 'institutional-stats', icon: <Landmark size={16} />, keywords: 'bcra reservas base monetaria lefi pases indec inflacion tasas' },
-    { title: 'Radar de Gobernabilidad & Proyectos RIGI', feature: 'political-analysis', icon: <Scale size={16} />, keywords: 'politica leyes dnu rigi congreso gobernabilidad reformas' },
-    { title: 'Feed de Noticias de Alto Impacto Macroeconómico', feature: 'news-intelligence', icon: <Newspaper size={16} />, keywords: 'noticias intelligence feed comunicados finanzas' },
+    { title: 'Panel Líder Merval & Panel General BYMA', feature: 'markets', subItem: 'panel-lider', icon: <TrendingUp size={16} />, keywords: 'merval acciones ggal ypf pamp bma adrs nyse general' },
+    { title: 'Calculadora de Rendimiento & Flujo AL30 / GD30', feature: 'bond-detail', subItem: 'calc', icon: <Calculator size={16} />, keywords: 'bonos al30 gd30 renta fija tir paridad cupones' },
+    { title: 'Balance General BCRA & Tasas de Interés', feature: 'institutional-stats', subItem: 'balance', icon: <Landmark size={16} />, keywords: 'bcra reservas base monetaria lefi pases indec inflacion tasas' },
+    { title: 'Radar de Gobernabilidad & Proyectos RIGI', feature: 'political-analysis', subItem: 'radar', icon: <Scale size={16} />, keywords: 'politica leyes dnu rigi congreso gobernabilidad reformas' },
+    { title: 'Feed de Noticias de Alto Impacto Macroeconómico', feature: 'news-intelligence', subItem: 'critical', icon: <Newspaper size={16} />, keywords: 'noticias intelligence feed comunicados finanzas' },
   ];
 
   const filteredNavItems = quickNavItems.filter(
@@ -71,7 +75,8 @@ export const App: React.FC = () => {
   return (
     <MainLayout
       activeFeature={activeFeature}
-      onSelectFeature={setActiveFeature}
+      activeSubItem={activeSubItem}
+      onSelectFeature={(feature, sub) => navigateTo(feature, sub)}
       onRefreshData={refreshAllData}
       isRefreshing={isRefreshing}
       activeFeatureTitle={featureTitles[activeFeature]}
@@ -80,19 +85,21 @@ export const App: React.FC = () => {
       {/* Route Switcher */}
       {activeFeature === 'dashboard' && (
         <DashboardView
-          onNavigateToMarkets={() => setActiveFeature('markets')}
+          activeSubItem={activeSubItem}
+          onNavigateToMarkets={() => navigateTo('markets', 'panel-lider')}
           onNavigateToBondDetail={() => {
             setSelectedBondTicker('AL30');
-            setActiveFeature('bond-detail');
+            navigateTo('bond-detail', 'calc');
           }}
         />
       )}
 
       {activeFeature === 'markets' && (
         <MarketsView
+          activeSubItem={activeSubItem}
           onSelectBondDetail={(ticker) => {
             setSelectedBondTicker(ticker.replace('D', ''));
-            setActiveFeature('bond-detail');
+            navigateTo('bond-detail');
           }}
         />
       )}
@@ -100,15 +107,22 @@ export const App: React.FC = () => {
       {activeFeature === 'bond-detail' && (
         <BondDetailView
           initialTicker={selectedBondTicker}
-          onBackToMarkets={() => setActiveFeature('markets')}
+          activeSubItem={activeSubItem}
+          onBackToMarkets={() => navigateTo('markets', 'bonos-usd')}
         />
       )}
 
-      {activeFeature === 'institutional-stats' && <InstitutionalStatsView />}
+      {activeFeature === 'institutional-stats' && (
+        <InstitutionalStatsView activeSubItem={activeSubItem} />
+      )}
 
-      {activeFeature === 'political-analysis' && <PoliticalAnalysisView />}
+      {activeFeature === 'political-analysis' && (
+        <PoliticalAnalysisView activeSubItem={activeSubItem} />
+      )}
 
-      {activeFeature === 'news-intelligence' && <NewsIntelligenceView />}
+      {activeFeature === 'news-intelligence' && (
+        <NewsIntelligenceView activeSubItem={activeSubItem} />
+      )}
 
       {/* Financial AI Copilot Modal (100% Free) */}
       <FinancialAiModal
@@ -141,7 +155,7 @@ export const App: React.FC = () => {
               autoFocus
               value={searchFilter}
               onChange={(e) => setSearchFilter(e.target.value)}
-              placeholder="Escribe el nombre del módulo o activo (ej: IA, AL30, Conversor, BCRA, Merval, Dólar)..."
+              placeholder="Escribe el nombre del módulo o activo (ej: Lecaps, AL30, Conversor, BCRA, Merval, Dólar)..."
               className="w-full pl-9 pr-3 py-2.5 bg-surface-container-low border border-surface-container-high rounded-xl text-xs font-sans focus:outline-none focus:border-gold"
             />
           </div>
@@ -159,7 +173,7 @@ export const App: React.FC = () => {
                   } else if (item.feature === 'ai-copilot') {
                     setIsAiModalOpen(true);
                   } else {
-                    setActiveFeature(item.feature as any);
+                    navigateTo(item.feature as any, (item as any).subItem);
                   }
                   setIsSearchOpen(false);
                   setSearchFilter('');

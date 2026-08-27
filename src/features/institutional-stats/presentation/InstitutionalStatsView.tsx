@@ -11,10 +11,26 @@ import { Button } from '@core/ui/components/Button';
 import { smartCache } from '@core/infrastructure/SmartCacheAdapter';
 import { RefreshCw, CheckCircle2 } from 'lucide-react';
 
-export const InstitutionalStatsView: React.FC = () => {
+export const InstitutionalStatsView: React.FC<{
+  activeSubItem?: string | null;
+}> = ({ activeSubItem }) => {
   const [data, setData] = useState<InstitutionalStatsDto | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+
+  useEffect(() => {
+    if (activeSubItem) {
+      if (activeSubItem === 'balance') {
+        document.getElementById('balance-section')?.scrollIntoView({ behavior: 'smooth' });
+      } else if (activeSubItem === 'series') {
+        document.getElementById('series-section')?.scrollIntoView({ behavior: 'smooth' });
+      } else if (activeSubItem === 'carry') {
+        document.getElementById('carry-section')?.scrollIntoView({ behavior: 'smooth' });
+      } else if (activeSubItem === 'rates') {
+        document.getElementById('rates-section')?.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  }, [activeSubItem]);
 
   const repo = new BackendInstitutionalStatsRepository();
   const useCase = new GetInstitutionalStatsUseCase(repo);
@@ -76,17 +92,23 @@ export const InstitutionalStatsView: React.FC = () => {
       </div>
 
       {/* BCRA Balance Consolidated Sheet */}
-      <BcraBalanceCard balance={data.balanceSheet} />
+      <div id="balance-section">
+        <BcraBalanceCard balance={data.balanceSheet} />
+      </div>
 
       {/* Macro Comparative Historical Series */}
-      <MacroSeriesComparator series={data.series} />
+      <div id="series-section">
+        <MacroSeriesComparator series={data.series} />
+      </div>
 
       {/* Real Rate vs Inflation Simulator */}
-      <RealRateCalculatorCard />
+      <div id="carry-section">
+        <RealRateCalculatorCard />
+      </div>
 
       {/* Interest Rates & Trade Balance Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 bg-white p-5 rounded-2xl border border-surface-container-highest shadow-tactile">
+        <div id="rates-section" className="lg:col-span-2 bg-white p-5 rounded-2xl border border-surface-container-highest shadow-tactile">
           <InterestRatesTable rates={data.rates} />
         </div>
         <div className="lg:col-span-1">
