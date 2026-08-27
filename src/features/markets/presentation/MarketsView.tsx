@@ -4,6 +4,8 @@ import { AdrsWallStreetCard } from './AdrsWallStreetCard';
 import { MarketAssetTable } from './MarketAssetTable';
 import { AssetAnalysisModal } from './AssetAnalysisModal';
 import { LecapsCurveView } from './LecapsCurveView';
+import { SovereignBondsCurveView } from './SovereignBondsCurveView';
+import { CerBondsCurveView } from './CerBondsCurveView';
 import { GetMarketAssetsUseCase } from '../application/GetMarketAssetsUseCase';
 import { BackendMarketRepository } from '../infrastructure/BackendMarketRepository';
 import { MarketAssetsDto } from '../application/MarketRepositoryPort';
@@ -208,24 +210,11 @@ export const MarketsView: React.FC<{
             )}
 
             {activeTab === 'bonos-usd' && (
-              <MarketAssetTable
-                assets={bondsUsd}
-                showBondMetrics={true}
-                onOpenAnalysis={(ticker) => setSelectedAnalysisTicker(ticker)}
-                onSelectAsset={(asset) => {
-                  if (onSelectBondDetail) {
-                    onSelectBondDetail(asset.ticker.replace('D', ''));
-                  }
-                }}
-              />
+              <SovereignBondsCurveView onSelectBondDetail={onSelectBondDetail} />
             )}
 
             {activeTab === 'bonos-pesos' && (
-              <MarketAssetTable
-                assets={bondsPesos}
-                showBondMetrics={true}
-                onOpenAnalysis={(ticker) => setSelectedAnalysisTicker(ticker)}
-              />
+              <CerBondsCurveView />
             )}
 
             {activeTab === 'bonos-extranjeros' && (
