@@ -165,9 +165,9 @@ export const CerBondsCurveView: React.FC = () => {
 
         <div className="flex items-center gap-3 shrink-0">
           <div className="p-3 bg-black/40 backdrop-blur-md rounded-xl border border-white/10 text-right">
-            <div className="text-[10px] font-mono text-slate-300 uppercase">Tasa Real Promedio</div>
-            <div className="text-xl font-bold font-mono text-emerald-400">CER + 8.9%</div>
-            <div className="text-[10px] font-mono text-slate-300">Protección del 100% de IPC</div>
+            <div className="text-[10px] font-sans text-slate-300 uppercase">Tasa Real Promedio</div>
+            <div className="text-xl font-bold font-sans text-emerald-400">CER + 8.9%</div>
+            <div className="text-[10px] font-sans text-slate-300">Protección del 100% de IPC</div>
           </div>
         </div>
       </div>
@@ -185,7 +185,7 @@ export const CerBondsCurveView: React.FC = () => {
             </p>
           </div>
 
-          <div className="flex items-center gap-2 text-xs font-mono text-emerald-600 font-bold">
+          <div className="flex items-center gap-2 text-xs font-sans text-emerald-600 font-bold">
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
             Curva CER Real Positiva
           </div>
@@ -221,7 +221,7 @@ export const CerBondsCurveView: React.FC = () => {
                     x={padLeft - 10}
                     y={yVal + 4}
                     textAnchor="end"
-                    className="text-[10px] font-mono fill-slate-400 font-semibold"
+                    className="text-[10px] font-sans fill-slate-400 font-semibold"
                   >
                     CER+{val}%
                   </text>
@@ -246,7 +246,7 @@ export const CerBondsCurveView: React.FC = () => {
                     x={xVal}
                     y={padTop + chartInnerHeight + 20}
                     textAnchor="middle"
-                    className="text-[10px] font-mono fill-slate-400 font-bold"
+                    className="text-[10px] font-sans fill-slate-400 font-bold"
                   >
                     {yr}
                   </text>
@@ -289,7 +289,7 @@ export const CerBondsCurveView: React.FC = () => {
                     x={pt.x}
                     y={pt.y - 10}
                     textAnchor="middle"
-                    className={`text-[9px] font-mono font-bold ${
+                    className={`text-[9px] font-sans font-bold ${
                       isSelected ? 'fill-emerald-600 font-black text-xs' : 'fill-primary'
                     }`}
                   >
@@ -324,20 +324,20 @@ export const CerBondsCurveView: React.FC = () => {
           <div className="space-y-3">
             <div className="grid grid-cols-2 gap-2 text-xs font-sans">
               <div className="p-2.5 bg-surface-container-low rounded-xl">
-                <span className="text-[10px] font-mono text-outline block">Tasa Real Neta</span>
-                <span className="text-base font-bold font-mono text-emerald-600">+{selectedBond.realYield}%</span>
+                <span className="text-[10px] font-sans text-outline block">Tasa Real Neta</span>
+                <span className="text-base font-bold font-sans text-emerald-600">+{selectedBond.realYield}%</span>
               </div>
               <div className="p-2.5 bg-surface-container-low rounded-xl">
-                <span className="text-[10px] font-mono text-outline block">Paridad</span>
-                <span className="text-base font-bold font-mono text-primary">{selectedBond.parity}%</span>
+                <span className="text-[10px] font-sans text-outline block">Paridad</span>
+                <span className="text-base font-bold font-sans text-primary">{selectedBond.parity}%</span>
               </div>
               <div className="p-2.5 bg-surface-container-low rounded-xl">
-                <span className="text-[10px] font-mono text-outline block">Vencimiento</span>
-                <span className="text-xs font-bold font-mono text-primary">{selectedBond.maturityDate}</span>
+                <span className="text-[10px] font-sans text-outline block">Vencimiento</span>
+                <span className="text-xs font-bold font-sans text-primary">{selectedBond.maturityDate}</span>
               </div>
               <div className="p-2.5 bg-surface-container-low rounded-xl">
-                <span className="text-[10px] font-mono text-outline block">Duración</span>
-                <span className="text-base font-bold font-mono text-primary">{selectedBond.modifiedDuration} años</span>
+                <span className="text-[10px] font-sans text-outline block">Duración</span>
+                <span className="text-base font-bold font-sans text-primary">{selectedBond.modifiedDuration} años</span>
               </div>
             </div>
 
@@ -361,7 +361,7 @@ export const CerBondsCurveView: React.FC = () => {
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs font-sans">
               <thead>
-                <tr className="border-b border-surface-container-highest text-[10px] font-mono uppercase text-outline">
+                <tr className="border-b border-surface-container-highest text-[10px] font-sans uppercase text-outline">
                   <th className="pb-2">Ticker</th>
                   <th className="pb-2">Tipo</th>
                   <th className="pb-2">Vencimiento</th>
@@ -387,10 +387,10 @@ export const CerBondsCurveView: React.FC = () => {
                           {b.type}
                         </Badge>
                       </td>
-                      <td className="py-2.5 font-mono text-on-surface-variant">{b.maturityDate}</td>
-                      <td className="py-2.5 font-mono text-emerald-600 font-bold">CER + {b.realYield.toFixed(2)}%</td>
-                      <td className="py-2.5 font-mono text-primary">{b.parity.toFixed(1)}%</td>
-                      <td className="py-2.5 font-mono text-outline">{b.modifiedDuration} años</td>
+                      <td className="py-2.5 font-sans text-on-surface-variant">{b.maturityDate}</td>
+                      <td className="py-2.5 font-sans text-emerald-600 font-bold">CER + {b.realYield.toFixed(2)}%</td>
+                      <td className="py-2.5 font-sans text-primary">{b.parity.toFixed(1)}%</td>
+                      <td className="py-2.5 font-sans text-outline">{b.modifiedDuration} años</td>
                     </tr>
                   );
                 })}

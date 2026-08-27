@@ -150,9 +150,9 @@ export const InterestRatesTable: React.FC<{ rates: InterestRateMetric[] }> = ({
                     {isBank && <Building2 size={14} className="text-blue-600 shrink-0" />}
                     {!isWallet && !isBank && <Landmark size={14} className="text-gold shrink-0" />}
                     <span className="font-bold text-primary">{item.name}</span>
-                    <span className="text-[10px] font-mono text-outline">({item.liquidity})</span>
+                    <span className="text-[10px] font-sans text-outline">({item.liquidity})</span>
                   </div>
-                  <span className="font-mono font-bold text-primary">
+                  <span className="font-sans font-bold text-primary">
                     {metricMode === 'dailyYieldPer100k'
                       ? `+$${val.toFixed(1)} /día`
                       : `${val.toFixed(2)}%`}
@@ -204,15 +204,15 @@ export const InterestRatesTable: React.FC<{ rates: InterestRateMetric[] }> = ({
               min="1000"
               value={simulationCapital}
               onChange={(e) => setSimulationCapital(Number(e.target.value) || 0)}
-              className="w-full p-2.5 bg-surface-container-low border border-surface-container-high rounded-xl text-sm font-mono font-bold text-primary focus:outline-none focus:border-gold"
+              className="w-full p-2.5 bg-surface-container-low border border-surface-container-high rounded-xl text-sm font-sans font-bold text-primary focus:outline-none focus:border-gold"
             />
           </div>
 
           <div className="p-3 bg-purple-50/70 border border-purple-200/60 rounded-xl space-y-1">
-            <span className="text-[10px] font-mono text-purple-900 uppercase block font-semibold">
+            <span className="text-[10px] font-sans text-purple-900 uppercase block font-semibold">
               En Billetera Top (Naranja X / Ualá)
             </span>
-            <div className="text-lg font-bold font-mono text-purple-700">
+            <div className="text-lg font-bold font-sans text-purple-700">
               +{Money.formatArs((simulationCapital * 3.45) / 100)}
             </div>
             <span className="text-[10px] font-sans text-purple-800 block">
@@ -221,10 +221,10 @@ export const InterestRatesTable: React.FC<{ rates: InterestRateMetric[] }> = ({
           </div>
 
           <div className="p-3 bg-blue-50/70 border border-blue-200/60 rounded-xl space-y-1">
-            <span className="text-[10px] font-mono text-blue-900 uppercase block font-semibold">
+            <span className="text-[10px] font-sans text-blue-900 uppercase block font-semibold">
               En Plazo Fijo Top (30 días)
             </span>
-            <div className="text-lg font-bold font-mono text-blue-700">
+            <div className="text-lg font-bold font-sans text-blue-700">
               +{Money.formatArs((simulationCapital * 3.16) / 100)}
             </div>
             <span className="text-[10px] font-sans text-blue-800 block">

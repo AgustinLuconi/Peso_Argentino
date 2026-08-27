@@ -71,7 +71,7 @@ export default {
       },
       fontFamily: {
         sans: ['"Plus Jakarta Sans"', 'system-ui', '-apple-system', 'sans-serif'],
-        mono: ['"JetBrains Mono"', 'monospace'],
+        mono: ['"Plus Jakarta Sans"', 'system-ui', '-apple-system', 'sans-serif'],
       },
       fontSize: {
         'display': ['clamp(1.75rem, 1.3rem + 1.8vw, 2.75rem)', { lineHeight: '1.1', letterSpacing: '-0.03em', fontWeight: '800' }],

@@ -125,9 +125,10 @@
     color: #74777f;
   }
 
-  .font-data {
-    font-family: 'JetBrains Mono', monospace;
-    font-weight: 700;
+  .font-data,
+  .font-mono-tabular,
+  .font-mono-num {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
     font-variant-numeric: tabular-nums lining-nums;
   }
 }

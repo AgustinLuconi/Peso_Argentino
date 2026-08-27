@@ -226,9 +226,9 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
                           {item.badge && (
                             <span
                               className={clsx(
-                                'text-[9px] font-mono px-1.5 py-0.5 rounded-full uppercase tracking-wider',
+                                'text-[10px] font-sans font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider whitespace-nowrap inline-flex items-center justify-center shrink-0 leading-tight',
                                 isActive
-                                  ? 'bg-gold text-primary font-bold'
+                                  ? 'bg-gold text-primary shadow-xs'
                                   : 'bg-surface-container text-on-surface-variant'
                               )}
                             >

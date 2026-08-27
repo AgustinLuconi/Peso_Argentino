@@ -338,9 +338,9 @@ export const LecapsCurveView: React.FC = () => {
 
         <div className="flex items-center gap-3 shrink-0 flex-wrap">
           <div className="p-3 bg-black/40 backdrop-blur-md rounded-xl border border-white/10 text-right">
-            <div className="text-[10px] font-mono text-slate-300 uppercase">TEM Promedio Curva</div>
-            <div className="text-xl font-bold font-mono text-gold">3.88% m/m</div>
-            <div className="text-[10px] font-mono text-bullish-green font-semibold">Tasa Real: +5.4 p.p.</div>
+            <div className="text-[10px] font-sans text-slate-300 uppercase">TEM Promedio Curva</div>
+            <div className="text-xl font-bold font-sans text-gold">3.88% m/m</div>
+            <div className="text-[10px] font-sans text-bullish-green font-semibold">Tasa Real: +5.4 p.p.</div>
           </div>
         </div>
       </div>
@@ -352,10 +352,10 @@ export const LecapsCurveView: React.FC = () => {
             <Award size={22} />
           </div>
           <div>
-            <span className="text-[10px] font-mono text-outline uppercase block">Mayor Tasa Mensual (TEM)</span>
+            <span className="text-[10px] font-sans text-outline uppercase block">Mayor Tasa Mensual (TEM)</span>
             <div className="flex items-baseline gap-1.5">
               <span className="text-base font-bold font-sans text-primary">T15D5</span>
-              <span className="text-sm font-bold font-mono text-gold">4.12% m/m</span>
+              <span className="text-sm font-bold font-sans text-gold">4.12% m/m</span>
             </div>
             <span className="text-[11px] font-sans text-on-surface-variant">Boncap Dic 25 · TEA 65.2%</span>
           </div>
@@ -366,10 +366,10 @@ export const LecapsCurveView: React.FC = () => {
             <Clock size={22} />
           </div>
           <div>
-            <span className="text-[10px] font-mono text-outline uppercase block">Liquidez Inmediata (Corto)</span>
+            <span className="text-[10px] font-sans text-outline uppercase block">Liquidez Inmediata (Corto)</span>
             <div className="flex items-baseline gap-1.5">
               <span className="text-base font-bold font-sans text-primary">S31E5</span>
-              <span className="text-sm font-bold font-mono text-primary">15 días</span>
+              <span className="text-sm font-bold font-sans text-primary">15 días</span>
             </div>
             <span className="text-[11px] font-sans text-on-surface-variant">TEM 3.55% · Vto 31/01/2025</span>
           </div>
@@ -380,10 +380,10 @@ export const LecapsCurveView: React.FC = () => {
             <ShieldCheck size={22} />
           </div>
           <div>
-            <span className="text-[10px] font-mono text-outline uppercase block">Mayor Spread Real vs REM</span>
+            <span className="text-[10px] font-sans text-outline uppercase block">Mayor Spread Real vs REM</span>
             <div className="flex items-baseline gap-1.5">
               <span className="text-base font-bold font-sans text-primary">S15D5</span>
-              <span className="text-sm font-bold font-mono text-bullish-green">+10.1 p.p.</span>
+              <span className="text-sm font-bold font-sans text-bullish-green">+10.1 p.p.</span>
             </div>
             <span className="text-[11px] font-sans text-on-surface-variant">Rend. Directo +48.2%</span>
           </div>
@@ -462,7 +462,7 @@ export const LecapsCurveView: React.FC = () => {
                     x={padLeft - 10}
                     y={yVal + 4}
                     textAnchor="end"
-                    className="text-[10px] font-mono fill-slate-400 font-semibold"
+                    className="text-[10px] font-sans fill-slate-400 font-semibold"
                   >
                     {labelVal.toFixed(1)}%
                   </text>
@@ -566,7 +566,7 @@ export const LecapsCurveView: React.FC = () => {
                       x="0"
                       y="-3"
                       textAnchor="middle"
-                      className={`text-[9px] font-mono font-bold ${
+                      className={`text-[9px] font-sans font-bold ${
                         isSelected ? 'fill-gold' : 'fill-primary'
                       }`}
                     >
@@ -589,7 +589,7 @@ export const LecapsCurveView: React.FC = () => {
                     x={pt.x}
                     y={padTop + chartInnerHeight + 28}
                     textAnchor="middle"
-                    className="text-[9px] font-mono fill-slate-400"
+                    className="text-[9px] font-sans fill-slate-400"
                   >
                     {pt.daysToMaturity}d
                   </text>
@@ -669,7 +669,7 @@ export const LecapsCurveView: React.FC = () => {
                 min="1000"
                 value={investmentAmount}
                 onChange={(e) => setInvestmentAmount(Number(e.target.value) || 0)}
-                className="w-full p-2.5 bg-surface-container-low border border-surface-container-high rounded-xl text-sm font-mono font-bold text-primary focus:outline-none focus:border-gold"
+                className="w-full p-2.5 bg-surface-container-low border border-surface-container-high rounded-xl text-sm font-sans font-bold text-primary focus:outline-none focus:border-gold"
               />
             </div>
 
@@ -677,28 +677,28 @@ export const LecapsCurveView: React.FC = () => {
             <div className="p-4 bg-surface-container-lowest border border-surface-container-highest rounded-xl space-y-2.5">
               <div className="flex justify-between items-center text-xs font-sans">
                 <span className="text-on-surface-variant">Capital Inicial:</span>
-                <span className="font-mono font-bold text-primary">
+                <span className="font-sans font-bold text-primary">
                   {Money.formatArs(investmentAmount)}
                 </span>
               </div>
 
               <div className="flex justify-between items-center text-xs font-sans">
                 <span className="text-on-surface-variant">Rendimiento Directo ({selectedLecap.directYield}%):</span>
-                <span className="font-mono font-bold text-bullish-green">
+                <span className="font-sans font-bold text-bullish-green">
                   +{Money.formatArs(totalReturnDirect)}
                 </span>
               </div>
 
               <div className="flex justify-between items-center text-xs font-sans">
                 <span className="text-on-surface-variant">Ganancia Mensual Est. (TEM {selectedLecap.tem}%):</span>
-                <span className="font-mono font-semibold text-primary">
+                <span className="font-sans font-semibold text-primary">
                   ~{Money.formatArs(monthlyEstimatedReturn)} /mes
                 </span>
               </div>
 
               <div className="pt-2 border-t border-surface-container flex justify-between items-center text-sm font-sans">
                 <span className="font-bold text-primary">Cobro Final al Vencimiento:</span>
-                <span className="font-mono font-black text-gold text-base">
+                <span className="font-sans font-black text-gold text-base">
                   {Money.formatArs(finalCapital)}
                 </span>
               </div>
@@ -752,26 +752,26 @@ export const LecapsCurveView: React.FC = () => {
           {/* Quick Metrics Grid */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             <div className="p-3 bg-surface-container-low rounded-xl">
-              <span className="text-[10px] font-mono text-outline uppercase block">TEM Mensual</span>
-              <span className="text-xl font-bold font-mono text-gold">{selectedLecap.tem}%</span>
+              <span className="text-[10px] font-sans text-outline uppercase block">TEM Mensual</span>
+              <span className="text-xl font-bold font-sans text-gold">{selectedLecap.tem}%</span>
               <span className="text-[10px] font-sans text-slate-400 block">Tasa efectiva/mes</span>
             </div>
 
             <div className="p-3 bg-surface-container-low rounded-xl">
-              <span className="text-[10px] font-mono text-outline uppercase block">TNA Efectiva</span>
-              <span className="text-xl font-bold font-mono text-primary">{selectedLecap.tna}%</span>
+              <span className="text-[10px] font-sans text-outline uppercase block">TNA Efectiva</span>
+              <span className="text-xl font-bold font-sans text-primary">{selectedLecap.tna}%</span>
               <span className="text-[10px] font-sans text-slate-400 block">Base 365 días</span>
             </div>
 
             <div className="p-3 bg-surface-container-low rounded-xl">
-              <span className="text-[10px] font-mono text-outline uppercase block">TEA Compuesta</span>
-              <span className="text-xl font-bold font-mono text-primary">{selectedLecap.tea}%</span>
+              <span className="text-[10px] font-sans text-outline uppercase block">TEA Compuesta</span>
+              <span className="text-xl font-bold font-sans text-primary">{selectedLecap.tea}%</span>
               <span className="text-[10px] font-sans text-slate-400 block">Con reinversión</span>
             </div>
 
             <div className="p-3 bg-surface-container-low rounded-xl">
-              <span className="text-[10px] font-mono text-outline uppercase block">Rend. Directo</span>
-              <span className="text-xl font-bold font-mono text-bullish-green">+{selectedLecap.directYield}%</span>
+              <span className="text-[10px] font-sans text-outline uppercase block">Rend. Directo</span>
+              <span className="text-xl font-bold font-sans text-bullish-green">+{selectedLecap.directYield}%</span>
               <span className="text-[10px] font-sans text-slate-400 block">Total al vencimiento</span>
             </div>
           </div>
@@ -789,7 +789,7 @@ export const LecapsCurveView: React.FC = () => {
             </div>
 
             <div className="flex items-center gap-1">
-              <span className="text-[10px] font-mono text-outline mr-1">Tramo:</span>
+              <span className="text-[10px] font-sans text-outline mr-1">Tramo:</span>
               {[
                 { id: 'ALL', label: 'Todos' },
                 { id: 'CORTO', label: 'Corto (<90d)' },
@@ -815,7 +815,7 @@ export const LecapsCurveView: React.FC = () => {
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs font-sans">
               <thead>
-                <tr className="border-b border-surface-container-highest text-[10px] font-mono uppercase text-outline">
+                <tr className="border-b border-surface-container-highest text-[10px] font-sans uppercase text-outline">
                   <th className="pb-2 font-semibold">Ticker</th>
                   <th className="pb-2 font-semibold">Tipo</th>
                   <th className="pb-2 font-semibold">Vencimiento</th>
@@ -846,18 +846,18 @@ export const LecapsCurveView: React.FC = () => {
                         {l.ticker}
                       </td>
                       <td className="py-2.5">
-                        <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-surface-container text-on-surface-variant">
+                        <span className="text-[9px] font-sans px-1.5 py-0.5 rounded bg-surface-container text-on-surface-variant">
                           {l.type}
                         </span>
                       </td>
-                      <td className="py-2.5 font-mono text-on-surface-variant">{l.maturityDate}</td>
-                      <td className="py-2.5 font-mono text-outline">{l.daysToMaturity}d</td>
-                      <td className="py-2.5 font-mono text-primary">${l.lastPrice.toFixed(2)}</td>
-                      <td className="py-2.5 font-mono text-gold font-bold">{l.tem.toFixed(2)}%</td>
-                      <td className="py-2.5 font-mono text-primary">{l.tna.toFixed(1)}%</td>
-                      <td className="py-2.5 font-mono text-primary font-semibold">{l.tea.toFixed(1)}%</td>
-                      <td className="py-2.5 font-mono text-bullish-green font-bold">+{l.directYield.toFixed(2)}%</td>
-                      <td className="py-2.5 font-mono text-primary">+{l.spreadInflation.toFixed(1)} p.p.</td>
+                      <td className="py-2.5 font-sans text-on-surface-variant">{l.maturityDate}</td>
+                      <td className="py-2.5 font-sans text-outline">{l.daysToMaturity}d</td>
+                      <td className="py-2.5 font-sans text-primary">${l.lastPrice.toFixed(2)}</td>
+                      <td className="py-2.5 font-sans text-gold font-bold">{l.tem.toFixed(2)}%</td>
+                      <td className="py-2.5 font-sans text-primary">{l.tna.toFixed(1)}%</td>
+                      <td className="py-2.5 font-sans text-primary font-semibold">{l.tea.toFixed(1)}%</td>
+                      <td className="py-2.5 font-sans text-bullish-green font-bold">+{l.directYield.toFixed(2)}%</td>
+                      <td className="py-2.5 font-sans text-primary">+{l.spreadInflation.toFixed(1)} p.p.</td>
                     </tr>
                   );
                 })}

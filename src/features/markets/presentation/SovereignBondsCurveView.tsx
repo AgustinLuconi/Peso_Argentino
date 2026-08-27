@@ -285,9 +285,9 @@ export const SovereignBondsCurveView: React.FC<{
 
         <div className="flex items-center gap-3 shrink-0">
           <div className="p-3 bg-black/40 backdrop-blur-md rounded-xl border border-white/10 text-right">
-            <div className="text-[10px] font-mono text-slate-300 uppercase">Spread Ley NY vs Arg (30s)</div>
-            <div className="text-xl font-bold font-mono text-gold">+{spreadNYvsArg}% TIR</div>
-            <div className="text-[10px] font-mono text-slate-300">~120 bps premio ley extranjera</div>
+            <div className="text-[10px] font-sans text-slate-300 uppercase">Spread Ley NY vs Arg (30s)</div>
+            <div className="text-xl font-bold font-sans text-gold">+{spreadNYvsArg}% TIR</div>
+            <div className="text-[10px] font-sans text-slate-300">~120 bps premio ley extranjera</div>
           </div>
         </div>
       </div>
@@ -352,7 +352,7 @@ export const SovereignBondsCurveView: React.FC<{
                     x={padLeft - 10}
                     y={yVal + 4}
                     textAnchor="end"
-                    className="text-[10px] font-mono fill-slate-400 font-semibold"
+                    className="text-[10px] font-sans fill-slate-400 font-semibold"
                   >
                     {labelVal.toFixed(1)}%
                   </text>
@@ -377,7 +377,7 @@ export const SovereignBondsCurveView: React.FC<{
                     x={xVal}
                     y={padTop + chartInnerHeight + 20}
                     textAnchor="middle"
-                    className="text-[10px] font-mono fill-slate-400 font-bold"
+                    className="text-[10px] font-sans fill-slate-400 font-bold"
                   >
                     {yr}
                   </text>
