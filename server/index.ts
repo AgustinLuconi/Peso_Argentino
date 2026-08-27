@@ -3,10 +3,9 @@ import path from 'path';
 import express from 'express';
 import cors from 'cors';
 import { v1Router } from './src/routes';
-import { SyncWorker } from './src/jobs/SyncWorker';
 import { DatabaseMigrations } from './src/core/database/DatabaseMigrations';
-import { DatabaseSeeder } from './src/core/database/DatabaseSeeder';
 import { DatabaseConnection } from './src/core/database/DatabaseConnection';
+import { SyncWorker } from './src/jobs/SyncWorker';
 
 // Load .env file into process.env if present
 try {
@@ -28,11 +27,8 @@ try {
   // Ignored in environments where process.env is preloaded
 }
 
-// 1. Initialize SQLite Database, Run Migrations & Auto-Seed
+// 1. Initialize SQLite Database & Run Migrations
 DatabaseMigrations.runMigrations();
-DatabaseSeeder.seedAll().catch((err) => {
-  console.warn('[Database] Advertencia durante el sembrado inicial:', err);
-});
 
 const app = express();
 const PORT = process.env.PORT || 3001;

@@ -22,21 +22,18 @@ jobs:
           echo "url=$BACKEND_URL" >> $GITHUB_OUTPUT
           echo "📡 Conectando con el backend en: $BACKEND_URL"
 
-      - name: 🔄 Disparar Sembrado & Consolidación Diaria
-        id: seed
+      - name: 🔄 Disparar Sincronización de Cierre Diario
+        id: sync
         run: |
-          RESPONSE=$(curl -s -w "\nHTTP_STATUS:%{http_code}" -X POST "${{ steps.config.outputs.url }}/api/v1/database/seed" \
-            -H "Content-Type: application/json" \
-            -d '{"force": true}')
+          RESPONSE=$(curl -s -w "\nHTTP_STATUS:%{http_code}" "${{ steps.config.outputs.url }}/api/v1/dashboard/metrics")
           
           HTTP_STATUS=$(echo "$RESPONSE" | grep "HTTP_STATUS" | cut -d':' -f2)
-          BODY=$(echo "$RESPONSE" | grep -v "HTTP_STATUS")
           
           echo "Status: $HTTP_STATUS"
-          echo "Response: $BODY"
           
           if [ "$HTTP_STATUS" -eq 200 ]; then
             echo "success=true" >> $GITHUB_OUTPUT
+            curl -s "${{ steps.config.outputs.url }}/api/v1/markets/assets" > /dev/null
           else
             echo "success=false" >> $GITHUB_OUTPUT
             echo "⚠️ Aviso: El backend podría estar despertando del modo reposo o la URL necesita configurarse."

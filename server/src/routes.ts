@@ -12,7 +12,6 @@ import { globalApiRateLimiter, llmApiRateLimiter } from './core/middleware/RateL
 import { QuotesHistoryRepository } from './core/database/repositories/QuotesHistoryRepository';
 import { AiNewsArchiveRepository } from './core/database/repositories/AiNewsArchiveRepository';
 import { DatabaseConnection } from './core/database/DatabaseConnection';
-import { DatabaseSeeder } from './core/database/DatabaseSeeder';
 
 export const v1Router = Router();
 
@@ -219,23 +218,4 @@ v1Router.get('/database/stats', (req, res) => {
       aiNewsArchiveCount: AiNewsArchiveRepository.getArchiveCount(),
     },
   });
-});
-
-// 11. Endpoint de Sembrado / Re-poblado bajo demanda
-v1Router.post('/database/seed', async (req, res) => {
-  try {
-    const force = Boolean(req.body?.force);
-    const summary = await DatabaseSeeder.seedAll(force);
-    res.json({
-      success: true,
-      message: 'Base de datos SQLite sincronizada y poblada exitosamente.',
-      data: summary,
-      stats: {
-        totalQuotes: QuotesHistoryRepository.getTotalRecordsCount(),
-        totalNews: AiNewsArchiveRepository.getArchiveCount(),
-      },
-    });
-  } catch (error: any) {
-    res.status(500).json({ success: false, error: error.message });
-  }
 });
