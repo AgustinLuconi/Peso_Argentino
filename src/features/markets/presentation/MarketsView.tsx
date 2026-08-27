@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { MervalIndicesHeader } from './MervalIndicesHeader';
 import { AdrsWallStreetCard } from './AdrsWallStreetCard';
 import { MarketAssetTable } from './MarketAssetTable';
+import { AssetAnalysisModal } from './AssetAnalysisModal';
 import { GetMarketAssetsUseCase } from '../application/GetMarketAssetsUseCase';
 import { BackendMarketRepository } from '../infrastructure/BackendMarketRepository';
 import { MarketAssetsDto } from '../application/MarketRepositoryPort';
@@ -9,7 +10,7 @@ import { Tabs } from '@core/ui/components/Tabs';
 import { Card } from '@core/ui/components/Card';
 import { Button } from '@core/ui/components/Button';
 import { smartCache } from '@core/infrastructure/SmartCacheAdapter';
-import { RefreshCw } from 'lucide-react';
+import { RefreshCw, BarChart2 } from 'lucide-react';
 
 export const MarketsView: React.FC<{
   onSelectBondDetail?: (ticker: string) => void;
@@ -18,6 +19,7 @@ export const MarketsView: React.FC<{
   const [activeTab, setActiveTab] = useState('panel-lider');
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [selectedAnalysisTicker, setSelectedAnalysisTicker] = useState<string | null>(null);
 
   const repo = new BackendMarketRepository();
   const useCase = new GetMarketAssetsUseCase(repo);
@@ -46,39 +48,34 @@ export const MarketsView: React.FC<{
         <div className="flex flex-col items-center gap-3">
           <RefreshCw className="animate-spin text-primary" size={28} />
           <span className="font-eyebrow">
-            Cargando cotizaciones del servidor backend...
+            Cargando cotizaciones y análisis en vivo del mercado de capitales...
           </span>
         </div>
       </div>
     );
   }
 
-  const panelLider = data.assets.filter((a) => a.category === 'merval');
+  // Filtrado por categorías de mercado
+  const panelLider = data.assets.filter((a) => a.category === 'panel-lider');
+  const panelGeneral = data.assets.filter((a) => a.category === 'panel-general');
   const adrs = data.assets.filter((a) => a.category === 'adrs');
-  const bondsUsd = data.assets.filter((a) => a.category === 'bonds');
-  const lecaps = data.assets.filter((a) => a.category === 'lecaps');
+  const cedears = data.assets.filter((a) => a.category === 'cedears');
+  const bondsUsd = data.assets.filter((a) => a.category === 'bonos-usd');
+  const bondsPesos = data.assets.filter((a) => a.category === 'bonos-pesos');
+  const bondsForeign = data.assets.filter((a) => a.category === 'bonos-extranjeros');
+  const commodities = data.assets.filter((a) => a.category === 'commodities');
+  const criptoDivisas = data.assets.filter((a) => a.category === 'cripto-divisas');
 
   const tabList = [
-    {
-      id: 'panel-lider',
-      label: 'Acciones Panel Líder',
-      count: panelLider.length,
-    },
-    {
-      id: 'adrs',
-      label: 'ADRs Wall Street (USD)',
-      count: adrs.length,
-    },
-    {
-      id: 'bonos',
-      label: 'Renta Fija Soberana (USD)',
-      count: bondsUsd.length,
-    },
-    {
-      id: 'lecaps',
-      label: 'Lecaps & Letras ARS',
-      count: lecaps.length,
-    },
+    { id: 'panel-lider', label: '🏛️ Panel Líder BYMA', count: panelLider.length },
+    { id: 'panel-general', label: '🏢 Panel General Secundario', count: panelGeneral.length },
+    { id: 'adrs', label: '🗽 ADRs Wall Street (USD)', count: adrs.length },
+    { id: 'cedears', label: '🌐 CEDEARs BYMA', count: cedears.length },
+    { id: 'bonos-usd', label: '💵 Bonos Soberanos USD', count: bondsUsd.length },
+    { id: 'bonos-pesos', label: '📈 Bonos Pesos & CER', count: bondsPesos.length },
+    { id: 'bonos-extranjeros', label: '🌎 Bonos Extranjeros & Treasuries', count: bondsForeign.length },
+    { id: 'commodities', label: '🌾 Commodities Agro & Energía', count: commodities.length },
+    { id: 'cripto-divisas', label: '⚡ Cripto & Divisas', count: criptoDivisas.length },
   ];
 
   return (
@@ -86,11 +83,13 @@ export const MarketsView: React.FC<{
       {/* Top Banner */}
       <div className="bg-white border border-surface-container-highest p-5 sm:p-6 rounded-2xl shadow-tactile stroke-of-value card-interactive flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="font-h1 mb-1">
-            Mercado de Capitales & Renta Variable
-          </h1>
+          <div className="flex items-center gap-2">
+            <h1 className="font-h1 mb-1">
+              Mercado de Capitales & Renta Fija Integral
+            </h1>
+          </div>
           <p className="font-subtitle max-w-3xl">
-            Monitoreo en tiempo real de Bolsas y Mercados Argentinos (BYMA), ADRs en Wall Street (NYSE/NASDAQ) y curvas de deuda soberana.
+            Monitoreo institucional en tiempo real de Bolsas y Mercados Argentinos (BYMA), Panel General, ADRs en Wall Street, CEDEARs, Curvas de Bonos Soberanos Locales y Extranjeros, y Commodities del Agro.
           </p>
         </div>
 
@@ -114,13 +113,16 @@ export const MarketsView: React.FC<{
 
       {/* Main Asset Explorer Tabs */}
       <Card variant="default" accent="gold" className="space-y-4">
-        <div>
-          <h2 className="font-h2">
-            Panel de Cotizaciones & Renta Fija
-          </h2>
-          <p className="font-subtitle text-xs">
-            Selecciona una categoría para explorar precios, variaciones y métricas cuantitativas
-          </p>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div>
+            <h2 className="font-h2 flex items-center gap-2">
+              <BarChart2 size={18} className="text-gold" />
+              Explorador Integral de Cotizaciones & Renta Fija
+            </h2>
+            <p className="font-subtitle text-xs">
+              Selecciona una categoría para explorar cotizaciones, rendimientos, indicadores técnicos y análisis fundamental
+            </p>
+          </div>
         </div>
 
         <Tabs
@@ -133,38 +135,82 @@ export const MarketsView: React.FC<{
           {activeTab === 'panel-lider' && (
             <MarketAssetTable
               assets={panelLider}
-              onSelectAsset={(asset) => console.log('Selected:', asset.ticker)}
+              onOpenAnalysis={(ticker) => setSelectedAnalysisTicker(ticker)}
+            />
+          )}
+
+          {activeTab === 'panel-general' && (
+            <MarketAssetTable
+              assets={panelGeneral}
+              onOpenAnalysis={(ticker) => setSelectedAnalysisTicker(ticker)}
             />
           )}
 
           {activeTab === 'adrs' && (
             <MarketAssetTable
               assets={adrs}
-              onSelectAsset={(asset) => console.log('Selected ADR:', asset.ticker)}
+              onOpenAnalysis={(ticker) => setSelectedAnalysisTicker(ticker)}
             />
           )}
 
-          {activeTab === 'bonos' && (
+          {activeTab === 'cedears' && (
+            <MarketAssetTable
+              assets={cedears}
+              onOpenAnalysis={(ticker) => setSelectedAnalysisTicker(ticker)}
+            />
+          )}
+
+          {activeTab === 'bonos-usd' && (
             <MarketAssetTable
               assets={bondsUsd}
               showBondMetrics={true}
+              onOpenAnalysis={(ticker) => setSelectedAnalysisTicker(ticker)}
               onSelectAsset={(asset) => {
                 if (onSelectBondDetail) {
-                  onSelectBondDetail(asset.ticker);
+                  onSelectBondDetail(asset.ticker.replace('D', ''));
                 }
               }}
             />
           )}
 
-          {activeTab === 'lecaps' && (
+          {activeTab === 'bonos-pesos' && (
             <MarketAssetTable
-              assets={lecaps}
+              assets={bondsPesos}
               showBondMetrics={true}
-              onSelectAsset={(asset) => console.log('Selected Lecap:', asset.ticker)}
+              onOpenAnalysis={(ticker) => setSelectedAnalysisTicker(ticker)}
+            />
+          )}
+
+          {activeTab === 'bonos-extranjeros' && (
+            <MarketAssetTable
+              assets={bondsForeign}
+              showBondMetrics={true}
+              showForeignBondMetrics={true}
+              onOpenAnalysis={(ticker) => setSelectedAnalysisTicker(ticker)}
+            />
+          )}
+
+          {activeTab === 'commodities' && (
+            <MarketAssetTable
+              assets={commodities}
+              onOpenAnalysis={(ticker) => setSelectedAnalysisTicker(ticker)}
+            />
+          )}
+
+          {activeTab === 'cripto-divisas' && (
+            <MarketAssetTable
+              assets={criptoDivisas}
+              onOpenAnalysis={(ticker) => setSelectedAnalysisTicker(ticker)}
             />
           )}
         </div>
       </Card>
+
+      {/* Asset Analysis Modal */}
+      <AssetAnalysisModal
+        ticker={selectedAnalysisTicker}
+        onClose={() => setSelectedAnalysisTicker(null)}
+      />
     </div>
   );
 };

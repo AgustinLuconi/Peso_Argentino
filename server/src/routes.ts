@@ -126,11 +126,21 @@ v1Router.get('/rates/wallets', async (req, res) => {
   }
 });
 
-// 5. Mercado de Capitales
+// 5. Mercado de Capitales & Análisis
 v1Router.get('/markets/assets', async (req, res) => {
   try {
     const data = await MarketsService.getMarketOverview();
     res.json({ success: true, data });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+v1Router.get('/markets/analysis/:ticker', async (req, res) => {
+  try {
+    const ticker = req.params.ticker || 'GGAL';
+    const analysis = await MarketsService.getAssetAnalysis(ticker);
+    res.json({ success: true, data: analysis });
   } catch (error: any) {
     res.status(500).json({ success: false, error: error.message });
   }

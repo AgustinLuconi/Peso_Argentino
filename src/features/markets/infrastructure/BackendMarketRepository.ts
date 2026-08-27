@@ -49,7 +49,17 @@ export class BackendMarketRepository implements MarketRepositoryPort {
                     sparkline: [a.price * 0.98, a.price * 0.99, a.price],
                     tir: a.tirPercent,
                     paridad: a.parityPercent,
+                    modifiedDurationYears: a.modifiedDurationYears,
                     maturityDate: a.maturityDate,
+                    couponPercent: a.couponPercent,
+                    legislation: a.legislation,
+                    tna: a.tna,
+                    tem: a.tem,
+                    rsi14: a.rsi14,
+                    trend: a.trend,
+                    technicalSignal: a.technicalSignal,
+                    fiftyTwoWeekHigh: a.fiftyTwoWeekHigh,
+                    fiftyTwoWeekLow: a.fiftyTwoWeekLow,
                   })
               );
 
@@ -73,5 +83,21 @@ export class BackendMarketRepository implements MarketRepositoryPort {
   async getAssetByTicker(ticker: string): Promise<MarketAsset | null> {
     const all = await this.getMarketData();
     return all.assets.find((a) => a.ticker.toLowerCase() === ticker.toLowerCase()) || null;
+  }
+
+  async getAssetAnalysis(ticker: string): Promise<any> {
+    try {
+      const url = API_CONFIG.getEndpoint(`/api/v1/markets/analysis/${encodeURIComponent(ticker)}`);
+      const res = await fetch(url);
+      if (res.ok) {
+        const json = await res.json();
+        if (json.success && json.data) {
+          return json.data;
+        }
+      }
+    } catch (e) {
+      console.warn('[BackendMarketRepository] Error fetching asset analysis:', e);
+    }
+    return null;
   }
 }
