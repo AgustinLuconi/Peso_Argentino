@@ -98,7 +98,7 @@ export class DolarService {
     );
   }
 
-  static getHistory(type: string, limit: number = 30) {
-    return QuotesHistoryRepository.getHistory(type, limit);
+  static getHistory(type: string, limit: number = 30, timeframe?: string) {
+    return QuotesHistoryRepository.getHistory(type, limit, timeframe);
   }
 }

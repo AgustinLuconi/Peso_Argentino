@@ -85,22 +85,45 @@ v1Router.get('/dolar/quotes', async (req, res) => {
   }
 });
 
+import { MacroSeriesRepository } from './core/database/repositories/MacroSeriesRepository';
+
 v1Router.get('/dolar/history/:type', (req, res) => {
   try {
     const type = req.params.type || 'blue';
     const limit = Number(req.query.limit) || 30;
-    const history = DolarService.getHistory(type, limit);
-    res.json({ success: true, count: history.length, quoteType: type, data: history });
+    const timeframe = req.query.timeframe as string | undefined;
+    const history = DolarService.getHistory(type, limit, timeframe);
+    res.json({ success: true, count: history.length, quoteType: type, timeframe: timeframe || 'custom', data: history });
   } catch (error: any) {
     res.status(500).json({ success: false, error: error.message });
   }
 });
 
-// 3. Macro Indicadores
+// 3. Macro Indicadores & Series Históricas
 v1Router.get('/macro/overview', async (req, res) => {
   try {
     const data = await MacroService.getOverview();
     res.json({ success: true, data });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+v1Router.get('/macro/series', (req, res) => {
+  try {
+    const series = MacroSeriesRepository.getAvailableSeries();
+    res.json({ success: true, count: series.length, data: series });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+v1Router.get('/macro/series/:code', (req, res) => {
+  try {
+    const code = req.params.code;
+    const limit = Number(req.query.limit) || 120;
+    const series = MacroSeriesRepository.getSeries(code, limit);
+    res.json({ success: true, count: series.length, seriesCode: code, data: series });
   } catch (error: any) {
     res.status(500).json({ success: false, error: error.message });
   }

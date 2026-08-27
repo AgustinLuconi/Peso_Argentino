@@ -43,10 +43,39 @@ export class QuotesHistoryRepository {
   }
 
   /**
-   * Obtiene la serie histórica de una cotización específica (ej. 'blue', 'mep', 'ccl', 'oficial')
+   * Obtiene la serie histórica de una cotización específica según timeframe (1M, 3M, 6M, 1Y, 3Y, ALL)
    */
-  static getHistory(quoteType: string, limit: number = 30): readonly QuoteHistoryPoint[] {
+  static getHistory(quoteType: string, limit: number = 30, timeframe?: string): readonly QuoteHistoryPoint[] {
     const db = DatabaseConnection.getInstance();
+
+    let days = 30;
+    if (timeframe) {
+      switch (timeframe.toUpperCase()) {
+        case '1M':
+          days = 30;
+          break;
+        case '3M':
+          days = 90;
+          break;
+        case '6M':
+          days = 180;
+          break;
+        case '1Y':
+          days = 365;
+          break;
+        case '3Y':
+          days = 1095;
+          break;
+        case 'ALL':
+          days = 2000;
+          break;
+        default:
+          days = limit;
+      }
+    } else {
+      days = limit;
+    }
+
     const query = db.prepare(`
       SELECT 
         id,
@@ -63,7 +92,7 @@ export class QuotesHistoryRepository {
       LIMIT ?
     `);
 
-    const rows = query.all(quoteType, limit) as unknown as QuoteHistoryPoint[];
+    const rows = query.all(quoteType, days) as unknown as QuoteHistoryPoint[];
     return rows.reverse();
   }
 
