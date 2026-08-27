@@ -294,28 +294,28 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
           </div>
 
           {/* Quick Institutional Summary Card in Sidebar */}
-          <div className="p-3.5 bg-surface-container-low border border-surface-container-highest rounded-xl">
-            <div className="flex items-center gap-1.5 text-primary mb-1">
+          <div className="p-3.5 bg-surface-container-low dark:bg-[#0c1730] border border-surface-container-highest dark:border-[#1a2744] rounded-xl shadow-xs">
+            <div className="flex items-center gap-1.5 text-primary dark:text-gold mb-1">
               <Shield size={14} className="text-gold" />
               <span className="font-sans font-bold text-xs uppercase tracking-wide">
                 Régimen Monetario
               </span>
             </div>
-            <p className="text-[11px] font-sans text-on-surface-variant leading-relaxed">
+            <p className="text-[11px] font-sans text-on-surface-variant dark:text-slate-300 leading-relaxed">
               Fase 2 de Estabilización: Ancla fiscal, saneamiento del balance BCRA y flotación administrada.
             </p>
-            <div className="mt-2 pt-2 border-t border-surface-container flex items-center justify-between text-[10px] font-mono text-outline">
+            <div className="mt-2 pt-2 border-t border-surface-container dark:border-[#1a2744] flex items-center justify-between text-[10px] font-sans text-outline dark:text-slate-400">
               <span>Superávit Financiero</span>
-              <span className="text-bullish-green font-bold">+0,4% PBI</span>
+              <span className="text-bullish-green dark:text-teal-400 font-bold">+0,4% PBI</span>
             </div>
           </div>
         </div>
 
         {/* Sidebar Footer */}
-        <div className="p-3 sm:p-4 border-t border-surface-container-highest bg-surface-container-lowest lg:rounded-b-2xl">
-          <div className="text-[11px] font-sans text-on-surface-variant flex items-center justify-between">
-            <span className="font-semibold text-primary">Peso Argentino v3.5</span>
-            <span className="font-mono text-outline">2026</span>
+        <div className="p-3 sm:p-4 border-t border-surface-container-highest dark:border-[#1a2744] bg-surface-container-lowest dark:bg-[#050b18] lg:rounded-b-2xl">
+          <div className="text-[11px] font-sans text-on-surface-variant dark:text-slate-400 flex items-center justify-between">
+            <span className="font-semibold text-primary dark:text-slate-200">Peso Argentino v3.5</span>
+            <span className="font-sans text-outline dark:text-slate-400 font-semibold">2026</span>
           </div>
         </div>
       </aside>

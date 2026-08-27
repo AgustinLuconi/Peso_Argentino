@@ -55,6 +55,11 @@
     border-color: #1a2744 !important;
   }
 
+  .dark .bg-surface-container-lowest {
+    background-color: #050b18 !important;
+    border-color: #1a2744 !important;
+  }
+
   .dark .bg-surface-container-low {
     background-color: #0c1730 !important;
     border-color: #1a2744 !important;
@@ -62,6 +67,17 @@
 
   .dark .bg-surface-container {
     background-color: #101e3d !important;
+    border-color: #1a2744 !important;
+  }
+
+  .dark .bg-surface-container-high {
+    background-color: #14244a !important;
+    border-color: #1a2744 !important;
+  }
+
+  .dark .bg-surface-container-highest {
+    background-color: #1a2c56 !important;
+    border-color: #1a2744 !important;
   }
 
   .dark .text-primary {
@@ -72,8 +88,13 @@
     color: #94a3b8 !important;
   }
 
+  .dark .text-outline {
+    color: #94a3b8 !important;
+  }
+
   .dark .border-surface-container-highest,
-  .dark .border-surface-container-high {
+  .dark .border-surface-container-high,
+  .dark .border-surface-container {
     border-color: #1a2744 !important;
   }
 
