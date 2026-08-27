@@ -3,7 +3,7 @@ import { MervalIndicesHeader } from './MervalIndicesHeader';
 import { AdrsWallStreetCard } from './AdrsWallStreetCard';
 import { MarketAssetTable } from './MarketAssetTable';
 import { AssetAnalysisModal } from './AssetAnalysisModal';
-import { LecapsCurveCard } from './LecapsCurveCard';
+import { LecapsCurveView } from './LecapsCurveView';
 import { GetMarketAssetsUseCase } from '../application/GetMarketAssetsUseCase';
 import { BackendMarketRepository } from '../infrastructure/BackendMarketRepository';
 import { MarketAssetsDto } from '../application/MarketRepositoryPort';
@@ -176,7 +176,7 @@ export const MarketsView: React.FC<{
 
           <div className="pt-2">
             {activeTab === 'curva-lecaps' && (
-              <LecapsCurveCard />
+              <LecapsCurveView />
             )}
 
             {activeTab === 'panel-lider' && (

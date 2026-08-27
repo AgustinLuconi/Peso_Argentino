@@ -16,6 +16,7 @@ import { clsx } from 'clsx';
 export type NavigationFeatureId =
   | 'dashboard'
   | 'markets'
+  | 'lecaps-curve'
   | 'bond-detail'
   | 'institutional-stats'
   | 'political-analysis'
@@ -80,6 +81,18 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
         { id: 'bonos-pesos', label: 'Bonos Pesos & Curva CER' },
         { id: 'bonos-extranjeros', label: 'Bonos Extranjeros & Treasuries' },
         { id: 'commodities', label: 'Commodities Agro & Energía' },
+      ],
+    },
+    {
+      id: 'lecaps-curve',
+      label: 'Curva de Lecaps & Boncaps',
+      sublabel: 'Estructura Temporal TEM, TNA & TEA',
+      icon: <TrendingUp size={18} className="text-gold" />,
+      badge: 'TASA FIJA',
+      subItems: [
+        { id: 'chart', label: 'Gráfico Dinámico de Curva TEM' },
+        { id: 'simulator', label: 'Simulador de Inversión en Pesos' },
+        { id: 'table', label: 'Ficha Técnica & Tabla Comparativa' },
       ],
     },
     {

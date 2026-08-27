@@ -3,6 +3,7 @@ import { MainLayout } from '@core/ui/layout/MainLayout';
 import { useApp } from './providers/AppContext';
 import { DashboardView } from '@features/dashboard/presentation/DashboardView';
 import { MarketsView } from '@features/markets/presentation/MarketsView';
+import { LecapsCurveView } from '@features/markets/presentation/LecapsCurveView';
 import { BondDetailView } from '@features/bond-detail/presentation/BondDetailView';
 import { InstitutionalStatsView } from '@features/institutional-stats/presentation/InstitutionalStatsView';
 import { PoliticalAnalysisView } from '@features/political-analysis/presentation/PoliticalAnalysisView';
@@ -47,7 +48,8 @@ export const App: React.FC = () => {
 
   const featureTitles: Record<string, string> = {
     dashboard: 'Dashboard Principal & Cotizaciones Dólar',
-    markets: 'Mercado de Capitales, Merval & Curva de Lecaps',
+    markets: 'Mercado de Capitales, Merval & Renta Fija',
+    'lecaps-curve': 'Curva de Rendimientos Lecaps & Boncaps del Tesoro',
     'bond-detail': `Ficha Técnica & Renta Fija (${selectedBondTicker})`,
     'institutional-stats': 'Estadísticas BCRA & Series Macro',
     'political-analysis': 'Análisis Político & Regulatorio',
@@ -55,9 +57,9 @@ export const App: React.FC = () => {
   };
 
   const quickNavItems = [
+    { title: 'Curva de Rendimientos Lecaps & Boncaps ARS', feature: 'lecaps-curve', icon: <TrendingUp size={16} className="text-gold" />, keywords: 'lecap lecaps boncaps letras tasa fija tem tna tea curva rendimiento' },
     { title: 'Copiloto Financiero IA (100% Gratis)', feature: 'ai-copilot', icon: <Bot size={16} className="text-gold" />, keywords: 'ia asistente copilot inteligencia artificial gemini chat preguntas' },
     { title: 'Cotizaciones Dólar (Oficial, Blue, MEP, CCL)', feature: 'dashboard', subItem: 'quotes', icon: <TrendingUp size={16} />, keywords: 'dolar mep blue ccl oficial tarjeta cripto cotizacion' },
-    { title: 'Curva de Rendimientos Lecaps & Boncaps ARS', feature: 'markets', subItem: 'curva-lecaps', icon: <TrendingUp size={16} className="text-gold" />, keywords: 'lecap lecaps boncaps letras tasa fija tem tna tea' },
     { title: 'Conversor Rápido de Divisas & Brecha', feature: 'converter', icon: <ArrowRightLeft size={16} />, keywords: 'conversor convertir pesos dolares calculador' },
     { title: 'Panel Líder Merval & Panel General BYMA', feature: 'markets', subItem: 'panel-lider', icon: <TrendingUp size={16} />, keywords: 'merval acciones ggal ypf pamp bma adrs nyse general' },
     { title: 'Calculadora de Rendimiento & Flujo AL30 / GD30', feature: 'bond-detail', subItem: 'calc', icon: <Calculator size={16} />, keywords: 'bonos al30 gd30 renta fija tir paridad cupones' },
@@ -102,6 +104,10 @@ export const App: React.FC = () => {
             navigateTo('bond-detail');
           }}
         />
+      )}
+
+      {activeFeature === 'lecaps-curve' && (
+        <LecapsCurveView />
       )}
 
       {activeFeature === 'bond-detail' && (
