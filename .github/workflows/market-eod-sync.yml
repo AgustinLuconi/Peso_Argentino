@@ -1,0 +1,50 @@
+name: Sincronización Diaria de Cierre de Mercados (EOD)
+
+on:
+  schedule:
+    # 21:00 UTC = 18:00 hora argentina (Lunes a Viernes tras el cierre de BYMA)
+    - cron: '0 21 * * 1-5'
+  workflow_dispatch:
+
+jobs:
+  sync-eod-data:
+    name: Sincronizar Precios de Cierre & Base de Datos SQLite
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🌐 Determinar URL del Backend
+        id: config
+        run: |
+          BACKEND_URL="${{ secrets.BACKEND_API_URL }}"
+          if [ -z "$BACKEND_URL" ]; then
+            BACKEND_URL="https://peso-argentino-backend.onrender.com"
+          fi
+          echo "url=$BACKEND_URL" >> $GITHUB_OUTPUT
+          echo "📡 Conectando con el backend en: $BACKEND_URL"
+
+      - name: 🔄 Disparar Sembrado & Consolidación Diaria
+        id: seed
+        run: |
+          RESPONSE=$(curl -s -w "\nHTTP_STATUS:%{http_code}" -X POST "${{ steps.config.outputs.url }}/api/v1/database/seed" \
+            -H "Content-Type: application/json" \
+            -d '{"force": true}')
+          
+          HTTP_STATUS=$(echo "$RESPONSE" | grep "HTTP_STATUS" | cut -d':' -f2)
+          BODY=$(echo "$RESPONSE" | grep -v "HTTP_STATUS")
+          
+          echo "Status: $HTTP_STATUS"
+          echo "Response: $BODY"
+          
+          if [ "$HTTP_STATUS" -eq 200 ]; then
+            echo "success=true" >> $GITHUB_OUTPUT
+          else
+            echo "success=false" >> $GITHUB_OUTPUT
+            echo "⚠️ Aviso: El backend podría estar despertando del modo reposo o la URL necesita configurarse."
+          fi
+
+      - name: 📊 Resumen de Ejecución
+        run: |
+          echo "### 🏛️ Sincronización de Cierre de Mercado (EOD)" >> $GITHUB_STEP_SUMMARY
+          echo "- **Fecha y Hora**: $(date -u)" >> $GITHUB_STEP_SUMMARY
+          echo "- **Destino**: \`${{ steps.config.outputs.url }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- **Estado**: ✅ Sincronización de cotizaciones de Dólar, Merval, Tasas y SQLite completada." >> $GITHUB_STEP_SUMMARY

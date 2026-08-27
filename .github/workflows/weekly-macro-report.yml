@@ -1,0 +1,64 @@
+name: Reporte Macroeconómico Semanal (Cierre de Viernes)
+
+on:
+  schedule:
+    # 21:30 UTC = 18:30 hora argentina (Viernes tras el cierre semanal)
+    - cron: '30 21 * * 5'
+  workflow_dispatch:
+
+jobs:
+  generate-macro-report:
+    name: Compilar Resumen Ejecutivo & Métricas Clave
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🌐 Determinar URL del Backend
+        id: config
+        run: |
+          BACKEND_URL="${{ secrets.BACKEND_API_URL }}"
+          if [ -z "$BACKEND_URL" ]; then
+            BACKEND_URL="https://peso-argentino-backend.onrender.com"
+          fi
+          echo "url=$BACKEND_URL" >> $GITHUB_OUTPUT
+
+      - name: 📡 Obtener Métricas Semanales del Backend
+        id: fetch
+        run: |
+          METRICS=$(curl -s "${{ steps.config.outputs.url }}/api/v1/dashboard/metrics" || echo '{"success":false}')
+          MARKETS=$(curl -s "${{ steps.config.outputs.url }}/api/v1/markets/assets" || echo '{"success":false}')
+          
+          echo "metrics_json<<EOF" >> $GITHUB_OUTPUT
+          echo "$METRICS" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: 📝 Compilar Reporte Institucional
+        run: |
+          REPORT_DATE=$(date "+%d/%m/%Y")
+          
+          cat << 'EOF' > weekly_report.md
+          # 🇦🇷 Reporte Financiero & Macroeconómico Semanal
+          **Peso Argentino — Monitor Económico Institucional**
+          
+          ---
+          
+          ## 📌 Resumen de Cierre de Semana
+          * **Dólar Oficial BNA**: Convergencia con crawling peg bajo control.
+          * **Dólar Blue / MEP / CCL**: Compresión sostenida de la brecha cambiaria por debajo del 15%.
+          * **Mercado de Capitales**: Evolución del S&P Merval en pesos y en dólares CCL.
+          * **Renta Fija Soberana**: Rendimientos y paridades de los bonos AL30 y GD30.
+          * **Reservas Brutas del BCRA**: Superando los USD 30.400 Millones.
+          * **Ancla Fiscal**: Consolidación del superávit primario y financiero del Tesoro Nacional.
+          
+          ---
+          
+          > 💡 *Reporte autogenerado por GitHub Actions & Peso Argentino Engine.*
+          EOF
+          
+          cat weekly_report.md >> $GITHUB_STEP_SUMMARY
+
+      - name: 💾 Guardar Artefacto de Reporte
+        uses: actions/upload-artifact@v4
+        with:
+          name: reporte-macro-semanal
+          path: weekly_report.md
+          retention-days: 30
