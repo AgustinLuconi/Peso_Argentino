@@ -1,0 +1,52 @@
+name: Sincronización Automática de Inflación, IPC & Macro (ArgentinaDatos & Argly)
+
+on:
+  schedule:
+    # Ejecuta dos veces al día: 03:00 UTC (00:00 AR) y 15:00 UTC (12:00 AR)
+    - cron: '0 3,15 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync-macro-data:
+    name: Sincronizar Inflación, Riesgo País, Tasas y SQLite
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Clonar Repositorio
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: ⚙️ Configurar Node.js v22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: 📦 Instalar Dependencias
+        run: npm ci || npm install
+
+      - name: 🔄 Ejecutar Sincronización Macroeconómica
+        id: sync
+        run: |
+          npx tsx server/src/core/sync/SyncMacroData.ts > sync_output.md 2>&1
+          cat sync_output.md
+          cat sync_output.md >> $GITHUB_STEP_SUMMARY
+
+      - name: 💾 Guardar Cambios en SQLite y Publicar en Repositorio
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          if [ -n "$(git status --porcelain server/data/peso_argentino.db)" ]; then
+            echo "📊 Base de datos SQLite modificada con nuevos datos oficiales. Guardando commit..."
+            git add server/data/peso_argentino.db
+            git commit -m "chore(data): auto-sync inflation IPC, risk & market rates [skip ci]"
+            git push origin main
+            echo "✅ Datos sincronizados y publicados exitosamente en la rama main."
+          else
+            echo "ℹ️ No se detectaron cambios nuevos en los índices (datos ya actualizados)."
+          fi
