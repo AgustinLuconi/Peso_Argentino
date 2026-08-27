@@ -29,7 +29,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   });
 
   return (
-    <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-surface-container-highest">
+    <header className="sticky top-0 z-50 bg-white/95 dark:bg-[#040914]/95 backdrop-blur-md border-b border-surface-container-highest dark:border-[#1a2744] shadow-xs transition-colors duration-200">
       <div className="w-full max-w-[2400px] mx-auto px-3 sm:px-5 lg:px-6 2xl:px-8 3xl:px-10 h-14 sm:h-16 flex items-center justify-between gap-2 sm:gap-4">
         {/* Left: Mobile Toggle & Brand Headline */}
         <div className="flex items-center gap-2 sm:gap-4">

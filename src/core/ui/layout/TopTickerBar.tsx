@@ -31,7 +31,7 @@ export const TopTickerBar: React.FC<{ customTickers?: TickerItemData[] }> = ({
   const displayTickers = [...customTickers, ...customTickers];
 
   return (
-    <div className="bg-primary text-white border-b border-gold/25 text-xs select-none overflow-hidden h-9 flex items-center relative z-40">
+    <div className="bg-primary text-white border-b border-gold/25 text-xs select-none overflow-hidden h-9 flex items-center relative z-20">
       {/* Live Badge Fixed at Left */}
       <div className="hidden sm:flex items-center gap-1.5 px-3 py-1 bg-primary-container text-gold border-r border-gold/30 shrink-0 z-10 h-full font-mono text-[11px] font-bold">
         <span className="relative flex h-2 w-2">

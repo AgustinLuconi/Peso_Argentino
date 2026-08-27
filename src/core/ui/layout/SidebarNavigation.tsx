@@ -158,7 +158,7 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
       {/* Mobile Backdrop */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-primary/70 backdrop-blur-md z-40 lg:hidden transition-opacity duration-300"
+          className="fixed inset-0 bg-primary/70 backdrop-blur-md z-50 lg:hidden transition-opacity duration-300"
           onClick={onClose}
         />
       )}
@@ -166,7 +166,7 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
       {/* Sidebar Aside */}
       <aside
         className={clsx(
-          'fixed lg:sticky top-0 lg:top-20 left-0 z-40 h-full lg:h-[calc(100vh-6rem)] w-72 2xl:w-80 3xl:w-84 bg-white/95 backdrop-blur-md border-r border-surface-container-highest transition-all duration-300 ease-out flex flex-col justify-between overflow-y-auto shrink-0 shadow-lg lg:shadow-none lg:rounded-2xl lg:border',
+          'fixed lg:sticky top-0 lg:top-[4.5rem] left-0 z-50 lg:z-30 h-full lg:h-[calc(100vh-5.5rem)] w-72 2xl:w-80 3xl:w-84 bg-white/95 dark:bg-[#081124]/95 backdrop-blur-md border-r border-surface-container-highest dark:border-[#1a2744] transition-all duration-300 ease-out flex flex-col justify-between overflow-y-auto shrink-0 shadow-lg lg:shadow-none lg:rounded-2xl lg:border',
           isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         )}
       >
