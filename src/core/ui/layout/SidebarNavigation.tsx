@@ -187,7 +187,7 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
           </div>
 
           <div>
-            <div className="px-3 pb-2 font-eyebrow text-outline">
+            <div className="px-3 pb-2 font-eyebrow text-outline dark:text-slate-300 font-bold tracking-wider">
               Módulos Institucionales
             </div>
 
@@ -204,7 +204,7 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
                         'w-full text-left p-2.5 sm:p-3 rounded-xl transition-all duration-200 flex items-start gap-2.5 sm:gap-3 group relative border select-none',
                         isActive
                           ? 'bg-primary text-white border-primary shadow-md scale-[1.02] stroke-of-value'
-                          : 'bg-white hover:bg-surface-container-low text-on-surface border-transparent hover:border-surface-container-highest hover:translate-x-1'
+                          : 'bg-white dark:bg-[#0c1730] hover:bg-surface-container-low dark:hover:bg-[#101e3d] text-on-surface dark:text-slate-100 border-transparent hover:border-surface-container-highest dark:hover:border-[#1a2744] hover:translate-x-1'
                       )}
                     >
                       <span
@@ -212,7 +212,7 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
                           'p-2 rounded-lg shrink-0 transition-colors',
                           isActive
                             ? 'bg-primary-container text-gold'
-                            : 'bg-surface-container text-on-surface-variant group-hover:text-primary'
+                            : 'bg-surface-container dark:bg-[#14244a] text-on-surface-variant dark:text-slate-300 group-hover:text-primary dark:group-hover:text-gold'
                         )}
                       >
                         {item.icon}
@@ -220,7 +220,7 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
 
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between gap-1">
-                          <span className="font-sans font-bold text-xs 2xl:text-sm truncate">
+                          <span className="font-sans font-bold text-xs 2xl:text-sm truncate text-primary dark:text-slate-100">
                             {item.label}
                           </span>
                           {item.badge && (
@@ -229,7 +229,7 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
                                 'text-[10px] font-sans font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider whitespace-nowrap inline-flex items-center justify-center shrink-0 leading-tight',
                                 isActive
                                   ? 'bg-gold text-primary shadow-xs'
-                                  : 'bg-surface-container text-on-surface-variant'
+                                  : 'bg-surface-container dark:bg-[#14244a] text-on-surface-variant dark:text-slate-300 border dark:border-[#1a2744]'
                               )}
                             >
                               {item.badge}
@@ -239,14 +239,14 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
                         <p
                           className={clsx(
                             'text-[11px] 2xl:text-xs font-sans truncate mt-0.5',
-                            isActive ? 'text-slate-300' : 'text-on-surface-variant'
+                            isActive ? 'text-slate-300' : 'text-on-surface-variant dark:text-slate-400'
                           )}
                         >
                           {item.sublabel}
                         </p>
                       </div>
 
-                      <div className="shrink-0 self-center text-outline-variant group-hover:text-primary transition-transform duration-200">
+                      <div className="shrink-0 self-center text-outline-variant dark:text-slate-400 group-hover:text-primary dark:group-hover:text-slate-100 transition-transform duration-200">
                         <ChevronDown
                           size={14}
                           className={clsx(
@@ -270,15 +270,15 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
                               className={clsx(
                                 'w-full text-left px-2.5 py-1.5 rounded-lg text-xs font-sans flex items-center gap-2 transition-all',
                                 isSubActive
-                                  ? 'bg-primary-container/30 text-primary font-bold shadow-sm'
-                                  : 'text-on-surface-variant hover:text-primary hover:bg-surface-container-low'
+                                  ? 'bg-primary-container/30 dark:bg-gold/15 text-primary dark:text-gold font-bold shadow-sm'
+                                  : 'text-on-surface-variant dark:text-slate-300 hover:text-primary dark:hover:text-white hover:bg-surface-container-low dark:hover:bg-[#101e3d]'
                               )}
                             >
                               <CircleDot
                                 size={10}
                                 className={clsx(
                                   'shrink-0',
-                                  isSubActive ? 'text-gold scale-125' : 'text-outline'
+                                  isSubActive ? 'text-gold scale-125' : 'text-outline dark:text-slate-400'
                                 )}
                               />
                               <span className="truncate">{sub.label}</span>

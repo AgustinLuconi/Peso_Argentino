@@ -84,12 +84,24 @@
     color: #f1f5f9 !important;
   }
 
+  .dark .text-on-surface {
+    color: #f1f5f9 !important;
+  }
+
   .dark .text-on-surface-variant {
     color: #94a3b8 !important;
   }
 
   .dark .text-outline {
     color: #94a3b8 !important;
+  }
+
+  .dark .font-subtitle {
+    color: #94a3b8 !important;
+  }
+
+  .dark .font-eyebrow {
+    color: #cbd5e1 !important;
   }
 
   .dark .border-surface-container-highest,

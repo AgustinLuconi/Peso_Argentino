@@ -64,11 +64,11 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
 
         {/* Center: Active View Breadcrumb */}
-        <div className="hidden lg:flex items-center gap-2 px-3 py-1 bg-surface-container-low border border-surface-container-high rounded-xl">
-          <span className="font-eyebrow">
+        <div className="hidden lg:flex items-center gap-2 px-3 py-1 bg-surface-container-low dark:bg-[#0c1730] border border-surface-container-high dark:border-[#1a2744] rounded-xl shadow-xs">
+          <span className="font-eyebrow text-outline dark:text-slate-400">
             Módulo Activo:
           </span>
-          <span className="text-xs 2xl:text-sm font-sans font-bold text-primary">
+          <span className="text-xs 2xl:text-sm font-sans font-bold text-primary dark:text-gold">
             {activeFeatureTitle}
           </span>
         </div>
