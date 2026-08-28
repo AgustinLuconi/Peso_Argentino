@@ -39,33 +39,40 @@ export const DashboardView: React.FC<{
   const repo = new DolarApiQuoteRepository();
   const useCase = new GetDashboardMetricsUseCase(repo);
 
-  const fetchMetrics = async (forceRefresh: boolean = false) => {
+  const fetchMetrics = async (forceRefresh: boolean = false, isBackground: boolean = false) => {
     if (forceRefresh) {
       setRefreshing(true);
       smartCache.invalidate('dolar_api_dashboard_metrics');
-    } else {
+    } else if (!isBackground && !data) {
       setLoading(true);
     }
 
-    const result = await useCase.execute();
-    setData(result);
-    setLastRefreshedAt(
-      new Date().toLocaleTimeString('es-AR', {
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-      })
-    );
-    setLoading(false);
-    setRefreshing(false);
+    try {
+      const result = await useCase.execute();
+      if (result) {
+        setData(result);
+        setLastRefreshedAt(
+          new Date().toLocaleTimeString('es-AR', {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+          })
+        );
+      }
+    } catch (err) {
+      console.error('[DashboardView] Error fetching metrics:', err);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
   };
 
   useEffect(() => {
-    fetchMetrics();
+    fetchMetrics(false, false);
 
-    // Auto-refresh dollar quotes every 30 seconds
+    // Auto-refresh dollar quotes every 30 seconds in background without unmounting UI
     const interval = setInterval(() => {
-      fetchMetrics();
+      fetchMetrics(false, true);
     }, 30000);
 
     return () => clearInterval(interval);

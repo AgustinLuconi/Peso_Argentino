@@ -39,14 +39,21 @@ export const InstitutionalStatsView: React.FC<{
     if (forceRefresh) {
       setRefreshing(true);
       smartCache.invalidate('institutional_stats_backend');
-    } else {
+    } else if (!data) {
       setLoading(true);
     }
 
-    const result = await useCase.execute();
-    setData(result);
-    setLoading(false);
-    setRefreshing(false);
+    try {
+      const result = await useCase.execute();
+      if (result) {
+        setData(result);
+      }
+    } catch (err) {
+      console.error('[InstitutionalStatsView] Error fetching institutional stats:', err);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
   };
 
   useEffect(() => {

@@ -13,6 +13,8 @@ import { FinancialAiModal } from '@core/ui/components/FinancialAiModal';
 import { Modal } from '@core/ui/components/Modal';
 import { Search, ArrowRight, TrendingUp, Landmark, Calculator, Scale, Newspaper, ArrowRightLeft, Bot } from 'lucide-react';
 
+import { ErrorBoundary } from '@core/ui/components/ErrorBoundary';
+
 export const App: React.FC = () => {
   const {
     activeFeature,
@@ -84,51 +86,53 @@ export const App: React.FC = () => {
       activeFeatureTitle={featureTitles[activeFeature]}
       onSearchClick={() => setIsSearchOpen(true)}
     >
-      {/* Route Switcher */}
-      {activeFeature === 'dashboard' && (
-        <DashboardView
-          activeSubItem={activeSubItem}
-          onNavigateToMarkets={() => navigateTo('markets', 'panel-lider')}
-          onNavigateToBondDetail={() => {
-            setSelectedBondTicker('AL30');
-            navigateTo('bond-detail', 'calc');
-          }}
-        />
-      )}
+      {/* Route Switcher wrapped in ErrorBoundary */}
+      <ErrorBoundary fallbackTitle="Error al cargar el módulo seleccionado">
+        {activeFeature === 'dashboard' && (
+          <DashboardView
+            activeSubItem={activeSubItem}
+            onNavigateToMarkets={() => navigateTo('markets', 'panel-lider')}
+            onNavigateToBondDetail={() => {
+              setSelectedBondTicker('AL30');
+              navigateTo('bond-detail', 'calc');
+            }}
+          />
+        )}
 
-      {activeFeature === 'markets' && (
-        <MarketsView
-          activeSubItem={activeSubItem}
-          onSelectBondDetail={(ticker) => {
-            setSelectedBondTicker(ticker.replace('D', ''));
-            navigateTo('bond-detail');
-          }}
-        />
-      )}
+        {activeFeature === 'markets' && (
+          <MarketsView
+            activeSubItem={activeSubItem}
+            onSelectBondDetail={(ticker) => {
+              setSelectedBondTicker(ticker.replace('D', ''));
+              navigateTo('bond-detail');
+            }}
+          />
+        )}
 
-      {activeFeature === 'lecaps-curve' && (
-        <LecapsCurveView />
-      )}
+        {activeFeature === 'lecaps-curve' && (
+          <LecapsCurveView />
+        )}
 
-      {activeFeature === 'bond-detail' && (
-        <BondDetailView
-          initialTicker={selectedBondTicker}
-          activeSubItem={activeSubItem}
-          onBackToMarkets={() => navigateTo('markets', 'bonos-usd')}
-        />
-      )}
+        {activeFeature === 'bond-detail' && (
+          <BondDetailView
+            initialTicker={selectedBondTicker}
+            activeSubItem={activeSubItem}
+            onBackToMarkets={() => navigateTo('markets', 'bonos-usd')}
+          />
+        )}
 
-      {activeFeature === 'institutional-stats' && (
-        <InstitutionalStatsView activeSubItem={activeSubItem} />
-      )}
+        {activeFeature === 'institutional-stats' && (
+          <InstitutionalStatsView activeSubItem={activeSubItem} />
+        )}
 
-      {activeFeature === 'political-analysis' && (
-        <PoliticalAnalysisView activeSubItem={activeSubItem} />
-      )}
+        {activeFeature === 'political-analysis' && (
+          <PoliticalAnalysisView activeSubItem={activeSubItem} />
+        )}
 
-      {activeFeature === 'news-intelligence' && (
-        <NewsIntelligenceView activeSubItem={activeSubItem} />
-      )}
+        {activeFeature === 'news-intelligence' && (
+          <NewsIntelligenceView activeSubItem={activeSubItem} />
+        )}
+      </ErrorBoundary>
 
       {/* Financial AI Copilot Modal (100% Free) */}
       <FinancialAiModal

@@ -31,12 +31,21 @@ export const BondDetailView: React.FC<{
   }, [activeSubItem]);
 
   const fetchBond = async (bondTicker: string) => {
-    setLoading(true);
-    const repo = new BackendBondRepository();
-    const useCase = new GetBondDetailUseCase(repo);
-    const result = await useCase.execute(bondTicker);
-    setBond(result);
-    setLoading(false);
+    if (!bond) {
+      setLoading(true);
+    }
+    try {
+      const repo = new BackendBondRepository();
+      const useCase = new GetBondDetailUseCase(repo);
+      const result = await useCase.execute(bondTicker);
+      if (result) {
+        setBond(result);
+      }
+    } catch (err) {
+      console.error(`[BondDetailView] Error fetching bond details for ${bondTicker}:`, err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {

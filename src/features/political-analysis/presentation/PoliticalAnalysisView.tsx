@@ -35,14 +35,21 @@ export const PoliticalAnalysisView: React.FC<{
     if (forceRefresh) {
       setRefreshing(true);
       smartCache.invalidate('political_analysis_backend');
-    } else {
+    } else if (!data) {
       setLoading(true);
     }
 
-    const result = await useCase.execute();
-    setData(result);
-    setLoading(false);
-    setRefreshing(false);
+    try {
+      const result = await useCase.execute();
+      if (result) {
+        setData(result);
+      }
+    } catch (err) {
+      console.error('[PoliticalAnalysisView] Error fetching political data:', err);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
   };
 
   useEffect(() => {
