@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Card } from '@core/ui/components/Card';
 import { Badge } from '@core/ui/components/Badge';
 import { Button } from '@core/ui/components/Button';
+import { PageHeader } from '@core/ui/components/PageHeader';
 import { smartCache, CACHE_TTL } from '@core/infrastructure/SmartCacheAdapter';
 import {
   Database,
@@ -154,26 +155,17 @@ export const DataSourcesView: React.FC = () => {
   return (
     <div className="space-y-6 animate-page-enter">
       {/* Top Banner */}
-      <div className="bg-white dark:bg-[#081124] border border-surface-container-highest dark:border-[#1a2744] p-5 sm:p-6 rounded-2xl shadow-tactile stroke-of-value card-interactive">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <div className="flex items-center gap-2 mb-1">
-              <Database size={22} className="text-gold" />
-              <h1 className="font-h1">
-                Arquitectura de Datos, Fuentes & Caché Estratificado
-              </h1>
-            </div>
-            <p className="font-subtitle max-w-3xl">
-              Catálogo oficial de APIs de ingesta públicas y gratuitas, políticas de almacenamiento en memoria con TTL diferencial y resiliencia offline.
-            </p>
-          </div>
-
-          <div className="flex items-center gap-2 shrink-0">
+      <PageHeader
+        title="Arquitectura de Datos, Fuentes & Caché Estratificado"
+        subtitle="Catálogo oficial de APIs de ingesta públicas y gratuitas, políticas de almacenamiento en memoria con TTL diferencial y resiliencia offline."
+        icon={<Database size={22} className="text-emerald-500" />}
+        actions={
+          <>
             <Button
               variant="outline"
               size="sm"
               onClick={handleTestConnectivity}
-              icon={<Zap size={14} className={testingApi ? 'animate-spin text-gold' : ''} />}
+              icon={<Zap size={14} className={testingApi ? 'animate-spin text-emerald-500' : ''} />}
             >
               {testingApi ? 'Verificando...' : 'Probar Conectividad'}
             </Button>
@@ -185,16 +177,16 @@ export const DataSourcesView: React.FC = () => {
             >
               {clearing ? 'Purgando...' : 'Vaciar Caché'}
             </Button>
-          </div>
-        </div>
+          </>
+        }
+      />
 
-        {testResult && (
-          <div className="mt-4 p-3 bg-champagne-light/50 dark:bg-[#101e3d] border border-gold/40 rounded-xl text-xs font-sans flex items-center gap-2 text-primary animate-in fade-in">
-            <CheckCircle2 size={16} className="text-bullish-green shrink-0" />
-            <span>{testResult}</span>
-          </div>
-        )}
-      </div>
+      {testResult && (
+        <div className="p-3 bg-emerald-500/10 dark:bg-[#101e3d] border border-emerald-500/30 rounded-xl text-xs font-sans flex items-center gap-2 text-emerald-600 dark:text-emerald-400 animate-in fade-in">
+          <CheckCircle2 size={16} className="text-emerald-500 shrink-0" />
+          <span>{testResult}</span>
+        </div>
+      )}
 
       {/* Cache Metrics KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

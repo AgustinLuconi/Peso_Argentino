@@ -10,6 +10,7 @@ import { MarketQuote } from '../domain/MarketQuote';
 import { Modal } from '@core/ui/components/Modal';
 import { TrendIndicator } from '@core/ui/components/TrendIndicator';
 import { Button } from '@core/ui/components/Button';
+import { PageHeader } from '@core/ui/components/PageHeader';
 import { smartCache } from '@core/infrastructure/SmartCacheAdapter';
 import { RefreshCw, CheckCircle2 } from 'lucide-react';
 
@@ -96,49 +97,42 @@ export const DashboardView: React.FC<{
   return (
     <div className="space-y-5 sm:space-y-6 animate-page-enter">
       {/* Top Banner / Hero Info */}
-      <div className="bg-white dark:bg-[#081124] border border-surface-container-highest dark:border-[#1a2744] p-5 sm:p-6 rounded-2xl shadow-tactile stroke-of-value flex flex-col md:flex-row md:items-center justify-between gap-4 card-interactive">
-        <div>
-          <div className="flex items-center gap-2 mb-1">
-            <h1 className="font-h1">
-              Monitor Macroeconómico de la República Argentina
-            </h1>
-          </div>
-          <p className="font-subtitle max-w-4xl">
-            Indicadores monetarios oficiales, cotizaciones en tiempo real del mercado cambiario (DolarApi), reservas internacionales del BCRA y brecha cambiaria.
-          </p>
-        </div>
-
-        <div className="flex items-center gap-2 sm:gap-3 self-start md:self-center shrink-0 flex-wrap">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => fetchMetrics(true)}
-            icon={<RefreshCw size={14} className={refreshing ? 'animate-spin text-primary' : ''} />}
-          >
-            {refreshing ? 'Actualizando...' : 'Refrescar Datos'}
-          </Button>
-
-          {onNavigateToMarkets && (
+      <PageHeader
+        title="Monitor Macroeconómico de la República Argentina"
+        subtitle="Indicadores monetarios oficiales, cotizaciones en tiempo real del mercado cambiario (DolarApi), reservas internacionales del BCRA y brecha cambiaria."
+        actions={
+          <>
             <Button
               variant="outline"
               size="sm"
-              onClick={onNavigateToMarkets}
+              onClick={() => fetchMetrics(true)}
+              icon={<RefreshCw size={14} className={refreshing ? 'animate-spin text-primary' : ''} />}
             >
-              Ver Mercados BYMA
+              {refreshing ? 'Actualizando...' : 'Refrescar Datos'}
             </Button>
-          )}
 
-          {onNavigateToBondDetail && (
-            <Button
-              variant="gold"
-              size="sm"
-              onClick={onNavigateToBondDetail}
-            >
-              Calcular AL30 / TIR
-            </Button>
-          )}
-        </div>
-      </div>
+            {onNavigateToMarkets && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={onNavigateToMarkets}
+              >
+                Ver Mercados BYMA
+              </Button>
+            )}
+
+            {onNavigateToBondDetail && (
+              <Button
+                variant="gold"
+                size="sm"
+                onClick={onNavigateToBondDetail}
+              >
+                Calcular AL30 / TIR
+              </Button>
+            )}
+          </>
+        }
+      />
 
       {/* Primary Dollar Quotes Section */}
       <div id="quotes-section">

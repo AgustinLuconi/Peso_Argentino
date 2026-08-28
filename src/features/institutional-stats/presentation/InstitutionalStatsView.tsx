@@ -8,6 +8,7 @@ import { GetInstitutionalStatsUseCase } from '../application/GetInstitutionalSta
 import { BackendInstitutionalStatsRepository } from '../infrastructure/BackendInstitutionalStatsRepository';
 import { InstitutionalStatsDto } from '../application/InstitutionalStatsRepositoryPort';
 import { Button } from '@core/ui/components/Button';
+import { PageHeader } from '@core/ui/components/PageHeader';
 import { smartCache } from '@core/infrastructure/SmartCacheAdapter';
 import { RefreshCw, CheckCircle2 } from 'lucide-react';
 
@@ -76,17 +77,10 @@ export const InstitutionalStatsView: React.FC<{
   return (
     <div className="space-y-6 animate-page-enter">
       {/* Header Banner */}
-      <div className="bg-white dark:bg-[#071228] border border-surface-container-highest dark:border-[#1a2744] p-5 sm:p-6 rounded-2xl shadow-tactile stroke-of-value card-interactive flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h1 className="font-h1 mb-1">
-            Estadísticas Institucionales & Banco Central
-          </h1>
-          <p className="font-subtitle max-w-3xl">
-            Monitor oficial de agregados monetarios, saneamiento del balance del BCRA, curvas de tasas bancarias en tiempo real y series históricas del INDEC.
-          </p>
-        </div>
-
-        <div className="shrink-0 flex items-center gap-2">
+      <PageHeader
+        title="Estadísticas Institucionales & Banco Central"
+        subtitle="Monitor oficial de agregados monetarios, saneamiento del balance del BCRA, curvas de tasas bancarias en tiempo real y series históricas del INDEC."
+        actions={
           <Button
             variant="outline"
             size="sm"
@@ -95,8 +89,8 @@ export const InstitutionalStatsView: React.FC<{
           >
             {refreshing ? 'Actualizando...' : 'Actualizar Tasas & Series'}
           </Button>
-        </div>
-      </div>
+        }
+      />
 
       {/* BCRA Balance Consolidated Sheet */}
       <div id="balance-section">

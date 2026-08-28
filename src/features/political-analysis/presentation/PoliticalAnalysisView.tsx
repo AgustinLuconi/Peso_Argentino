@@ -6,6 +6,7 @@ import { GetPoliticalAnalysisUseCase } from '../application/GetPoliticalAnalysis
 import { BackendPoliticalRepository } from '../infrastructure/BackendPoliticalRepository';
 import { PoliticalAnalysisDto } from '../application/PoliticalRepositoryPort';
 import { Button } from '@core/ui/components/Button';
+import { PageHeader } from '@core/ui/components/PageHeader';
 import { smartCache } from '@core/infrastructure/SmartCacheAdapter';
 import { RefreshCw } from 'lucide-react';
 
@@ -71,18 +72,10 @@ export const PoliticalAnalysisView: React.FC<{
 
   return (
     <div className="space-y-6 animate-page-enter">
-      {/* Header Banner */}
-      <div className="bg-white dark:bg-[#071228] border border-surface-container-highest dark:border-[#1a2744] p-5 sm:p-6 rounded-2xl shadow-tactile stroke-of-value card-interactive flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <h1 className="font-h1 mb-1">
-            Análisis Político, Regulatorio & Gobernabilidad
-          </h1>
-          <p className="font-subtitle max-w-3xl">
-            Monitoreo de riesgo institucional, seguimiento de reformas estructurales en el Congreso de la Nación y pipeline de inversiones RIGI.
-          </p>
-        </div>
-
-        <div className="shrink-0 flex items-center gap-2">
+      <PageHeader
+        title="Análisis Político, Regulatorio & Gobernabilidad"
+        subtitle="Monitoreo de riesgo institucional, seguimiento de reformas estructurales en el Congreso de la Nación y pipeline de inversiones RIGI."
+        actions={
           <Button
             variant="outline"
             size="sm"
@@ -91,8 +84,8 @@ export const PoliticalAnalysisView: React.FC<{
           >
             {refreshing ? 'Actualizando...' : 'Actualizar Leyes & RIGI'}
           </Button>
-        </div>
-      </div>
+        }
+      />
 
       {/* Governance & Political Risk Radar */}
       <div id="radar-section">

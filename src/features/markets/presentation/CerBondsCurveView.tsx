@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { Card } from '@core/ui/components/Card';
 import { Badge } from '@core/ui/components/Badge';
 import { Button } from '@core/ui/components/Button';
+import { PageHeader } from '@core/ui/components/PageHeader';
 import { TrendingUp, ShieldCheck, Calculator, ArrowUpRight, Flame, Percent } from 'lucide-react';
 
 export interface CerBondItem {
@@ -145,32 +146,19 @@ export const CerBondsCurveView: React.FC = () => {
   return (
     <div className="space-y-6 animate-page-enter">
       {/* Header Banner */}
-      <div className="bg-gradient-to-r from-[#0d2137] via-[#102a45] to-[#153e6b] text-white p-5 sm:p-6 rounded-2xl border border-blue-900/40 shadow-tactile flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="p-2 bg-emerald-500/20 text-emerald-400 rounded-xl">
-              <Flame size={22} />
-            </span>
-            <h2 className="text-xl sm:text-2xl font-bold font-sans text-white">
-              Curva de Bonos en Pesos & Rendimiento Real CER
-            </h2>
-            <Badge variant="bullish" size="sm">
-              COBERTURA INFLACIONARIA
-            </Badge>
+      <PageHeader
+        title="Curva de Bonos en Pesos & Rendimiento Real CER"
+        subtitle="Estructura de Tasa Real positiva por encima de la variación del IPC/CER. Monitoreo de TIR Real en pesos, paridades de mercado y protección del poder adquisitivo contra la inflación."
+        badgeText="COBERTURA INFLACIONARIA"
+        badgeVariant="emerald"
+        actions={
+          <div className="p-3 bg-surface-container-low dark:bg-[#131822] rounded-xl border border-surface-container-highest dark:border-[#1E2638] text-right shadow-xs">
+            <div className="text-[10px] font-sans text-outline dark:text-slate-400 uppercase font-semibold">Tasa Real Promedio</div>
+            <div className="text-lg sm:text-xl font-bold font-sans text-emerald-600 dark:text-emerald-400">CER + 8.9%</div>
+            <div className="text-[10px] font-sans text-outline dark:text-slate-400">Protección del 100% de IPC</div>
           </div>
-          <p className="text-slate-300 text-xs sm:text-sm max-w-4xl leading-relaxed">
-            Estructura de Tasa Real positiva por encima de la variación del IPC/CER. Monitoreo de TIR Real en pesos, paridades de mercado y protección del poder adquisitivo contra la inflación.
-          </p>
-        </div>
-
-        <div className="flex items-center gap-3 shrink-0">
-          <div className="p-3 bg-black/40 backdrop-blur-md rounded-xl border border-white/10 text-right">
-            <div className="text-[10px] font-sans text-slate-300 uppercase">Tasa Real Promedio</div>
-            <div className="text-xl font-bold font-sans text-emerald-400">CER + 8.9%</div>
-            <div className="text-[10px] font-sans text-slate-300">Protección del 100% de IPC</div>
-          </div>
-        </div>
-      </div>
+        }
+      />
 
       {/* SVG Real Yield Curve Chart */}
       <Card variant="default" accent="gold" className="space-y-4">

@@ -12,6 +12,7 @@ import { MarketAssetsDto } from '../application/MarketRepositoryPort';
 import { Tabs } from '@core/ui/components/Tabs';
 import { Card } from '@core/ui/components/Card';
 import { Button } from '@core/ui/components/Button';
+import { PageHeader } from '@core/ui/components/PageHeader';
 import { smartCache } from '@core/infrastructure/SmartCacheAdapter';
 import { RefreshCw, BarChart2 } from 'lucide-react';
 
@@ -132,19 +133,10 @@ export const MarketsView: React.FC<{
   return (
     <div className="space-y-6 animate-page-enter">
       {/* Header Banner */}
-      <div className="bg-white dark:bg-[#071228] border border-surface-container-highest dark:border-[#1a2744] p-5 sm:p-6 rounded-2xl shadow-tactile stroke-of-value card-interactive flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-2">
-            <h1 className="font-h1 mb-1">
-              Mercado de Capitales & Renta Fija Integral
-            </h1>
-          </div>
-          <p className="font-subtitle max-w-3xl">
-            Monitoreo institucional en tiempo real de Bolsas y Mercados Argentinos (BYMA), Panel General, Curva de Lecaps, ADRs en Wall Street, CEDEARs, Curvas de Bonos Soberanos Locales y Extranjeros, y Commodities del Agro.
-          </p>
-        </div>
-
-        <div className="shrink-0 flex items-center gap-2">
+      <PageHeader
+        title="Mercado de Capitales & Renta Fija Integral"
+        subtitle="Monitoreo institucional en tiempo real de Bolsas y Mercados Argentinos (BYMA), Panel General, Curva de Lecaps, ADRs en Wall Street, CEDEARs, Curvas de Bonos Soberanos Locales y Extranjeros, y Commodities del Agro."
+        actions={
           <Button
             variant="outline"
             size="sm"
@@ -153,8 +145,8 @@ export const MarketsView: React.FC<{
           >
             {refreshing ? 'Actualizando...' : 'Actualizar Mercado'}
           </Button>
-        </div>
-      </div>
+        }
+      />
 
       {/* Merval Big Indices Header Cards */}
       <MervalIndicesHeader indices={data.indices} />

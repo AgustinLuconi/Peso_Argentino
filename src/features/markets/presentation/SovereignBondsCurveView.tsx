@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { Card } from '@core/ui/components/Card';
 import { Badge } from '@core/ui/components/Badge';
 import { Button } from '@core/ui/components/Button';
+import { PageHeader } from '@core/ui/components/PageHeader';
 import { Money } from '@core/domain/Money';
 import {
   TrendingUp,
@@ -265,32 +266,19 @@ export const SovereignBondsCurveView: React.FC<{
   return (
     <div className="space-y-6 animate-page-enter">
       {/* Header Banner */}
-      <div className="bg-gradient-to-r from-primary via-[#0c1833] to-primary-container text-white p-5 sm:p-6 rounded-2xl border border-primary/30 shadow-tactile flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="p-2 bg-gold/20 text-gold rounded-xl">
-              <TrendingUp size={22} />
-            </span>
-            <h2 className="text-xl sm:text-2xl font-bold font-sans text-white">
-              Curva Soberana de Bonos Hard Dollar (Bonares vs Globales)
-            </h2>
-            <Badge variant="gold" size="sm">
-              DEUDA EN DÓLARES
-            </Badge>
+      <PageHeader
+        title="Curva Soberana de Bonos Hard Dollar (Bonares vs Globales)"
+        subtitle="Estructura temporal de rendimientos (Yield Curve USD) de la deuda soberana argentina. Comparativa directa de curvas de rendimiento entre títulos Ley Local (AL) y Ley Nueva York (GD), paridades y riesgo país implícito."
+        badgeText="DEUDA EN DÓLARES"
+        badgeVariant="emerald"
+        actions={
+          <div className="p-3 bg-surface-container-low dark:bg-[#131822] rounded-xl border border-surface-container-highest dark:border-[#1E2638] text-right shadow-xs">
+            <div className="text-[10px] font-sans text-outline dark:text-slate-400 uppercase font-semibold">Spread Ley NY vs Arg (30s)</div>
+            <div className="text-lg sm:text-xl font-bold font-sans text-emerald-600 dark:text-emerald-400">+{spreadNYvsArg}% TIR</div>
+            <div className="text-[10px] font-sans text-outline dark:text-slate-400">~120 bps premio ley extranjera</div>
           </div>
-          <p className="text-slate-300 text-xs sm:text-sm max-w-4xl leading-relaxed">
-            Estructura temporal de rendimientos (Yield Curve USD) de la deuda soberana argentina. Comparativa directa de curvas de rendimiento entre títulos Ley Local (AL) y Ley Nueva York (GD), paridades y riesgo país implícito.
-          </p>
-        </div>
-
-        <div className="flex items-center gap-3 shrink-0">
-          <div className="p-3 bg-black/40 backdrop-blur-md rounded-xl border border-white/10 text-right">
-            <div className="text-[10px] font-sans text-slate-300 uppercase">Spread Ley NY vs Arg (30s)</div>
-            <div className="text-xl font-bold font-sans text-gold">+{spreadNYvsArg}% TIR</div>
-            <div className="text-[10px] font-sans text-slate-300">~120 bps premio ley extranjera</div>
-          </div>
-        </div>
-      </div>
+        }
+      />
 
       {/* Yield Curve SVG Chart */}
       <Card variant="default" accent="gold" className="space-y-4">

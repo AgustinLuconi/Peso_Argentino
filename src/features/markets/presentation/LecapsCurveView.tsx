@@ -2,6 +2,8 @@ import React, { useState, useMemo } from 'react';
 import { Card } from '@core/ui/components/Card';
 import { Badge } from '@core/ui/components/Badge';
 import { Button } from '@core/ui/components/Button';
+import { PageHeader } from '@core/ui/components/PageHeader';
+import { StatBox } from '@core/ui/components/StatBox';
 import { Money } from '@core/domain/Money';
 import {
   TrendingUp,
@@ -321,73 +323,48 @@ export const LecapsCurveView: React.FC = () => {
   return (
     <div className="space-y-6 animate-page-enter">
       {/* Top Banner Institucional */}
-      <div className="bg-gradient-to-r from-primary via-primary-container to-[#0b1736] text-white p-5 sm:p-6 rounded-2xl border border-primary/30 shadow-tactile flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="p-2 bg-gold/20 text-gold rounded-xl">
-              <TrendingUp size={22} />
-            </span>
-            <h1 className="text-xl sm:text-2xl font-bold font-sans text-white">
-              Curva de Rendimientos de Lecaps & Boncaps (Tesoro Nacional)
-            </h1>
+      <PageHeader
+        title="Curva de Rendimientos de Lecaps & Boncaps (Tesoro Nacional)"
+        subtitle="Estructura Temporal de Tasas de Interés (ETTI) de Letras y Bonos Capitalizables en pesos. Análisis de pendiente de la curva, Tasa Efectiva Mensual (TEM), TNA, TEA y spreads de tasa real positiva contra el Relevamiento de Expectativas de Mercado (REM)."
+        badgeText="TASA FIJA EN PESOS"
+        badgeVariant="emerald"
+        actions={
+          <div className="p-3 bg-surface-container-low dark:bg-[#131822] rounded-xl border border-surface-container-highest dark:border-[#1E2638] text-right shadow-xs">
+            <div className="text-[10px] font-sans text-outline dark:text-slate-400 uppercase font-semibold">TEM Promedio Curva</div>
+            <div className="text-lg sm:text-xl font-bold font-sans text-emerald-600 dark:text-emerald-400">3.88% m/m</div>
+            <div className="text-[10px] font-sans text-emerald-600 dark:text-emerald-400 font-semibold">Tasa Real: +5.4 p.p.</div>
           </div>
-          <p className="text-slate-300 text-xs sm:text-sm max-w-4xl leading-relaxed">
-            Estructura Temporal de Tasas de Interés (ETTI) de Letras y Bonos Capitalizables en pesos. Análisis de pendiente de la curva, Tasa Efectiva Mensual (TEM), TNA, TEA y spreads de tasa real positiva contra el Relevamiento de Expectativas de Mercado (REM).
-          </p>
-        </div>
-
-        <div className="flex items-center gap-3 shrink-0 flex-wrap">
-          <div className="p-3 bg-black/40 backdrop-blur-md rounded-xl border border-white/10 text-right">
-            <div className="text-[10px] font-sans text-slate-300 uppercase">TEM Promedio Curva</div>
-            <div className="text-xl font-bold font-sans text-gold">3.88% m/m</div>
-            <div className="text-[10px] font-sans text-bullish-green font-semibold">Tasa Real: +5.4 p.p.</div>
-          </div>
-        </div>
-      </div>
+        }
+      />
 
       {/* Podio / Top Highlights Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="bg-white dark:bg-[#071228] p-4 rounded-2xl border border-surface-container-highest dark:border-[#1a2744] shadow-soft flex items-center gap-3.5">
-          <div className="p-2.5 bg-gold/15 text-gold rounded-xl shrink-0">
-            <Award size={22} />
-          </div>
-          <div>
-            <span className="text-[10px] font-sans text-outline dark:text-slate-400 uppercase block">Mayor Tasa Mensual (TEM)</span>
-            <div className="flex items-baseline gap-1.5">
-              <span className="text-base font-bold font-sans text-primary dark:text-slate-100">T15D5</span>
-              <span className="text-sm font-bold font-sans text-gold">4.12% m/m</span>
-            </div>
-            <span className="text-[11px] font-sans text-on-surface-variant dark:text-slate-300">Boncap Dic 25 · TEA 65.2%</span>
-          </div>
-        </div>
+        <StatBox
+          icon={<Award size={22} />}
+          label="Mayor Tasa Mensual (TEM)"
+          primaryValue="T15D5"
+          secondaryValue="4.12% m/m"
+          footnote="Boncap Dic 25 · TEA 65.2%"
+          accent="emerald"
+        />
 
-        <div className="bg-white dark:bg-[#071228] p-4 rounded-2xl border border-surface-container-highest dark:border-[#1a2744] shadow-soft flex items-center gap-3.5">
-          <div className="p-2.5 bg-blue-500/15 text-blue-600 rounded-xl shrink-0">
-            <Clock size={22} />
-          </div>
-          <div>
-            <span className="text-[10px] font-sans text-outline dark:text-slate-400 uppercase block">Liquidez Inmediata (Corto)</span>
-            <div className="flex items-baseline gap-1.5">
-              <span className="text-base font-bold font-sans text-primary dark:text-slate-100">S31E5</span>
-              <span className="text-sm font-bold font-sans text-primary dark:text-slate-100">15 días</span>
-            </div>
-            <span className="text-[11px] font-sans text-on-surface-variant dark:text-slate-300">TEM 3.55% · Vto 31/01/2025</span>
-          </div>
-        </div>
+        <StatBox
+          icon={<Clock size={22} />}
+          label="Liquidez Inmediata (Corto)"
+          primaryValue="S31E5"
+          secondaryValue="15 días"
+          footnote="TEM 3.55% · Vto 31/01/2025"
+          accent="cyan"
+        />
 
-        <div className="bg-white dark:bg-[#071228] p-4 rounded-2xl border border-surface-container-highest dark:border-[#1a2744] shadow-soft flex items-center gap-3.5">
-          <div className="p-2.5 bg-bullish-green/15 text-bullish-green rounded-xl shrink-0">
-            <ShieldCheck size={22} />
-          </div>
-          <div>
-            <span className="text-[10px] font-sans text-outline uppercase block">Mayor Spread Real vs REM</span>
-            <div className="flex items-baseline gap-1.5">
-              <span className="text-base font-bold font-sans text-primary">S15D5</span>
-              <span className="text-sm font-bold font-sans text-bullish-green">+10.1 p.p.</span>
-            </div>
-            <span className="text-[11px] font-sans text-on-surface-variant">Rend. Directo +48.2%</span>
-          </div>
-        </div>
+        <StatBox
+          icon={<ShieldCheck size={22} />}
+          label="Mayor Spread Real vs REM"
+          primaryValue="S15D5"
+          secondaryValue="+10.1 p.p."
+          footnote="Rend. Directo +48.2%"
+          accent="emerald"
+        />
       </div>
 
       {/* Main Yield Curve SVG Chart */}

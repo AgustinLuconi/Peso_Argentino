@@ -5,6 +5,7 @@ import { GetImpactNewsUseCase } from '../application/GetImpactNewsUseCase';
 import { BackendNewsRepository } from '../infrastructure/BackendNewsRepository';
 import { NewsIntelligenceDto } from '../application/NewsRepositoryPort';
 import { Button } from '@core/ui/components/Button';
+import { PageHeader } from '@core/ui/components/PageHeader';
 import { smartCache } from '@core/infrastructure/SmartCacheAdapter';
 import { RefreshCw, Filter } from 'lucide-react';
 
@@ -99,36 +100,22 @@ export const NewsIntelligenceView: React.FC<{
   return (
     <div className="space-y-6 animate-page-enter">
       {/* Header Banner */}
-      <div className="bg-white dark:bg-[#071228] border border-surface-container-highest dark:border-[#1a2744] p-5 sm:p-6 rounded-2xl shadow-tactile stroke-of-value card-interactive flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <div className="flex items-center gap-2 mb-2 flex-wrap">
-            <span className="px-2.5 py-0.5 text-[11px] font-mono font-bold bg-primary/10 dark:bg-gold/15 text-primary dark:text-gold border border-primary/20 dark:border-gold/30 rounded-full flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              EDICIÓN DEL DÍA: {todayFormatted.toUpperCase()}
-            </span>
-            <span className="text-[11px] font-sans text-on-surface-variant dark:text-slate-400">
-              • Rotación automática a medianoche
-            </span>
-          </div>
-          <h1 className="font-h1 mb-1 text-primary dark:text-slate-100">
-            Intelligence Feed & Noticias Financieras
-          </h1>
-          <p className="font-subtitle max-w-3xl text-on-surface-variant dark:text-slate-300">
-            Monitoreo en tiempo real de variables locales (BCRA, inflación, tasas) y globales de Estados Unidos (Tasas Fed, S&P 500, Petróleo WTI, Soja) que impactan directamente sobre bonos y acciones argentinas.
-          </p>
-        </div>
-
-        <div className="shrink-0 flex items-center gap-2">
+      <PageHeader
+        title="Intelligence Feed & Noticias Financieras"
+        subtitle="Monitoreo en tiempo real de variables locales (BCRA, inflación, tasas) y globales de Estados Unidos (Tasas Fed, S&P 500, Petróleo WTI, Soja) que impactan directamente sobre bonos y acciones argentinas."
+        badgeText={`EDICIÓN DEL DÍA: ${todayFormatted.toUpperCase()}`}
+        badgeVariant="emerald"
+        actions={
           <Button
             variant="outline"
             size="sm"
             onClick={() => fetchNews(true)}
-            icon={<RefreshCw size={14} className={refreshing ? 'animate-spin text-primary dark:text-gold' : ''} />}
+            icon={<RefreshCw size={14} className={refreshing ? 'animate-spin text-primary dark:text-emerald-400' : ''} />}
           >
             {refreshing ? 'Actualizando...' : 'Actualizar Noticias'}
           </Button>
-        </div>
-      </div>
+        }
+      />
 
       {/* Executive AI Briefing */}
       <div id="news-brief-section">
