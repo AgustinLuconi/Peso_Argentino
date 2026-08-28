@@ -13,7 +13,6 @@ import {
   Layers,
 } from 'lucide-react';
 import { clsx } from 'clsx';
-import { SolDeMayo } from '../components/SolDeMayo';
 
 export type NavigationFeatureId =
   | 'dashboard'
@@ -179,7 +178,11 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
           {/* Mobile Header with Close Button */}
           <div className="flex items-center justify-between lg:hidden border-b border-surface-container-highest dark:border-[#1E2638] pb-3">
             <div className="flex items-center gap-2">
-              <SolDeMayo size={24} />
+              <img
+                src="/favicon.svg"
+                alt="Sol de Mayo"
+                className="w-6 h-6 object-contain"
+              />
               <span className="font-sans font-black text-base text-slate-900 dark:text-white uppercase">
                 PESO ARGENTINO
               </span>

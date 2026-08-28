@@ -2,7 +2,6 @@ import React from 'react';
 import { Search, RefreshCw, Moon, Sun, ArrowRightLeft, Menu, Sparkles } from 'lucide-react';
 import { Button } from '../components/Button';
 import { Badge } from '../components/Badge';
-import { SolDeMayo } from '../components/SolDeMayo';
 import { useApp } from '@app/providers/AppContext';
 
 export interface NavbarProps {
@@ -43,8 +42,12 @@ export const Navbar: React.FC<NavbarProps> = ({
           </button>
 
           <div className="flex items-center gap-2 sm:gap-2.5">
-            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-amber-500/10 dark:bg-[#131822] border border-amber-500/40 flex items-center justify-center shadow-soft hover:shadow-gold shrink-0 transition-transform duration-200 hover:scale-105">
-              <SolDeMayo size={26} />
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl overflow-hidden flex items-center justify-center shadow-soft hover:scale-105 transition-transform duration-200 shrink-0">
+              <img
+                src="/favicon.svg"
+                alt="Sol de Mayo"
+                className="w-full h-full object-contain"
+              />
             </div>
             <div className="flex flex-col">
               <div className="flex items-center gap-1.5 sm:gap-2">
