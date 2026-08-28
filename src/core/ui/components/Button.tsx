@@ -3,7 +3,7 @@ import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'gold' | 'outline' | 'ghost' | 'danger';
+  variant?: 'primary' | 'secondary' | 'gold' | 'emerald' | 'cyan' | 'outline' | 'ghost' | 'danger';
   size?: 'sm' | 'md' | 'lg';
   icon?: React.ReactNode;
   loading?: boolean;
@@ -20,7 +20,7 @@ export const Button: React.FC<ButtonProps> = ({
   ...props
 }) => {
   const baseStyles =
-    'inline-flex items-center justify-center font-sans font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gold/50 disabled:opacity-50 disabled:cursor-not-allowed select-none rounded-lg sm:rounded-xl active:scale-[0.98]';
+    'inline-flex items-center justify-center font-sans font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 disabled:opacity-50 disabled:cursor-not-allowed select-none rounded-lg sm:rounded-xl active:scale-[0.98]';
 
   const sizeStyles = {
     sm: 'px-3 py-1.5 text-xs gap-1.5',
@@ -30,17 +30,21 @@ export const Button: React.FC<ButtonProps> = ({
 
   const variantStyles = {
     primary:
-      'bg-primary text-white hover:bg-primary-container border border-primary/20 shadow-sm hover:shadow-md hover:-translate-y-0.5',
+      'bg-slate-900 dark:bg-emerald-500 text-white dark:text-slate-950 font-bold hover:bg-slate-800 dark:hover:bg-emerald-400 border border-transparent shadow-sm hover:shadow-emerald-glow hover:-translate-y-0.5',
     secondary:
-      'bg-surface-container text-on-surface hover:bg-surface-container-high border border-surface-container-highest hover:-translate-y-0.5',
+      'bg-surface-container dark:bg-[#131822] text-on-surface dark:text-slate-200 hover:bg-surface-container-high dark:hover:bg-[#1B2230] border border-surface-container-highest dark:border-[#1E2638] hover:-translate-y-0.5',
+    emerald:
+      'bg-emerald-500 text-slate-950 font-bold hover:bg-emerald-400 border border-emerald-600/30 shadow-sm hover:shadow-emerald-glow hover:-translate-y-0.5',
     gold:
-      'bg-gold text-primary font-bold hover:bg-[#d4b06a] border border-gold-dark/20 shadow-sm hover:shadow-gold-glow hover:-translate-y-0.5',
+      'bg-emerald-500 text-slate-950 font-bold hover:bg-emerald-400 border border-emerald-600/30 shadow-sm hover:shadow-emerald-glow hover:-translate-y-0.5',
+    cyan:
+      'bg-cyan-500 text-slate-950 font-bold hover:bg-cyan-400 border border-cyan-600/30 shadow-sm hover:shadow-cyan-glow hover:-translate-y-0.5',
     outline:
-      'bg-transparent border border-surface-container-highest hover:border-gold hover:text-primary text-on-surface-variant hover:bg-surface-container-low hover:-translate-y-0.5',
+      'bg-transparent border border-surface-container-highest dark:border-[#1E2638] hover:border-emerald-500 hover:text-emerald-500 text-on-surface-variant dark:text-slate-300 hover:bg-emerald-500/5 hover:-translate-y-0.5',
     ghost:
-      'bg-transparent hover:bg-surface-container-low text-on-surface-variant hover:text-primary',
+      'bg-transparent hover:bg-surface-container-low dark:hover:bg-white/5 text-on-surface-variant dark:text-slate-300 hover:text-emerald-500',
     danger:
-      'bg-bearish-red text-white hover:bg-red-800 border border-red-900/20 hover:-translate-y-0.5',
+      'bg-rose-600 text-white hover:bg-rose-700 border border-rose-900/20 hover:-translate-y-0.5 shadow-sm',
   };
 
   return (

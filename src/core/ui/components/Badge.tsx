@@ -3,7 +3,7 @@ import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
-  variant?: 'gold' | 'bullish' | 'bearish' | 'neutral' | 'navy' | 'outline' | 'warning';
+  variant?: 'gold' | 'bullish' | 'bearish' | 'neutral' | 'navy' | 'outline' | 'warning' | 'emerald' | 'cyan';
   size?: 'sm' | 'md';
   children: React.ReactNode;
 }
@@ -24,13 +24,15 @@ export const Badge: React.FC<BadgeProps> = ({
   };
 
   const variantStyles = {
-    gold: 'bg-champagne-light/70 text-secondary border border-gold/40 shadow-xs',
-    bullish: 'bg-teal-50 text-bullish-green border border-teal-200/60 shadow-xs',
-    bearish: 'bg-red-50 text-bearish-red border border-red-200/60 shadow-xs',
-    warning: 'bg-amber-50 text-amber-800 border border-amber-200/60 shadow-xs',
-    neutral: 'bg-surface-container text-on-surface-variant border border-surface-container-highest',
-    navy: 'bg-primary text-gold border border-gold/30 shadow-xs',
-    outline: 'bg-transparent text-on-surface border border-surface-container-highest',
+    emerald: 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 shadow-xs',
+    gold: 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 shadow-xs',
+    cyan: 'bg-cyan-500/15 text-cyan-600 dark:text-cyan-400 border border-cyan-500/30 shadow-xs',
+    bullish: 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 shadow-xs',
+    bearish: 'bg-rose-500/15 text-rose-600 dark:text-rose-400 border border-rose-500/30 shadow-xs',
+    warning: 'bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30 shadow-xs',
+    neutral: 'bg-surface-container text-on-surface-variant border border-surface-container-highest dark:bg-[#131822] dark:text-slate-300 dark:border-[#1E2638]',
+    navy: 'bg-slate-900 dark:bg-[#131822] text-emerald-400 border border-emerald-500/30 shadow-xs',
+    outline: 'bg-transparent text-on-surface border border-surface-container-highest dark:border-[#1E2638] dark:text-slate-200',
   };
 
   return (

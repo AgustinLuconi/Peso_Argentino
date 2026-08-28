@@ -185,9 +185,8 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
               <X size={18} />
             </button>
           </div>
-
           <div>
-            <div className="px-3 pb-2 font-eyebrow text-outline dark:text-slate-300 font-bold tracking-wider">
+            <div className="px-3 pb-2 font-eyebrow text-outline dark:text-slate-400 font-bold tracking-wider">
               Módulos Institucionales
             </div>
 
@@ -203,16 +202,16 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
                       className={clsx(
                         'w-full text-left p-2.5 sm:p-3 rounded-xl transition-all duration-200 flex items-start gap-2.5 sm:gap-3 group relative border select-none',
                         isActive
-                          ? 'bg-primary text-white border-primary shadow-md scale-[1.02] stroke-of-value'
-                          : 'bg-white dark:bg-[#0c1730] hover:bg-surface-container-low dark:hover:bg-[#101e3d] text-on-surface dark:text-slate-100 border-transparent hover:border-surface-container-highest dark:hover:border-[#1a2744] hover:translate-x-1'
+                          ? 'bg-slate-900 dark:bg-[#131822] text-white dark:text-emerald-400 border-slate-800 dark:border-emerald-500/40 shadow-emerald-glow scale-[1.02] stroke-of-value'
+                          : 'bg-white dark:bg-[#0F141C] hover:bg-surface-container-low dark:hover:bg-[#161B26] text-on-surface dark:text-slate-100 border-transparent hover:border-surface-container-highest dark:hover:border-[#1E2638] hover:translate-x-1'
                       )}
                     >
                       <span
                         className={clsx(
                           'p-2 rounded-lg shrink-0 transition-colors',
                           isActive
-                            ? 'bg-primary-container text-gold'
-                            : 'bg-surface-container dark:bg-[#14244a] text-on-surface-variant dark:text-slate-300 group-hover:text-primary dark:group-hover:text-gold'
+                            ? 'bg-emerald-500/20 text-emerald-400'
+                            : 'bg-surface-container dark:bg-[#161B26] text-on-surface-variant dark:text-slate-300 group-hover:text-emerald-500 dark:group-hover:text-emerald-400'
                         )}
                       >
                         {item.icon}
@@ -220,16 +219,16 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
 
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between gap-1">
-                          <span className="font-sans font-bold text-xs 2xl:text-sm truncate text-primary dark:text-slate-100">
+                          <span className="font-sans font-bold text-xs 2xl:text-sm truncate text-slate-900 dark:text-slate-100">
                             {item.label}
                           </span>
                           {item.badge && (
                             <span
                               className={clsx(
-                                'text-[10px] font-sans font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider whitespace-nowrap inline-flex items-center justify-center shrink-0 leading-tight',
+                                'text-[10px] font-sans font-bold px-2 py-0.5 rounded-full uppercase tracking-wider whitespace-nowrap inline-flex items-center justify-center shrink-0 leading-tight',
                                 isActive
-                                  ? 'bg-gold text-primary shadow-xs'
-                                  : 'bg-surface-container dark:bg-[#14244a] text-on-surface-variant dark:text-slate-300 border dark:border-[#1a2744]'
+                                  ? 'bg-emerald-500 text-slate-950 shadow-xs'
+                                  : 'bg-surface-container dark:bg-[#161B26] text-on-surface-variant dark:text-slate-300 border dark:border-[#1E2638]'
                               )}
                             >
                               {item.badge}
@@ -239,19 +238,19 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
                         <p
                           className={clsx(
                             'text-[11px] 2xl:text-xs font-sans truncate mt-0.5',
-                            isActive ? 'text-slate-300' : 'text-on-surface-variant dark:text-slate-400'
+                            isActive ? 'text-slate-300 dark:text-emerald-300/80' : 'text-on-surface-variant dark:text-slate-400'
                           )}
                         >
                           {item.sublabel}
                         </p>
                       </div>
 
-                      <div className="shrink-0 self-center text-outline-variant dark:text-slate-400 group-hover:text-primary dark:group-hover:text-slate-100 transition-transform duration-200">
+                      <div className="shrink-0 self-center text-outline-variant dark:text-slate-400 group-hover:text-emerald-500 dark:group-hover:text-slate-100 transition-transform duration-200">
                         <ChevronDown
                           size={14}
                           className={clsx(
                             'transition-transform duration-200',
-                            isMenuOpen ? 'rotate-180 text-gold' : ''
+                            isMenuOpen ? 'rotate-180 text-emerald-400' : ''
                           )}
                         />
                       </div>
@@ -268,17 +267,19 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
                               key={sub.id}
                               onClick={() => handleSubItemClick(item.id, sub.id)}
                               className={clsx(
-                                'w-full text-left px-2.5 py-1.5 rounded-lg text-xs font-sans flex items-center gap-2 transition-all',
+                                'w-full text-left py-1.5 px-3 rounded-lg text-xs font-sans transition-all duration-150 flex items-center gap-2 group',
                                 isSubActive
-                                  ? 'bg-primary-container/30 dark:bg-gold/15 text-primary dark:text-gold font-bold shadow-sm'
-                                  : 'text-on-surface-variant dark:text-slate-300 hover:text-primary dark:hover:text-white hover:bg-surface-container-low dark:hover:bg-[#101e3d]'
+                                  ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 font-bold border-l-2 border-emerald-500'
+                                  : 'text-on-surface-variant dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-300 hover:bg-surface-container dark:hover:bg-[#161B26]'
                               )}
                             >
                               <CircleDot
                                 size={10}
                                 className={clsx(
-                                  'shrink-0',
-                                  isSubActive ? 'text-gold scale-125' : 'text-outline dark:text-slate-400'
+                                  'shrink-0 transition-colors',
+                                  isSubActive
+                                    ? 'text-emerald-500 fill-emerald-500'
+                                    : 'text-outline dark:text-slate-500 group-hover:text-emerald-400'
                                 )}
                               />
                               <span className="truncate">{sub.label}</span>
@@ -294,9 +295,9 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
           </div>
 
           {/* Quick Institutional Summary Card in Sidebar */}
-          <div className="p-3.5 bg-surface-container-low dark:bg-[#0c1730] border border-surface-container-highest dark:border-[#1a2744] rounded-xl shadow-xs">
-            <div className="flex items-center gap-1.5 text-primary dark:text-gold mb-1">
-              <Shield size={14} className="text-gold" />
+          <div className="p-3.5 bg-surface-container-low dark:bg-[#0F141C] border border-surface-container-highest dark:border-[#1E2638] rounded-xl shadow-xs">
+            <div className="flex items-center gap-1.5 text-slate-900 dark:text-emerald-400 mb-1">
+              <Shield size={14} className="text-emerald-500" />
               <span className="font-sans font-bold text-xs uppercase tracking-wide">
                 Régimen Monetario
               </span>
@@ -304,18 +305,18 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
             <p className="text-[11px] font-sans text-on-surface-variant dark:text-slate-300 leading-relaxed">
               Fase 2 de Estabilización: Ancla fiscal, saneamiento del balance BCRA y flotación administrada.
             </p>
-            <div className="mt-2 pt-2 border-t border-surface-container dark:border-[#1a2744] flex items-center justify-between text-[10px] font-sans text-outline dark:text-slate-400">
+            <div className="mt-2 pt-2 border-t border-surface-container dark:border-[#1E2638] flex items-center justify-between text-[10px] font-sans text-outline dark:text-slate-400">
               <span>Superávit Financiero</span>
-              <span className="text-bullish-green dark:text-teal-400 font-bold">+0,4% PBI</span>
+              <span className="text-emerald-600 dark:text-emerald-400 font-bold">+0,4% PBI</span>
             </div>
           </div>
         </div>
 
         {/* Sidebar Footer */}
-        <div className="p-3 sm:p-4 border-t border-surface-container-highest dark:border-[#1a2744] bg-surface-container-lowest dark:bg-[#050b18] lg:rounded-b-2xl">
+        <div className="p-3 sm:p-4 border-t border-surface-container-highest dark:border-[#1E2638] bg-surface-container-lowest dark:bg-[#070A0E] lg:rounded-b-2xl">
           <div className="text-[11px] font-sans text-on-surface-variant dark:text-slate-400 flex items-center justify-between">
-            <span className="font-semibold text-primary dark:text-slate-200">Peso Argentino v3.5</span>
-            <span className="font-sans text-outline dark:text-slate-400 font-semibold">2026</span>
+            <span className="font-semibold text-slate-900 dark:text-slate-200">Peso Argentino Terminal</span>
+            <span className="font-mono text-emerald-500 text-[10px] font-bold">ONLINE ●</span>
           </div>
         </div>
       </aside>
