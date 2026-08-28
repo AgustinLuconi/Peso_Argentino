@@ -1,5 +1,13 @@
 export type CurrencyCode = 'ARS' | 'USD' | 'EUR' | 'BRL';
 
+export interface MoneyFormatOptions {
+  decimals?: number;
+  showCurrency?: boolean;
+  compact?: boolean;
+  scaleDetail?: boolean; // Muestra 'Billones', 'Millones', 'Miles' de forma explícita
+  notation?: 'standard' | 'compact' | 'extended';
+}
+
 export class Money {
   readonly amount: number;
   readonly currency: CurrencyCode;
@@ -13,12 +21,12 @@ export class Money {
     return new Money(amount, currency);
   }
 
-  static formatArs(amount: number): string {
-    return Money.of(amount, 'ARS').format();
+  static formatArs(amount: number, options?: MoneyFormatOptions): string {
+    return Money.of(amount, 'ARS').format(options);
   }
 
-  static formatUsd(amount: number): string {
-    return Money.of(amount, 'USD').format();
+  static formatUsd(amount: number, options?: MoneyFormatOptions): string {
+    return Money.of(amount, 'USD').format(options);
   }
 
   static fromString(val: string, currency: CurrencyCode = 'ARS'): Money {
@@ -27,29 +35,113 @@ export class Money {
     return new Money(isNaN(num) ? 0 : num, currency);
   }
 
-  format(options?: { decimals?: number; showCurrency?: boolean; compact?: boolean }): string {
-    const decimals = options?.decimals ?? (this.currency === 'ARS' ? 2 : 2);
+  /**
+   * Formatea el monto con especificación clara de escala:
+   * - Billones (10^12): ej. "$ 25,4 Billones"
+   * - Miles de Millones (10^9): ej. "US$ 14.500 Millones"
+   * - Millones (10^6): ej. "US$ 30.400 M"
+   * - Miles (10^3): ej. "$ 500 Mil"
+   */
+  static formatScale(amount: number, currency: CurrencyCode = 'ARS'): {
+    formatted: string;
+    scaleLabel: 'Billones' | 'Miles de Millones' | 'Millones' | 'Miles' | 'Unidades';
+    compactValue: string;
+    fullFormatted: string;
+  } {
+    const abs = Math.abs(amount);
+    const symbol = currency === 'USD' ? 'US$' : currency === 'EUR' ? '€' : '$';
+
+    const fullFormatted = `${symbol} ${amount.toLocaleString('es-AR', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })}`;
+
+    if (abs >= 1_000_000_000_000) {
+      // 1 Billón en español = 10^12 (Trillion en inglés)
+      const val = amount / 1_000_000_000_000;
+      const compactVal = `${val.toLocaleString('es-AR', { minimumFractionDigits: 1, maximumFractionDigits: 2 })} Billones`;
+      return {
+        formatted: `${symbol} ${compactVal}`,
+        scaleLabel: 'Billones',
+        compactValue: compactVal,
+        fullFormatted,
+      };
+    }
+
+    if (abs >= 1_000_000_000) {
+      // 1 Mil Millones en español = 10^9 (Billion en inglés)
+      const val = amount / 1_000_000_000;
+      const compactVal = `${val.toLocaleString('es-AR', { minimumFractionDigits: 1, maximumFractionDigits: 2 })} Mil M`;
+      return {
+        formatted: `${symbol} ${compactVal}`,
+        scaleLabel: 'Miles de Millones',
+        compactValue: compactVal,
+        fullFormatted,
+      };
+    }
+
+    if (abs >= 1_000_000) {
+      // Millones = 10^6
+      const val = amount / 1_000_000;
+      const compactVal = `${val.toLocaleString('es-AR', { minimumFractionDigits: 1, maximumFractionDigits: 2 })} M`;
+      return {
+        formatted: `${symbol} ${compactVal}`,
+        scaleLabel: 'Millones',
+        compactValue: compactVal,
+        fullFormatted,
+      };
+    }
+
+    if (abs >= 1_000) {
+      // Miles = 10^3
+      const val = amount / 1_000;
+      const compactVal = `${val.toLocaleString('es-AR', { minimumFractionDigits: 1, maximumFractionDigits: 2 })} Mil`;
+      return {
+        formatted: `${symbol} ${compactVal}`,
+        scaleLabel: 'Miles',
+        compactValue: compactVal,
+        fullFormatted,
+      };
+    }
+
+    return {
+      formatted: fullFormatted,
+      scaleLabel: 'Unidades',
+      compactValue: `${amount.toLocaleString('es-AR')}`,
+      fullFormatted,
+    };
+  }
+
+  /**
+   * Conversión bidireccional entre Pesos y Dólares con tasa de cambio
+   */
+  static convert(amount: number, from: CurrencyCode, to: CurrencyCode, exchangeRate: number): Money {
+    if (from === to || exchangeRate <= 0) return new Money(amount, to);
+
+    if (from === 'ARS' && to === 'USD') {
+      return new Money(amount / exchangeRate, 'USD');
+    }
+    if (from === 'USD' && to === 'ARS') {
+      return new Money(amount * exchangeRate, 'ARS');
+    }
+
+    return new Money(amount, to);
+  }
+
+  format(options?: MoneyFormatOptions): string {
+    const decimals = options?.decimals ?? 2;
     const showCurrency = options?.showCurrency ?? true;
     const compact = options?.compact ?? false;
 
-    let formattedNumber: string;
-
-    if (compact && Math.abs(this.amount) >= 1_000_000_000_000) {
-      formattedNumber = (this.amount / 1_000_000_000_000).toLocaleString('es-AR', {
-        maximumFractionDigits: 1,
-        minimumFractionDigits: 1,
-      }) + ' B'; // Billones (trillions)
-    } else if (compact && Math.abs(this.amount) >= 1_000_000) {
-      formattedNumber = (this.amount / 1_000_000).toLocaleString('es-AR', {
-        maximumFractionDigits: 1,
-        minimumFractionDigits: 1,
-      }) + ' M'; // Millones
-    } else {
-      formattedNumber = this.amount.toLocaleString('es-AR', {
-        minimumFractionDigits: decimals,
-        maximumFractionDigits: decimals,
-      });
+    if (compact || options?.scaleDetail) {
+      const scale = Money.formatScale(this.amount, this.currency);
+      return showCurrency ? scale.formatted : scale.compactValue;
     }
+
+    const formattedNumber = this.amount.toLocaleString('es-AR', {
+      minimumFractionDigits: decimals,
+      maximumFractionDigits: decimals,
+    });
 
     if (!showCurrency) return formattedNumber;
 

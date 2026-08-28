@@ -4,10 +4,13 @@ import { Card } from '@core/ui/components/Card';
 import { Tabs } from '@core/ui/components/Tabs';
 import { Badge } from '@core/ui/components/Badge';
 import { LineChart, TrendingUp, TrendingDown, Calendar } from 'lucide-react';
+import { useApp } from '@app/providers/AppContext';
+import { Money } from '@core/domain/Money';
 
 export const MacroSeriesComparator: React.FC<{ series: MacroComparativeData }> = ({
   series,
 }) => {
+  const { displayCurrency, referenceUsdRate } = useApp();
   const [activeSeriesKey, setActiveSeriesKey] = useState<
     'inflation' | 'reserves' | 'monetaryBase' | 'tradeBalance'
   >('inflation');
@@ -15,9 +18,9 @@ export const MacroSeriesComparator: React.FC<{ series: MacroComparativeData }> =
 
   const tabs = [
     { id: 'inflation', label: 'Inflación Mensual IPC (%)' },
-    { id: 'reserves', label: 'Reservas BCRA (USD M)' },
-    { id: 'monetaryBase', label: 'Base Monetaria ($ B)' },
-    { id: 'tradeBalance', label: 'Superávit Comercial (USD M)' },
+    { id: 'reserves', label: displayCurrency === 'ARS' ? 'Reservas ($ Billones)' : 'Reservas BCRA (USD M)' },
+    { id: 'monetaryBase', label: displayCurrency === 'USD' ? 'Base Monetaria (USD M)' : 'Base Monetaria ($ Billones)' },
+    { id: 'tradeBalance', label: displayCurrency === 'ARS' ? 'Balanza ($ Billones)' : 'Superávit Comercial (USD M)' },
   ];
 
   const currentSeries =
@@ -95,12 +98,24 @@ export const MacroSeriesComparator: React.FC<{ series: MacroComparativeData }> =
       return `${val.toFixed(1)}%`;
     }
     if (activeSeriesKey === 'monetaryBase') {
-      return `$ ${val.toLocaleString('es-AR', { minimumFractionDigits: 1, maximumFractionDigits: 2 })} Billones`;
+      if (displayCurrency === 'USD') {
+        const usdVal = (val * 1_000_000_000_000) / referenceUsdRate / 1_000_000;
+        return `US$ ${usdVal.toLocaleString('es-AR', { maximumFractionDigits: 0 })} Millones`;
+      }
+      return `$ ${val.toLocaleString('es-AR', { minimumFractionDigits: 1, maximumFractionDigits: 2 })} Billones (10¹² ARS)`;
     }
     if (activeSeriesKey === 'reserves') {
-      return `US$ ${val.toLocaleString('es-AR')} M`;
+      if (displayCurrency === 'ARS') {
+        const arsVal = (val * 1_000_000 * referenceUsdRate) / 1_000_000_000_000;
+        return `$ ${arsVal.toLocaleString('es-AR', { minimumFractionDigits: 1, maximumFractionDigits: 2 })} Billones`;
+      }
+      return `US$ ${val.toLocaleString('es-AR')} Millones (USD)`;
     }
-    return `US$ +${val.toLocaleString('es-AR')} M`;
+    if (displayCurrency === 'ARS') {
+      const arsVal = (val * 1_000_000 * referenceUsdRate) / 1_000_000_000_000;
+      return `$ +${arsVal.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} Billones`;
+    }
+    return `US$ +${val.toLocaleString('es-AR')} Millones (USD)`;
   };
 
   return (

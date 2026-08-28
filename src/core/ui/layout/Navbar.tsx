@@ -19,7 +19,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   activeFeatureTitle = 'Dashboard Principal',
   onSearchClick,
 }) => {
-  const { theme, toggleTheme, setIsConverterOpen, setIsAiModalOpen } = useApp();
+  const { theme, toggleTheme, setIsConverterOpen, setIsAiModalOpen, displayCurrency, setDisplayCurrency } = useApp();
 
   const currentDate = new Date().toLocaleDateString('es-AR', {
     weekday: 'short',
@@ -73,8 +73,33 @@ export const Navbar: React.FC<NavbarProps> = ({
           </span>
         </div>
 
-        {/* Right: Copilot AI, Converter, Search, Theme, Refresh */}
+        {/* Right: Currency Toggle, Copilot AI, Converter, Search, Theme, Refresh */}
         <div className="flex items-center gap-1.5 sm:gap-2 2xl:gap-3">
+          {/* Global Currency Toggle (ARS / USD) */}
+          <div className="flex items-center p-0.5 bg-surface-container-low dark:bg-[#0c1730] border border-surface-container-highest dark:border-[#1a2744] rounded-xl shadow-xs">
+            <button
+              onClick={() => setDisplayCurrency('ARS')}
+              className={`px-2 sm:px-2.5 py-1 text-[11px] font-sans font-bold rounded-lg transition-all ${
+                displayCurrency === 'ARS'
+                  ? 'bg-gold text-slate-950 shadow-xs scale-105 font-extrabold'
+                  : 'text-on-surface-variant hover:text-primary dark:hover:text-white'
+              }`}
+              title="Visualizar montos y estadísticas en Pesos Argentinos ($ ARS - Atajo: ⌘U)"
+            >
+              🇦🇷 ARS
+            </button>
+            <button
+              onClick={() => setDisplayCurrency('USD')}
+              className={`px-2 sm:px-2.5 py-1 text-[11px] font-sans font-bold rounded-lg transition-all ${
+                displayCurrency === 'USD'
+                  ? 'bg-blue-600 text-white shadow-xs scale-105 font-extrabold'
+                  : 'text-on-surface-variant hover:text-primary dark:hover:text-white'
+              }`}
+              title="Visualizar montos y estadísticas en Dólares (US$ USD - Atajo: ⌘U)"
+            >
+              🇺🇸 USD
+            </button>
+          </div>
           {/* AI Copilot Button (100% Free) */}
           <Button
             variant="primary"
