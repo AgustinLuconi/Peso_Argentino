@@ -12,7 +12,7 @@ export const NewsIntelligenceView: React.FC<{
   activeSubItem?: string | null;
 }> = ({ activeSubItem }) => {
   const [data, setData] = useState<NewsIntelligenceDto | null>(null);
-  const [filterScope, setFilterScope] = useState<'all' | 'nacional' | 'internacional'>('all');
+  const [filterRegion, setFilterRegion] = useState<string>('all');
   const [filterImpact, setFilterImpact] = useState<string>('all');
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -55,7 +55,7 @@ export const NewsIntelligenceView: React.FC<{
         <div className="flex flex-col items-center gap-3">
           <RefreshCw className="animate-spin text-primary dark:text-gold" size={28} />
           <span className="font-eyebrow text-on-surface">
-            Sintetizando cables de noticias nacionales e internacionales...
+            Sintetizando edición diaria de noticias locales y globales...
           </span>
         </div>
       </div>
@@ -66,23 +66,48 @@ export const NewsIntelligenceView: React.FC<{
 
   const filteredNews = allNewsCombined.filter((item) => {
     const matchesImpact = filterImpact === 'all' || item.impactLevel === filterImpact;
-    const matchesScope = filterScope === 'all' || item.scope === filterScope;
-    return matchesImpact && matchesScope;
+    let matchesRegion = true;
+    if (filterRegion === 'nacional') {
+      matchesRegion = item.scope === 'nacional';
+    } else if (filterRegion === 'usa') {
+      matchesRegion = item.region?.includes('Estados Unidos') || item.source.includes('Fed') || item.source.includes('WSJ');
+    } else if (filterRegion === 'global') {
+      matchesRegion = item.scope === 'internacional' && !item.region?.includes('Estados Unidos');
+    }
+    return matchesImpact && matchesRegion;
   });
 
   const countNacionales = allNewsCombined.filter((n) => n.scope === 'nacional').length;
-  const countInternacionales = allNewsCombined.filter((n) => n.scope === 'internacional').length;
+  const countUSA = allNewsCombined.filter((n) => n.region?.includes('Estados Unidos') || n.source.includes('Fed') || n.source.includes('WSJ')).length;
+  const countGlobal = allNewsCombined.filter((n) => n.scope === 'internacional' && !n.region?.includes('Estados Unidos')).length;
+
+  const todayFormatted = new Date().toLocaleDateString('es-AR', {
+    timeZone: 'America/Argentina/Buenos_Aires',
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
 
   return (
     <div className="space-y-6 animate-page-enter">
       {/* Header Banner */}
       <div className="bg-white dark:bg-[#071228] border border-surface-container-highest dark:border-[#1a2744] p-5 sm:p-6 rounded-2xl shadow-tactile stroke-of-value card-interactive flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
+          <div className="flex items-center gap-2 mb-2 flex-wrap">
+            <span className="px-2.5 py-0.5 text-[11px] font-mono font-bold bg-primary/10 dark:bg-gold/15 text-primary dark:text-gold border border-primary/20 dark:border-gold/30 rounded-full flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              EDICIÓN DEL DÍA: {todayFormatted.toUpperCase()}
+            </span>
+            <span className="text-[11px] font-sans text-on-surface-variant dark:text-slate-400">
+              • Rotación automática a medianoche
+            </span>
+          </div>
           <h1 className="font-h1 mb-1 text-primary dark:text-slate-100">
             Intelligence Feed & Noticias Financieras
           </h1>
           <p className="font-subtitle max-w-3xl text-on-surface-variant dark:text-slate-300">
-            Monitoreo en tiempo real de fuentes nacionales (Ámbito, Cronista, Infobae, BCRA) e internacionales (Bloomberg, WSJ, Financial Times, Reuters) con impacto sobre bonos, tipo de cambio y mercados.
+            Monitoreo en tiempo real de variables locales (BCRA, inflación, tasas) y globales de Estados Unidos (Tasas Fed, S&P 500, Petróleo WTI, Soja) que impactan directamente sobre bonos y acciones argentinas.
           </p>
         </div>
 
@@ -111,14 +136,15 @@ export const NewsIntelligenceView: React.FC<{
             {[
               { id: 'all', label: `Todas (${allNewsCombined.length})` },
               { id: 'nacional', label: `🇦🇷 Locales / BCRA (${countNacionales})` },
-              { id: 'internacional', label: `🌐 Wall Street & Global (${countInternacionales})` },
+              { id: 'usa', label: `🇺🇸 Estados Unidos & Fed (${countUSA})` },
+              { id: 'global', label: `🌐 Global & Commodities (${countGlobal})` },
             ].map((s) => (
               <button
                 key={s.id}
-                onClick={() => setFilterScope(s.id as any)}
+                onClick={() => setFilterRegion(s.id)}
                 className={`px-3 py-1.5 text-xs font-sans font-bold rounded-xl transition-all duration-200 ${
-                  filterScope === s.id
-                    ? 'bg-gold text-slate-950 shadow-md font-extrabold'
+                  filterRegion === s.id
+                    ? 'bg-gold text-slate-950 shadow-md font-extrabold scale-105'
                     : 'bg-surface-container-low dark:bg-[#0c1936] text-on-surface hover:bg-surface-container border border-surface-container-highest dark:border-[#1a2744]'
                 }`}
               >

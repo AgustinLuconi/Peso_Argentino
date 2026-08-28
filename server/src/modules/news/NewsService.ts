@@ -6,7 +6,9 @@ export interface NewsItemDto {
   summary: string;
   source: string;
   scope: 'nacional' | 'internacional';
+  region?: 'Argentina 🇦🇷' | 'Estados Unidos 🇺🇸' | 'Global / Wall Street 🌐';
   publishedAt: string;
+  editionDate: string; // Fecha de la edición del día 'YYYY-MM-DD'
   impactLevel: 'critico' | 'alto' | 'moderado';
   affectedAssets: string[];
   keyTakeaways: string[];
@@ -16,22 +18,60 @@ export interface NewsItemDto {
   marketConsensus?: string;
 }
 
-export class NewsService {
-  private static readonly TTL_MS = 15 * 60 * 1000; // 15 minutos en memoria RAM (temporal, sin saturar SQLite)
+export interface DailyNewsFeedResponse {
+  editionDate: string;
+  editionFormatted: string;
+  totalNews: number;
+  nationalCount: number;
+  internationalCount: number;
+  news: NewsItemDto[];
+}
 
-  static async getNewsFeed(): Promise<NewsItemDto[]> {
+export class NewsService {
+  // Retorna la fecha actual en zona horaria de Argentina (YYYY-MM-DD)
+  private static getTodayDateString(): string {
+    const d = new Date();
+    // Ajustar a hora Argentina (UTC-3)
+    const arDate = new Date(d.toLocaleString('en-US', { timeZone: 'America/Argentina/Buenos_Aires' }));
+    const yyyy = arDate.getFullYear();
+    const mm = String(arDate.getMonth() + 1).padStart(2, '0');
+    const dd = String(arDate.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  }
+
+  private static getTodayFormatted(): string {
+    return new Date().toLocaleDateString('es-AR', {
+      timeZone: 'America/Argentina/Buenos_Aires',
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+  }
+
+  static async getNewsFeed(): Promise<DailyNewsFeedResponse> {
+    const today = this.getTodayDateString();
+    const cacheKey = `news_daily_edition_${today}`;
+
+    // La edición diaria queda en memoria RAM durante toda la jornada y se auto-renueva a medianoche
     return globalCache.getOrSet(
-      'news_feed_v1_multisource',
+      cacheKey,
       async () => {
-        return [
-          // --- FUENTES NACIONALES 🇦🇷 ---
+        const editionFormatted = this.getTodayFormatted();
+
+        const newsList: NewsItemDto[] = [
+          // ==========================================
+          // 🇦🇷 1. FUENTES NACIONALES (Economía & BCRA)
+          // ==========================================
           {
-            id: 'news-nat-1',
+            id: `news-nat-1-${today}`,
             title: 'El BCRA profundiza la absorción de liquidez y consolida el ancla de tasas en LEFIs',
             summary: 'La migración hacia letras del Tesoro completó el saneamiento del balance y eliminó la emisión endógena por intereses de pasivos remunerados.',
             source: 'Ámbito Financiero / BCRA',
             scope: 'nacional',
-            publishedAt: 'Hace 15 min',
+            region: 'Argentina 🇦🇷',
+            publishedAt: 'Hace 20 min',
+            editionDate: today,
             impactLevel: 'critico',
             affectedAssets: ['LEFIs', 'Dólar CCL', 'TNA 32%'],
             keyTakeaways: [
@@ -45,12 +85,14 @@ export class NewsService {
             marketConsensus: 'Consenso: Continuidad en la compresión del riesgo país mientras se sostenga el superávit financiero.',
           },
           {
-            id: 'news-nat-2',
+            id: `news-nat-2-${today}`,
             title: 'La inflación mayorista (IPIM) desacelera al 1.8% y anticipa menor presión sobre precios al consumidor',
             summary: 'El relevamiento del INDEC mostró caídas en productos primarios e importados, reforzando la tendencia desinflacionaria de alta frecuencia.',
             source: 'Infobae Economía',
             scope: 'nacional',
-            publishedAt: 'Hace 45 min',
+            region: 'Argentina 🇦🇷',
+            publishedAt: 'Hace 50 min',
+            editionDate: today,
             impactLevel: 'alto',
             affectedAssets: ['Lecaps', 'Bonos CER', 'IPC INDEC'],
             keyTakeaways: [
@@ -64,12 +106,14 @@ export class NewsService {
             marketConsensus: 'Consenso: Rendimientos reales positivos en instrumentos a tasa fija capitalizables en pesos.',
           },
           {
-            id: 'news-nat-3',
-            title: 'Las compras de reservas del BCRA en el MULC superan la meta del trimestre',
+            id: `news-nat-3-${today}`,
+            title: 'Las compras de reservas del BCRA en el MULC superan la meta del trimestre tras récord del superávit comercial',
             summary: 'El superávit comercial energético y agrícola continúa aportando divisas genuinas al mercado oficial de cambios.',
             source: 'El Cronista Comercial',
             scope: 'nacional',
+            region: 'Argentina 🇦🇷',
             publishedAt: 'Hace 2 horas',
+            editionDate: today,
             impactLevel: 'alto',
             affectedAssets: ['AL30', 'GD30', 'Reservas USD'],
             keyTakeaways: [
@@ -83,12 +127,14 @@ export class NewsService {
             marketConsensus: 'Probabilidad de reingreso al mercado voluntario de crédito en 2025/2026.',
           },
           {
-            id: 'news-nat-4',
+            id: `news-nat-4-${today}`,
             title: 'Se formalizan las primeras solicitudes de grandes inversiones bajo el RIGI por más de US$ 30.000 millones',
             summary: 'Proyectos de gas natural licuado (GNL) en Río Negro y minería de cobre en San Juan ingresaron al comité evaluador ministerial.',
             source: 'Boletín Oficial / MECON',
             scope: 'nacional',
+            region: 'Argentina 🇦🇷',
             publishedAt: 'Hace 3 horas',
+            editionDate: today,
             impactLevel: 'alto',
             affectedAssets: ['YPF', 'PAMP', 'TXAR', 'TGS'],
             keyTakeaways: [
@@ -102,12 +148,14 @@ export class NewsService {
             marketConsensus: 'Impulso al crecimiento del PBI proyectado y demanda de acciones energéticas en BYMA/NYSE.',
           },
           {
-            id: 'news-nat-5',
-            title: 'El Tesoro capta más de $4 Billones en Lecaps y alarga el perfil de vencimientos a 2026',
-            summary: 'Fuerte demanda de bancos y fondos comunes de inversión por títulos de tasa fija convalidando tasas del 3.5% TEM a 3.7% TEM.',
+            id: `news-nat-5-${today}`,
+            title: 'El Tesoro capta más de $4 Billones en Lecaps y consolida la tasa fija en torno al 3.5% TEM',
+            summary: 'Fuerte demanda de bancos y fondos comunes de inversión por títulos de tasa fija convalidando alargamiento de vencimientos hacia 2026.',
             source: 'Ámbito Financiero',
             scope: 'nacional',
+            region: 'Argentina 🇦🇷',
             publishedAt: 'Hace 5 horas',
+            editionDate: today,
             impactLevel: 'moderado',
             affectedAssets: ['S31E5', 'S30Y5', 'T15D5', 'Curva Lecap'],
             keyTakeaways: [
@@ -121,105 +169,127 @@ export class NewsService {
             marketConsensus: 'Estrategia de carry trade institucional atractiva frente a la estabilidad del tipo de cambio financiero.',
           },
 
-          // --- FUENTES INTERNACIONALES & WALL STREET 🌐 ---
+          // =========================================================================
+          // 🌐 2. FUENTES INTERNACIONALES, ESTADOS UNIDOS & COMMODITIES GLOBALES
+          // =========================================================================
           {
-            id: 'news-int-1',
-            title: 'Wall Street Rebalances Toward Argentine Dollar Bonds as Country Risk Hits 5-Year Low',
-            summary: 'Global asset managers and emerging market debt funds increase exposure to AL30 and GD30 sovereign notes citing unprecedented fiscal surplus.',
-            source: 'Bloomberg Markets',
+            id: `news-int-1-${today}`,
+            title: 'La Reserva Federal (Fed) perfila un sendero de recortes de tasas y desata compras en activos emergentes',
+            summary: 'Jerome Powell y los miembros del FOMC señalaron que la moderación salarial y del empleo en EE.UU. justifican iniciar la relajación monetaria, debilitando al dólar global (DXY).',
+            source: 'Bloomberg / Federal Reserve',
             scope: 'internacional',
+            region: 'Estados Unidos 🇺🇸',
             publishedAt: 'Hace 30 min',
+            editionDate: today,
             impactLevel: 'critico',
-            affectedAssets: ['AL30D', 'GD30D', 'EMBI+ Arg (505 bps)'],
+            affectedAssets: ['Tasa Fed (5.25%)', 'US 10Y Yield', 'GGAL ADR', 'BMA ADR', 'AL30D'],
             keyTakeaways: [
-              'Riesgo país argentino perfora los 510 puntos básicos hacia mínimos desde 2019.',
-              'Paridades de bonos soberanos rebotan del 20% al 65%-68%.',
-              'Fondos institucionales de Nueva York y Londres incrementan ponderación en carteras EM.',
+              'Rendimiento del bono del Tesoro a 10 años cae por debajo de 3.85%.',
+              'El dólar global (DXY) retrocede, aliviando presiones cambiarias en la región.',
+              'Flujo masivo de capitales hacia títulos de deuda soberana de alto rendimiento (High Yield).',
             ],
             sentiment: 'bullish',
-            leadAnalysis: 'La estricta disciplina fiscal y la acumulación de reservas están transformando la percepción de solvencia crediticia internacional de Argentina.',
-            transmissionChannel: 'Canal de transmisión: Menor costo de capital internacional facilitará el financiamiento corporativo privado.',
-            marketConsensus: 'Consenso Wall Street: Rendimientos de los bonos Globales convergen hacia curvas soberanas de pares regionales (B+ / BB-).',
+            leadAnalysis: 'Un ciclo de relajación de la Fed reduce el costo de fondeo internacional y crea un "viento de cola" ideal para la deuda soberana y los bancos argentinos.',
+            transmissionChannel: 'Canal de transmisión: Menor tasa libre de riesgo en EE.UU. incentiva a fondos de Wall Street a aumentar ponderación en bonos Globales AL30/GD30 y ADRs bancarios (GGAL, BMA).',
+            marketConsensus: 'Consenso Wall Street: Aceleración en la compresión del riesgo país hacia niveles de acceso a mercados voluntarios.',
           },
           {
-            id: 'news-int-2',
-            title: 'Argentina Fiscal Discipline and Monetary Anchors Draw Scrutiny from Global Private Equity',
-            summary: 'Infrastructure and natural resource investors evaluate long-term capital allocation in Vaca Muerta shale gas and lithium mining ventures.',
-            source: 'The Wall Street Journal (WSJ)',
+            id: `news-int-2-${today}`,
+            title: 'El petróleo WTI y Brent repuntan por tensiones en Medio Oriente y potencian la rentabilidad de Vaca Muerta',
+            summary: 'El crudo supera los US$ 78 por barril en Nueva York ante riesgos de suministro global, beneficiando fuertemente el perfil exportador de las petroleras argentinas.',
+            source: 'The Wall Street Journal (WSJ) / CME Group',
             scope: 'internacional',
+            region: 'Global / Wall Street 🌐',
             publishedAt: 'Hace 1 hora',
+            editionDate: today,
             impactLevel: 'alto',
-            affectedAssets: ['YPF ADR', 'PAMP ADR', 'LITIO', 'VACA MUERTA'],
+            affectedAssets: ['Petróleo WTI (USD 78+)', 'YPF ADR', 'Vista Energy (VIST)', 'Pampa Energía (PAMP)'],
             keyTakeaways: [
-              'Compromiso fiscal inquebrantable como ancla macroeconómica primaria.',
-              'Desregulación del mercado energético impulsa contratos de exportación de crudo.',
-              'Creciente interés de fondos de infraestructura estadounidenses.',
+              'WTI avanza 2.4% y consolida soporte técnico.',
+              'Las exportaciones de crudo desde la cuenca neuquina alcanzan máximos históricos de 150.000 bpd.',
+              'Proyección de superávit de balanza comercial energética supera los US$ 5.000 millones.',
             ],
             sentiment: 'bullish',
-            leadAnalysis: 'La consolidación de un entorno pro-mercado y reglas claras de inversión mitigan el riesgo regulatorio histórico.',
-            transmissionChannel: 'Inversión Extranjera Directa (IED) sostenida refuerza la balanza de pagos a mediano plazo.',
-            marketConsensus: 'Consenso: Crecimiento exponencial proyectado en exportaciones de hidrocarburos hacia 2027.',
+            leadAnalysis: 'Los altos precios del petróleo internacional maximizan el margen de exportación de shale oil sin comprometer los precios internos estabilizados.',
+            transmissionChannel: 'Mayores ingresos por exportaciones generan liquidación genuina en el MULC e incrementan los múltiplos de valuación (EV/EBITDA) de YPF y Vista en Wall Street.',
+            marketConsensus: 'Consenso: Fuerte flujo de fondos hacia ADRs energéticos en el NYSE.',
           },
           {
-            id: 'news-int-3',
-            title: 'Argentina Trade Balance Expands on Surging Energy Surplus and Bumper Agricultural Harvest',
-            summary: 'Energy trade deficit has turned into a projected US$ 5.0 billion surplus for the full year, transforming the external liquidity profile.',
-            source: 'Financial Times (FT)',
+            id: `news-int-3-${today}`,
+            title: 'La soja y el maíz repuntan en la Bolsa de Chicago (CBOT) y mejoran la liquidación de divisas del agro',
+            summary: 'Compras estratégicas de fondos de cobertura y demanda de molienda en Asia impulsan las cotizaciones de granos y subproductos en el mercado de Chicago.',
+            source: 'Reuters Commodities / CBOT',
             scope: 'internacional',
+            region: 'Global / Wall Street 🌐',
+            publishedAt: 'Hace 2 horas',
+            editionDate: today,
+            impactLevel: 'alto',
+            affectedAssets: ['Soja Chicago CBOT', 'Liquidación CIARA-CEC', 'Reservas BCRA', 'Dólar Mayorista'],
+            keyTakeaways: [
+              'Contrato de soja en CBOT avanza hacia los US$ 385 / tonelada.',
+              'Harina y aceite de soja registran demanda sostenida en el sudeste asiático.',
+              'Mejora de US$ 800 millones en las estimaciones de exportaciones del complejo agroindustrial.',
+            ],
+            sentiment: 'bullish',
+            leadAnalysis: 'El rebote en Chicago incrementa el valor FOB de los embarques argentinos en los puertos del Gran Rosario (Up-River).',
+            transmissionChannel: 'Mayor liquidación de dólares por el esquema exportador 80/20 (MULC / CCL), fortaleciendo las reservas netas del BCRA.',
+            marketConsensus: 'Consenso: Mayor liquidez de divisas comerciales durante el trimestre.',
+          },
+          {
+            id: `news-int-4-${today}`,
+            title: 'El IPC de Estados Unidos confirma la desinflación y Wall Street anota máximos históricos en el S&P 500',
+            summary: 'La inflación interanual en EE.UU. se ubicó en línea con las expectativas del mercado, disipando temores de recesión y elevando el apetito por activos de riesgo.',
+            source: 'Financial Times (FT) / US BLS',
+            scope: 'internacional',
+            region: 'Estados Unidos 🇺🇸',
             publishedAt: 'Hace 4 horas',
-            impactLevel: 'alto',
-            affectedAssets: ['Balanza Comercial', 'Reservas BCRA', 'Dólar Mayorista'],
+            editionDate: today,
+            impactLevel: 'moderado',
+            affectedAssets: ['S&P 500', 'Nasdaq 100', 'S&P Merval', 'ADRs Argentinos'],
             keyTakeaways: [
-              'Inversión del déficit energético histórico a superávit neto de divisas.',
-              'Gasoducto y oleoductos operativos maximizan envíos al exterior.',
-              'Alivio estructural para la cuenta corriente cambiaria.',
+              'S&P 500 y Nasdaq operan en zona de máximos históricos.',
+              'Índice de volatilidad VIX retrocede a niveles de calma (14.5 pts).',
+              'El optimismo en Wall Street tracciona las acciones latinoamericanas.',
             ],
             sentiment: 'bullish',
-            leadAnalysis: 'El cambio estructural de la matriz energética elimina una de las principales fuentes de drenaje de reservas de las últimas dos décadas.',
-            transmissionChannel: 'Mayor oferta neta de dólares comerciales en el mercado oficial de cambios.',
-            marketConsensus: 'Sustentabilidad cambiaria robustecida de cara a la unificación y salida del cepo.',
+            leadAnalysis: 'Un escenario de "aterrizaje suave" (soft landing) en Estados Unidos expande el apetito global por acciones y deuda corporativa de mercados emergentes.',
+            transmissionChannel: 'Correlación positiva entre el S&P 500 y el S&P Merval en dólares CCL.',
+            marketConsensus: 'Consenso: Menor aversión al riesgo global favorece a las acciones argentinas de beta alto.',
           },
           {
-            id: 'news-int-4',
-            title: 'J.P. Morgan Emerging Markets Note: Argentine Sovereign Curve Steepens with Improving Debt Metrics',
-            summary: 'Research desk highlights solid debt-to-GDP ratio trajectory and zero fiscal deficit as primary catalysts for continued bond appreciation.',
-            source: 'J.P. Morgan Global Research',
+            id: `news-int-5-${today}`,
+            title: 'El FMI y fondos de Wall Street destacan la consolidación fiscal argentina en Washington',
+            summary: 'Analistas del Fondo Monetario Internacional y bancos de inversión valoran el sobrecumplimiento de las metas de superávit financiero de cara a las próximas revisiones técnicas.',
+            source: 'J.P. Morgan & IMF Communications',
             scope: 'internacional',
+            region: 'Estados Unidos 🇺🇸',
             publishedAt: 'Hace 6 horas',
+            editionDate: today,
             impactLevel: 'moderado',
-            affectedAssets: ['GD35', 'GD41', 'GD46', 'Bonares'],
+            affectedAssets: ['GD30', 'GD35', 'AL30', 'Bonares'],
             keyTakeaways: [
               'Revisión al alza de los precios objetivo de los bonos Globales Ley Nueva York.',
-              'Probabilidad reducida de eventos de reestructuración en el mediano plazo.',
-              'Recomendación Overweight en títulos soberanos en moneda dura.',
+              'Apoyo de directores de EE.UU. y Europa para avanzar en un nuevo acuerdo financiero.',
+              'Riesgo país con sendero técnico hacia la zona de 400-450 puntos básicos.',
             ],
             sentiment: 'bullish',
-            leadAnalysis: 'El reporte de J.P. Morgan valida la sostenibilidad del ancla fiscal y el cumplimiento puntual de los servicios de amortización e intereses.',
-            transmissionChannel: 'Mejora en las calificaciones crediticias soberanas por parte de agencias internacionales (S&P, Moody\'s, Fitch).',
-            marketConsensus: 'Riesgo país con sendero técnico hacia la zona de 400-450 puntos básicos.',
-          },
-          {
-            id: 'news-int-5',
-            title: 'Reuters Daily LatAm Wrap: Argentine Assets Outperform Regional Benchmarks Amid FX Stability',
-            summary: 'The S&P Merval index and dollar bonds lead Latin American financial market gains as parallel exchange rate spread stays subdued.',
-            source: 'Reuters Financial',
-            scope: 'internacional',
-            publishedAt: 'Hace 8 horas',
-            impactLevel: 'moderado',
-            affectedAssets: ['S&P Merval', 'GGAL', 'BMA', 'Dólar Blue'],
-            keyTakeaways: [
-              'ADRs de bancos y energéticas argentinas lideran subas en la Bolsa de Nueva York.',
-              'Brecha cambiaria en mínimos sostenidos consolida la calma financiera.',
-              'Flujo sostenido de inversores institucionales no residentes.',
-            ],
-            sentiment: 'bullish',
-            leadAnalysis: 'El rendimiento relativo de los activos argentinos supera al Bovespa y al IPC de México en lo que va del año.',
-            transmissionChannel: 'Arbitraje positivo entre cotizaciones locales (BYMA) y certificados extranjeros (ADRs NYSE).',
-            marketConsensus: 'Consenso: Apetito inversor sostenido con sesgo alcista en el sector bancario y de servicios públicos.',
+            leadAnalysis: 'El respaldo explícito de la comunidad financiera internacional refuerza la credibilidad del programa económico y la sostenibilidad de la deuda soberana.',
+            transmissionChannel: 'Menor prima de riesgo país facilita la refinanciación de vencimientos de capital e intereses en 2025/2026.',
+            marketConsensus: 'Consenso: Mantener postura Overweight en títulos soberanos argentinos.',
           },
         ];
+
+        return {
+          editionDate: today,
+          editionFormatted,
+          totalNews: newsList.length,
+          nationalCount: newsList.filter((n) => n.scope === 'nacional').length,
+          internationalCount: newsList.filter((n) => n.scope === 'internacional').length,
+          news: newsList,
+        };
       },
-      NewsService.TTL_MS
+      // 12 horas en memoria RAM: se actualiza a medianoche automáticamente con la fecha del nuevo día
+      12 * 60 * 60 * 1000
     );
   }
 }

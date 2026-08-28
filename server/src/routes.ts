@@ -189,11 +189,19 @@ v1Router.get('/political/overview', async (req, res) => {
   }
 });
 
-// 8. Intelligence & Noticias
+// 8. Intelligence & Noticias (Edición Diaria en Memoria RAM)
 v1Router.get('/news/feed', async (req, res) => {
   try {
-    const data = await NewsService.getNewsFeed();
-    res.json({ success: true, count: data.length, data });
+    const feed = await NewsService.getNewsFeed();
+    res.json({
+      success: true,
+      editionDate: feed.editionDate,
+      editionFormatted: feed.editionFormatted,
+      totalNews: feed.totalNews,
+      nationalCount: feed.nationalCount,
+      internationalCount: feed.internationalCount,
+      data: feed.news,
+    });
   } catch (error: any) {
     res.status(500).json({ success: false, error: error.message });
   }

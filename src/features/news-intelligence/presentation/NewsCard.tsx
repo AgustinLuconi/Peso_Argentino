@@ -76,13 +76,15 @@ export const NewsCard: React.FC<{
           <Badge variant={currentImpact.variant} size="sm">
             {currentImpact.label}
           </Badge>
-          {news.scope === 'internacional' ? (
-            <span className="px-2 py-0.5 text-[10px] font-sans font-bold bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 rounded-full flex items-center gap-1">
-              🌐 Wall Street
-            </span>
-          ) : (
-            <span className="px-2 py-0.5 text-[10px] font-sans font-bold bg-gold/10 text-gold-dark dark:text-gold border border-gold/20 rounded-full flex items-center gap-1">
-              🇦🇷 Local
+          {news.region && (
+            <span className={`px-2 py-0.5 text-[10px] font-sans font-bold rounded-full flex items-center gap-1 border ${
+              news.region.includes('Estados Unidos')
+                ? 'bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-500/20'
+                : news.region.includes('Global')
+                ? 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20'
+                : 'bg-gold/10 text-gold-dark dark:text-gold border-gold/20'
+            }`}>
+              {news.region}
             </span>
           )}
           <span className="font-eyebrow text-outline dark:text-slate-300 font-semibold">
