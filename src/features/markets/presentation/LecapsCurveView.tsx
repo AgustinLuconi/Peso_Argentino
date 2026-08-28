@@ -347,35 +347,35 @@ export const LecapsCurveView: React.FC = () => {
 
       {/* Podio / Top Highlights Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="bg-white p-4 rounded-2xl border border-surface-container-highest shadow-soft flex items-center gap-3.5">
+        <div className="bg-white dark:bg-[#071228] p-4 rounded-2xl border border-surface-container-highest dark:border-[#1a2744] shadow-soft flex items-center gap-3.5">
           <div className="p-2.5 bg-gold/15 text-gold rounded-xl shrink-0">
             <Award size={22} />
           </div>
           <div>
-            <span className="text-[10px] font-sans text-outline uppercase block">Mayor Tasa Mensual (TEM)</span>
+            <span className="text-[10px] font-sans text-outline dark:text-slate-400 uppercase block">Mayor Tasa Mensual (TEM)</span>
             <div className="flex items-baseline gap-1.5">
-              <span className="text-base font-bold font-sans text-primary">T15D5</span>
+              <span className="text-base font-bold font-sans text-primary dark:text-slate-100">T15D5</span>
               <span className="text-sm font-bold font-sans text-gold">4.12% m/m</span>
             </div>
-            <span className="text-[11px] font-sans text-on-surface-variant">Boncap Dic 25 · TEA 65.2%</span>
+            <span className="text-[11px] font-sans text-on-surface-variant dark:text-slate-300">Boncap Dic 25 · TEA 65.2%</span>
           </div>
         </div>
 
-        <div className="bg-white p-4 rounded-2xl border border-surface-container-highest shadow-soft flex items-center gap-3.5">
+        <div className="bg-white dark:bg-[#071228] p-4 rounded-2xl border border-surface-container-highest dark:border-[#1a2744] shadow-soft flex items-center gap-3.5">
           <div className="p-2.5 bg-blue-500/15 text-blue-600 rounded-xl shrink-0">
             <Clock size={22} />
           </div>
           <div>
-            <span className="text-[10px] font-sans text-outline uppercase block">Liquidez Inmediata (Corto)</span>
+            <span className="text-[10px] font-sans text-outline dark:text-slate-400 uppercase block">Liquidez Inmediata (Corto)</span>
             <div className="flex items-baseline gap-1.5">
-              <span className="text-base font-bold font-sans text-primary">S31E5</span>
-              <span className="text-sm font-bold font-sans text-primary">15 días</span>
+              <span className="text-base font-bold font-sans text-primary dark:text-slate-100">S31E5</span>
+              <span className="text-sm font-bold font-sans text-primary dark:text-slate-100">15 días</span>
             </div>
-            <span className="text-[11px] font-sans text-on-surface-variant">TEM 3.55% · Vto 31/01/2025</span>
+            <span className="text-[11px] font-sans text-on-surface-variant dark:text-slate-300">TEM 3.55% · Vto 31/01/2025</span>
           </div>
         </div>
 
-        <div className="bg-white p-4 rounded-2xl border border-surface-container-highest shadow-soft flex items-center gap-3.5">
+        <div className="bg-white dark:bg-[#071228] p-4 rounded-2xl border border-surface-container-highest dark:border-[#1a2744] shadow-soft flex items-center gap-3.5">
           <div className="p-2.5 bg-bullish-green/15 text-bullish-green rounded-xl shrink-0">
             <ShieldCheck size={22} />
           </div>

@@ -16,14 +16,24 @@ export const AssetAnalysisModal: React.FC<AssetAnalysisModalProps> = ({ ticker, 
   const { setIsAiModalOpen } = useApp();
 
   useEffect(() => {
-    if (!ticker) return;
-    setLoading(true);
-    const repo = new BackendMarketRepository();
-    repo.getAssetAnalysis(ticker).then((res) => {
-      setData(res);
-      setLoading(false);
-    });
-  }, [ticker]);
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    if (ticker) {
+      document.body.style.overflow = 'hidden';
+      window.addEventListener('keydown', handleKeyDown);
+      setLoading(true);
+      const repo = new BackendMarketRepository();
+      repo.getAssetAnalysis(ticker).then((res) => {
+        setData(res);
+        setLoading(false);
+      });
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [ticker, onClose]);
 
   if (!ticker) return null;
 

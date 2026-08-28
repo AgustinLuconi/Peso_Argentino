@@ -186,7 +186,7 @@ export const QuickCurrencyConverter: React.FC<QuickCurrencyConverterProps> = ({
                     <span className="truncate">{d.name.split(' ')[1] || d.name}</span>
                     <span className="font-mono-tabular">${d.rate.toFixed(0)}</span>
                   </div>
-                  <span className="font-mono-tabular font-bold text-xs text-primary block">
+                  <span className="font-mono-tabular font-bold text-xs text-primary dark:text-slate-100 block">
                     {direction === 'ARS_TO_USD'
                       ? `US$ ${res.toFixed(2)}`
                       : `$ ${(res / 1000).toFixed(1)}k`}

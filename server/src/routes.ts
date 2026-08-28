@@ -11,6 +11,7 @@ import { globalCache } from './core/cache/MemoryCache';
 import { globalApiRateLimiter, llmApiRateLimiter } from './core/middleware/RateLimiter';
 import { QuotesHistoryRepository } from './core/database/repositories/QuotesHistoryRepository';
 import { AiNewsArchiveRepository } from './core/database/repositories/AiNewsArchiveRepository';
+import { MacroSeriesRepository } from './core/database/repositories/MacroSeriesRepository';
 import { DatabaseConnection } from './core/database/DatabaseConnection';
 
 export const v1Router = Router();
@@ -84,8 +85,6 @@ v1Router.get('/dolar/quotes', async (req, res) => {
     res.status(500).json({ success: false, error: error.message });
   }
 });
-
-import { MacroSeriesRepository } from './core/database/repositories/MacroSeriesRepository';
 
 v1Router.get('/dolar/history/:type', (req, res) => {
   try {

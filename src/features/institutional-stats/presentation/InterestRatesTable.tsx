@@ -178,8 +178,8 @@ export const InterestRatesTable: React.FC<{ rates: InterestRateMetric[] }> = ({
       </Card>
 
       {/* Simulator for Financial Rates */}
-      <div className="bg-white p-5 rounded-2xl border border-surface-container-highest shadow-tactile space-y-4">
-        <div className="flex items-center gap-2 border-b border-surface-container-highest pb-3">
+      <div className="bg-white dark:bg-[#071228] p-5 rounded-2xl border border-surface-container-highest dark:border-[#1a2744] shadow-tactile space-y-4">
+        <div className="flex items-center gap-2 border-b border-surface-container-highest dark:border-[#1a2744] pb-3">
           <span className="p-1.5 bg-gold/15 text-gold rounded-lg">
             <Calculator size={18} />
           </span>

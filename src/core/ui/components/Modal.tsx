@@ -53,26 +53,29 @@ export const Modal: React.FC<ModalProps> = ({
 
       {/* Modal Card with Rounded Corners and Scale Animation */}
       <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-title"
         className={clsx(
-          'relative w-full bg-white rounded-2xl sm:rounded-3xl shadow-2xl border border-surface-container-highest overflow-hidden z-10 stroke-of-value animate-in zoom-in-95 duration-200',
+          'relative w-full bg-white dark:bg-[#071228] rounded-2xl sm:rounded-3xl shadow-2xl border border-surface-container-highest dark:border-[#1a2744] overflow-hidden z-10 stroke-of-value animate-in zoom-in-95 duration-200',
           maxWidthStyles[maxWidth]
         )}
       >
         {/* Header */}
-        <div className="flex items-start justify-between p-4 sm:p-5 border-b border-surface-container-highest bg-surface-container-lowest">
+        <div className="flex items-start justify-between p-4 sm:p-5 border-b border-surface-container-highest dark:border-[#1a2744] bg-surface-container-lowest dark:bg-[#0c1730]">
           <div>
-            <h3 className="font-sans font-bold text-base sm:text-lg text-primary tracking-tight">
+            <h3 id="modal-title" className="font-sans font-bold text-base sm:text-lg text-primary dark:text-slate-100 tracking-tight">
               {title}
             </h3>
             {subtitle && (
-              <p className="text-xs font-sans text-on-surface-variant mt-0.5">
+              <p className="text-xs font-sans text-on-surface-variant dark:text-slate-400 mt-0.5">
                 {subtitle}
               </p>
             )}
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-full text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors"
+            className="p-1.5 rounded-full text-on-surface-variant dark:text-slate-400 hover:text-primary dark:hover:text-white hover:bg-surface-container dark:hover:bg-white/10 transition-colors"
             aria-label="Cerrar modal"
           >
             <X size={18} />
@@ -80,7 +83,7 @@ export const Modal: React.FC<ModalProps> = ({
         </div>
 
         {/* Body */}
-        <div className="p-4 sm:p-6 max-h-[80vh] overflow-y-auto">{children}</div>
+        <div className="p-4 sm:p-6 max-h-[80vh] overflow-y-auto text-on-surface dark:text-slate-200">{children}</div>
       </div>
     </div>
   );

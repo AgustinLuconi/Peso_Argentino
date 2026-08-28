@@ -93,7 +93,7 @@ export const InteractiveYieldCalculator: React.FC<{ bond: BondDetail }> = ({
               className={`py-2 text-xs font-sans font-bold rounded-xl border transition-all duration-200 ${
                 currency === 'USD'
                   ? 'bg-primary text-white border-primary shadow-sm scale-[1.02]'
-                  : 'bg-white text-on-surface hover:bg-surface-container border-surface-container-highest'
+                  : 'bg-white dark:bg-[#0c1730] text-on-surface dark:text-slate-100 hover:bg-surface-container border-surface-container-highest dark:border-[#1a2744]'
               }`}
             >
               Dólares (US$)
@@ -106,7 +106,7 @@ export const InteractiveYieldCalculator: React.FC<{ bond: BondDetail }> = ({
               className={`py-2 text-xs font-sans font-bold rounded-xl border transition-all duration-200 ${
                 currency === 'ARS'
                   ? 'bg-primary text-white border-primary shadow-sm scale-[1.02]'
-                  : 'bg-white text-on-surface hover:bg-surface-container border-surface-container-highest'
+                  : 'bg-white dark:bg-[#0c1730] text-on-surface dark:text-slate-100 hover:bg-surface-container border-surface-container-highest dark:border-[#1a2744]'
               }`}
             >
               Pesos ($ ARS)
