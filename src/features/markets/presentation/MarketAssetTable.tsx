@@ -300,6 +300,8 @@ export const MarketAssetTable: React.FC<MarketAssetTableProps> = ({
       </div>
 
       <Table
+        title="Cotizaciones de Mercado en Vivo"
+        exportable="cotizaciones_mercado_byma"
         columns={columns}
         data={sortedAssets}
         keyExtractor={(item) => item.ticker}

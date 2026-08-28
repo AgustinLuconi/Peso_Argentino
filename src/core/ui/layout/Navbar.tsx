@@ -1,7 +1,8 @@
 import React from 'react';
-import { Search, RefreshCw, Moon, Sun, ArrowRightLeft, Menu, Sparkles } from 'lucide-react';
+import { Search, RefreshCw, Moon, Sun, ArrowRightLeft, Menu, Sparkles, Keyboard } from 'lucide-react';
 import { Button } from '../components/Button';
 import { Badge } from '../components/Badge';
+import { ApiStatusBadge } from '../components/ApiStatusBadge';
 import { useApp } from '@app/providers/AppContext';
 
 export interface NavbarProps {
@@ -10,6 +11,7 @@ export interface NavbarProps {
   isRefreshing?: boolean;
   activeFeatureTitle?: string;
   onSearchClick?: () => void;
+  onOpenShortcuts?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -18,6 +20,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   isRefreshing = false,
   activeFeatureTitle = 'Dashboard Principal',
   onSearchClick,
+  onOpenShortcuts,
 }) => {
   const { theme, toggleTheme, setIsConverterOpen, setIsAiModalOpen, displayCurrency, setDisplayCurrency } = useApp();
 
@@ -77,6 +80,11 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {/* Right: Currency Toggle, Copilot AI, Converter, Search, Theme, Refresh */}
         <div className="flex items-center gap-1.5 sm:gap-2 2xl:gap-3">
+          {/* Live API Health Badge */}
+          <div className="hidden sm:block">
+            <ApiStatusBadge />
+          </div>
+
           {/* Global Currency Toggle (ARS / USD) */}
           <div className="flex items-center p-0.5 bg-surface-container-low dark:bg-[#0F141C] border border-surface-container-highest dark:border-[#1E2638] rounded-xl shadow-xs">
             <button
@@ -124,7 +132,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             size="sm"
             onClick={() => setIsConverterOpen(true)}
             icon={<ArrowRightLeft size={13} className="text-emerald-500" />}
-            className="hidden md:inline-flex"
+            className="hidden xl:inline-flex"
             title="Abrir conversor de divisas instantáneo"
           >
             Conversor
@@ -134,12 +142,23 @@ export const Navbar: React.FC<NavbarProps> = ({
           <button
             onClick={onSearchClick}
             className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 text-xs font-sans text-on-surface-variant dark:text-slate-300 bg-surface-container-low dark:bg-[#0F141C] hover:bg-surface-container dark:hover:bg-[#131822] border border-surface-container-highest dark:border-[#1E2638] rounded-xl transition-colors"
+            title="Buscar módulo, activo o calcular (⌘K)"
           >
             <Search size={14} className="text-outline dark:text-slate-400 shrink-0" />
-            <span className="hidden md:inline">Buscar activo...</span>
+            <span className="hidden md:inline">Buscar...</span>
             <kbd className="hidden sm:inline text-[9px] 2xl:text-[10px] font-mono px-1.5 py-0.5 bg-white dark:bg-[#131822] border border-outline-variant/40 dark:border-[#1E2638] rounded text-outline dark:text-slate-400">
               ⌘K
             </kbd>
+          </button>
+
+          {/* Keyboard Shortcuts Button */}
+          <button
+            onClick={onOpenShortcuts}
+            className="p-1.5 sm:p-2 rounded-xl text-on-surface-variant dark:text-slate-300 hover:text-emerald-500 hover:bg-surface-container dark:hover:bg-[#131822] transition-colors border border-surface-container-highest dark:border-[#1E2638] shrink-0 hidden sm:inline-flex"
+            title="Atajos de teclado de la terminal (Presiona ?)"
+            aria-label="Atajos de teclado"
+          >
+            <Keyboard size={16} />
           </button>
 
           {/* Theme Switcher Button */}
@@ -166,7 +185,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             className="hidden sm:inline-flex shrink-0"
             title="Actualizar cotizaciones en vivo"
           >
-            <span className="hidden lg:inline">Actualizar</span>
+            <span className="hidden 2xl:inline">Actualizar</span>
           </Button>
         </div>
       </div>

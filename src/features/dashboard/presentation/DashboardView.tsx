@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { DollarQuotesCard } from './DollarQuotesCard';
 import { MacroKpiGrid } from './MacroKpiGrid';
 import { BreachHistoryChart } from './BreachHistoryChart';
+import { BrechaGaugeCard } from '@core/ui/components/BrechaGaugeCard';
 import { ExecutiveSummaryCard } from './ExecutiveSummaryCard';
 import { GetDashboardMetricsUseCase } from '../application/GetDashboardMetricsUseCase';
 import { DolarApiQuoteRepository } from '../infrastructure/DolarApiQuoteRepository';
@@ -94,6 +95,10 @@ export const DashboardView: React.FC<{
 
   const cacheStats = smartCache.getStats();
 
+  const oficialQuote = data.quotes.find((q) => q.type === 'oficial' || q.type === 'mayorista');
+  const cclQuote = data.quotes.find((q) => q.type === 'ccl');
+  const blueQuote = data.quotes.find((q) => q.type === 'blue');
+
   return (
     <div className="space-y-5 sm:space-y-6 animate-page-enter">
       {/* Top Banner / Hero Info */}
@@ -161,12 +166,22 @@ export const DashboardView: React.FC<{
         <MacroKpiGrid kpis={data.kpis} />
       </div>
 
-      {/* Breach Chart & Executive Pillars Grid */}
-      <div id="breach-section" className="grid grid-cols-1 lg:grid-cols-2 3xl:grid-cols-12 gap-5 sm:gap-6">
-        <div className="3xl:col-span-7">
-          <BreachHistoryChart timeSeries={data.breachHistory} />
+      {/* Breach Gauge, History Chart & Executive Pillars Grid */}
+      <div id="breach-section" className="space-y-4">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6">
+          <div className="lg:col-span-4 3xl:col-span-4">
+            <BrechaGaugeCard
+              officialPrice={oficialQuote?.sellPrice.amount ?? 1080}
+              cclPrice={cclQuote?.sellPrice.amount ?? 1350}
+              bluePrice={blueQuote?.sellPrice.amount ?? 1380}
+            />
+          </div>
+          <div className="lg:col-span-8 3xl:col-span-8">
+            <BreachHistoryChart timeSeries={data.breachHistory} />
+          </div>
         </div>
-        <div className="3xl:col-span-5">
+
+        <div className="w-full">
           <ExecutiveSummaryCard />
         </div>
       </div>

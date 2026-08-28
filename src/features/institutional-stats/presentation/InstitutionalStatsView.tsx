@@ -3,7 +3,7 @@ import { BcraBalanceCard } from './BcraBalanceCard';
 import { InterestRatesTable } from './InterestRatesTable';
 import { MacroSeriesComparator } from './MacroSeriesComparator';
 import { TradeBalanceCard } from './TradeBalanceCard';
-import { RealRateCalculatorCard } from './RealRateCalculatorCard';
+import { CarryTradeSimulator } from './CarryTradeSimulator';
 import { GetInstitutionalStatsUseCase } from '../application/GetInstitutionalStatsUseCase';
 import { BackendInstitutionalStatsRepository } from '../infrastructure/BackendInstitutionalStatsRepository';
 import { InstitutionalStatsDto } from '../application/InstitutionalStatsRepositoryPort';
@@ -104,7 +104,7 @@ export const InstitutionalStatsView: React.FC<{
 
       {/* Real Rate vs Inflation Simulator */}
       <div id="carry-section">
-        <RealRateCalculatorCard />
+        <CarryTradeSimulator />
       </div>
 
       {/* Interest Rates & Trade Balance Grid */}
