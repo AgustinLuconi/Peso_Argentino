@@ -212,7 +212,7 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
                       className={clsx(
                         'w-full text-left p-2.5 sm:p-3 rounded-xl transition-all duration-200 flex items-start gap-2.5 sm:gap-3 group relative border select-none',
                         isActive
-                          ? 'bg-slate-950 dark:bg-[#131822] text-white dark:text-emerald-400 border-slate-800 dark:border-emerald-500/50 shadow-emerald-glow scale-[1.02] stroke-of-value'
+                          ? 'bg-slate-950 dark:bg-[#131822] text-white dark:text-emerald-400 border-slate-800 dark:border-emerald-500/50 shadow-emerald-glow scale-[1.02]'
                           : 'bg-white dark:bg-[#0F141C] hover:bg-slate-100 dark:hover:bg-[#161B26] text-slate-900 dark:text-slate-100 border-transparent hover:border-surface-container-highest dark:hover:border-[#1E2638] hover:translate-x-1'
                       )}
                     >

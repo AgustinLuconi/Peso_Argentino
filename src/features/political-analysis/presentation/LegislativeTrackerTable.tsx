@@ -81,10 +81,10 @@ export const LegislativeTrackerTable: React.FC<{
           return (
             <div
               key={item.id}
-              className={`rounded-2xl border transition-all duration-300 overflow-hidden bg-white dark:bg-[#081124] ${
+              className={`rounded-2xl border transition-all duration-300 overflow-hidden bg-white dark:bg-[#0F141C] ${
                 isExpanded
-                  ? 'border-gold shadow-md stroke-of-value'
-                  : 'border-surface-container-highest dark:border-[#1a2744] hover:border-gold/50 shadow-soft hover:-translate-y-0.5'
+                  ? 'border-emerald-500/50 shadow-tactile'
+                  : 'border-surface-container-highest dark:border-[#1E2638] hover:border-emerald-500/30 shadow-soft hover:-translate-y-0.5'
               }`}
             >
               {/* Accordion Header Row */}

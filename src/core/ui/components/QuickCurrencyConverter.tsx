@@ -139,9 +139,9 @@ export const QuickCurrencyConverter: React.FC<QuickCurrencyConverterProps> = ({
         </div>
 
         {/* Big Converted Result Display */}
-        <div className="p-5 bg-primary text-white rounded-2xl border border-gold/30 shadow-tactile flex flex-col sm:flex-row items-center justify-between gap-3 stroke-of-value">
+        <div className="p-5 bg-slate-900 dark:bg-[#111622] text-white rounded-2xl border border-emerald-500/40 shadow-tactile flex flex-col sm:flex-row items-center justify-between gap-3 overflow-hidden">
           <div>
-            <span className="font-eyebrow text-gold font-bold block mb-1">
+            <span className="font-eyebrow text-emerald-400 font-bold block mb-1">
               Resultado Estimado al Tipo de Cambio {currentRateObj.name.split('(')[0]}:
             </span>
             <span className="text-2xl sm:text-3xl font-mono-tabular font-extrabold text-white tracking-tight">
@@ -151,7 +151,7 @@ export const QuickCurrencyConverter: React.FC<QuickCurrencyConverterProps> = ({
             </span>
           </div>
 
-          <Badge variant="gold" size="sm">
+          <Badge variant="emerald" size="sm">
             {direction === 'ARS_TO_USD'
               ? `1 USD = $${rate.toFixed(2)}`
               : `$1 = US$ ${(1 / rate).toFixed(4)}`}

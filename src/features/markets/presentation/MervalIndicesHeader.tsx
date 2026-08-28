@@ -13,8 +13,8 @@ export const MervalIndicesHeader: React.FC<{ indices: MarketIndexData[] }> = ({
           key={idx.name}
           className={`p-5 rounded-2xl border transition-all duration-200 hover:-translate-y-1 ${
             index === 0
-              ? 'bg-primary text-white border-primary shadow-tactile stroke-of-value'
-              : 'bg-white dark:bg-[#081124] text-on-surface border-surface-container-highest dark:border-[#1a2744] shadow-tactile'
+              ? 'bg-slate-900 dark:bg-[#131822] text-white border-slate-800 dark:border-emerald-500/40 shadow-tactile'
+              : 'bg-white dark:bg-[#0F141C] text-on-surface border-surface-container-highest dark:border-[#1E2638] shadow-tactile'
           }`}
         >
           <div className="flex items-start justify-between gap-2 mb-2">

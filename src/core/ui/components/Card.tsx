@@ -30,11 +30,11 @@ export const Card: React.FC<CardProps> = ({
           variant === 'outline' &&
             'bg-surface-container-low border border-surface-container-highest',
           variant === 'navy' &&
-            'bg-primary text-white border border-primary-container shadow-tactile',
+            'bg-slate-900 dark:bg-[#0F141C] text-white border border-slate-800 dark:border-[#1E2638] shadow-tactile',
           variant === 'flat' &&
             'bg-surface-container-low border-0',
-          accent === 'gold' && 'stroke-of-value',
-          accent === 'navy' && 'stroke-of-value-navy',
+          accent === 'gold' && 'border-emerald-500/40 dark:border-emerald-500/30',
+          accent === 'navy' && 'border-cyan-500/40 dark:border-cyan-500/30',
           className
         )
       )}

@@ -57,7 +57,7 @@ export const Modal: React.FC<ModalProps> = ({
         aria-modal="true"
         aria-labelledby="modal-title"
         className={clsx(
-          'relative w-full bg-white dark:bg-[#071228] rounded-2xl sm:rounded-3xl shadow-2xl border border-surface-container-highest dark:border-[#1a2744] overflow-hidden z-10 stroke-of-value animate-in zoom-in-95 duration-200',
+          'relative w-full bg-white dark:bg-[#071228] rounded-2xl sm:rounded-3xl shadow-2xl border border-surface-container-highest dark:border-[#1a2744] overflow-hidden z-10 animate-in zoom-in-95 duration-200',
           maxWidthStyles[maxWidth]
         )}
       >
