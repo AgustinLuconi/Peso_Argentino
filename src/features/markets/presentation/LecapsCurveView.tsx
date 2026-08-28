@@ -727,46 +727,46 @@ export const LecapsCurveView: React.FC = () => {
           </div>
 
           {/* Quick Metrics Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            <div className="p-3 bg-surface-container-low rounded-xl">
-              <span className="text-[10px] font-sans text-outline uppercase block">TEM Mensual</span>
-              <span className="text-xl font-bold font-sans text-gold">{selectedLecap.tem}%</span>
-              <span className="text-[10px] font-sans text-slate-400 block">Tasa efectiva/mes</span>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5">
+            <div className="p-3.5 bg-surface-container-low dark:bg-[#131822] rounded-xl border border-slate-200 dark:border-[#1E2638]">
+              <span className="text-xs font-sans text-slate-500 dark:text-slate-400 uppercase font-bold tracking-wider block">TEM Mensual</span>
+              <span className="text-2xl font-bold font-mono text-emerald-500 my-0.5 block">{selectedLecap.tem}%</span>
+              <span className="text-xs font-sans text-slate-400 block">Tasa efectiva/mes</span>
             </div>
 
-            <div className="p-3 bg-surface-container-low rounded-xl">
-              <span className="text-[10px] font-sans text-outline uppercase block">TNA Efectiva</span>
-              <span className="text-xl font-bold font-sans text-primary">{selectedLecap.tna}%</span>
-              <span className="text-[10px] font-sans text-slate-400 block">Base 365 días</span>
+            <div className="p-3.5 bg-surface-container-low dark:bg-[#131822] rounded-xl border border-slate-200 dark:border-[#1E2638]">
+              <span className="text-xs font-sans text-slate-500 dark:text-slate-400 uppercase font-bold tracking-wider block">TNA Efectiva</span>
+              <span className="text-2xl font-bold font-mono text-slate-900 dark:text-white my-0.5 block">{selectedLecap.tna}%</span>
+              <span className="text-xs font-sans text-slate-400 block">Base 365 días</span>
             </div>
 
-            <div className="p-3 bg-surface-container-low rounded-xl">
-              <span className="text-[10px] font-sans text-outline uppercase block">TEA Compuesta</span>
-              <span className="text-xl font-bold font-sans text-primary">{selectedLecap.tea}%</span>
-              <span className="text-[10px] font-sans text-slate-400 block">Con reinversión</span>
+            <div className="p-3.5 bg-surface-container-low dark:bg-[#131822] rounded-xl border border-slate-200 dark:border-[#1E2638]">
+              <span className="text-xs font-sans text-slate-500 dark:text-slate-400 uppercase font-bold tracking-wider block">TEA Compuesta</span>
+              <span className="text-2xl font-bold font-mono text-slate-900 dark:text-white my-0.5 block">{selectedLecap.tea}%</span>
+              <span className="text-xs font-sans text-slate-400 block">Con reinversión</span>
             </div>
 
-            <div className="p-3 bg-surface-container-low rounded-xl">
-              <span className="text-[10px] font-sans text-outline uppercase block">Rend. Directo</span>
-              <span className="text-xl font-bold font-sans text-bullish-green">+{selectedLecap.directYield}%</span>
-              <span className="text-[10px] font-sans text-slate-400 block">Total al vencimiento</span>
+            <div className="p-3.5 bg-surface-container-low dark:bg-[#131822] rounded-xl border border-slate-200 dark:border-[#1E2638]">
+              <span className="text-xs font-sans text-slate-500 dark:text-slate-400 uppercase font-bold tracking-wider block">Rend. Directo</span>
+              <span className="text-2xl font-bold font-mono text-emerald-500 my-0.5 block">+{selectedLecap.directYield}%</span>
+              <span className="text-xs font-sans text-slate-400 block">Total al vencimiento</span>
             </div>
           </div>
 
           {/* Filter & Search Bar for Full Table */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-2">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2">
             <div className="flex items-center gap-2">
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Buscar Lecap o Boncap (ej: S31M5, Mayo, Boncap)..."
-                className="px-3 py-1.5 bg-surface-container-low border border-surface-container-high rounded-xl text-xs font-sans focus:outline-none focus:border-gold w-64"
+                className="px-3.5 py-2 bg-surface-container-low dark:bg-[#131822] border border-surface-container-high dark:border-[#1E2638] rounded-xl text-sm font-sans focus:outline-none focus:border-emerald-500 w-72"
               />
             </div>
 
-            <div className="flex items-center gap-1">
-              <span className="text-[10px] font-sans text-outline mr-1">Tramo:</span>
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <span className="text-xs font-sans font-bold uppercase text-slate-500 dark:text-slate-400 mr-1">Tramo:</span>
               {[
                 { id: 'ALL', label: 'Todos' },
                 { id: 'CORTO', label: 'Corto (<90d)' },
@@ -776,10 +776,10 @@ export const LecapsCurveView: React.FC = () => {
                 <button
                   key={f.id}
                   onClick={() => setFilterTramo(f.id as any)}
-                  className={`px-2.5 py-1 text-[11px] font-sans font-semibold rounded-lg transition-all ${
+                  className={`px-3 py-1.5 text-xs font-sans font-bold rounded-xl transition-all ${
                     filterTramo === f.id
-                      ? 'bg-primary text-white shadow-sm'
-                      : 'bg-surface-container-low text-on-surface hover:bg-surface-container'
+                      ? 'bg-emerald-500 text-white shadow-sm'
+                      : 'bg-surface-container-low dark:bg-[#131822] text-slate-700 dark:text-slate-300 hover:bg-surface-container border border-slate-200 dark:border-[#1E2638]'
                   }`}
                 >
                   {f.label}
@@ -790,19 +790,19 @@ export const LecapsCurveView: React.FC = () => {
 
           {/* Full Table */}
           <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs font-sans">
+            <table className="w-full text-left text-xs sm:text-sm font-sans">
               <thead>
-                <tr className="border-b border-surface-container-highest text-[10px] font-sans uppercase text-outline">
-                  <th className="pb-2 font-semibold">Ticker</th>
-                  <th className="pb-2 font-semibold">Tipo</th>
-                  <th className="pb-2 font-semibold">Vencimiento</th>
-                  <th className="pb-2 font-semibold">Días</th>
-                  <th className="pb-2 font-semibold">Precio Spot</th>
-                  <th className="pb-2 font-semibold">TEM (%)</th>
-                  <th className="pb-2 font-semibold">TNA (%)</th>
-                  <th className="pb-2 font-semibold">TEA (%)</th>
-                  <th className="pb-2 font-semibold">Rend. Total</th>
-                  <th className="pb-2 font-semibold">Spread REM</th>
+                <tr className="border-b border-surface-container-highest dark:border-[#1E2638] text-xs font-sans uppercase font-bold text-slate-500 dark:text-slate-400 tracking-wider">
+                  <th className="pb-3 font-bold">Ticker</th>
+                  <th className="pb-3 font-bold">Tipo</th>
+                  <th className="pb-3 font-bold">Vencimiento</th>
+                  <th className="pb-3 font-bold">Días</th>
+                  <th className="pb-3 font-bold">Precio Spot</th>
+                  <th className="pb-3 font-bold">TEM (%)</th>
+                  <th className="pb-3 font-bold">TNA (%)</th>
+                  <th className="pb-3 font-bold">TEA (%)</th>
+                  <th className="pb-3 font-bold">Rend. Total</th>
+                  <th className="pb-3 font-bold">Spread REM</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-surface-container-highest/60">

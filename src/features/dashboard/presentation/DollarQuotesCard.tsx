@@ -133,37 +133,36 @@ export const DollarQuotesCard: React.FC<DollarQuotesCardProps> = ({
                   </span>
                   <TrendIndicator value={quote.variation24h.value} size="sm" />
                 </div>
-
-                {/* Middle row: Buy / Sell Prices */}
-                <div className="grid grid-cols-2 gap-1.5 my-0.5">
+                    {/* Middle row: Buy / Sell Prices */}
+                <div className="grid grid-cols-2 gap-2 my-1">
                   <div className="bg-white/90 dark:bg-[#131822] p-2.5 rounded-xl border border-surface-container-highest dark:border-[#1E2638] transition-colors group-hover:border-emerald-500/30 shadow-soft">
-                    <span className="font-eyebrow text-[9px] block text-outline dark:text-slate-400">
+                    <span className="font-eyebrow text-[11px] font-bold uppercase block text-slate-500 dark:text-slate-400 mb-0.5">
                       Compra
                     </span>
-                    <span className="text-xs 2xl:text-sm font-mono-tabular font-bold text-slate-900 dark:text-slate-100">
+                    <span className="text-sm sm:text-base font-mono-tabular font-bold text-slate-900 dark:text-slate-100 block">
                       {quote.buyPrice.format({ showCurrency: true })}
                     </span>
                   </div>
                   <div className="bg-white/90 dark:bg-[#131822] p-2.5 rounded-xl border border-surface-container-highest dark:border-[#1E2638] transition-colors group-hover:border-emerald-500/30 shadow-soft">
-                    <span className="font-eyebrow text-[9px] block text-outline dark:text-slate-400">
+                    <span className="font-eyebrow text-[11px] font-bold uppercase block text-slate-500 dark:text-slate-400 mb-0.5">
                       Venta
                     </span>
-                    <span className="text-xs 2xl:text-sm font-mono-tabular font-bold text-emerald-600 dark:text-emerald-400">
+                    <span className="text-sm sm:text-base font-mono-tabular font-bold text-emerald-600 dark:text-emerald-400 block">
                       {quote.sellPrice.format({ showCurrency: true })}
                     </span>
                   </div>
                 </div>
 
                 {/* Bottom row: Spread & Sparkline */}
-                <div className="pt-2 border-t border-surface-container-highest dark:border-[#1E2638] flex items-center justify-between text-[11px] font-sans text-on-surface-variant dark:text-slate-300">
-                  <div className="flex items-center gap-1 font-mono-tabular text-[10px]">
-                    <ArrowRightLeft size={11} className="text-outline dark:text-slate-400 shrink-0" />
-                    <span className="truncate">Spr: {quote.spread.format({ showCurrency: true })}</span>
+                <div className="pt-2.5 border-t border-surface-container-highest dark:border-[#1E2638] flex items-center justify-between text-xs font-sans text-on-surface-variant dark:text-slate-300">
+                  <div className="flex items-center gap-1.5 font-mono-tabular text-xs font-semibold">
+                    <ArrowRightLeft size={13} className="text-slate-400 dark:text-slate-500 shrink-0" />
+                    <span className="truncate text-slate-600 dark:text-slate-300">Spr: {quote.spread.format({ showCurrency: true })}</span>
                   </div>
-                  <div className="w-14 h-5 shrink-0 ml-1">
+                  <div className="w-16 h-5 shrink-0 ml-1">
                     <MiniSparkline
                       data={quote.historicalSparkline}
-                      height={18}
+                      height={20}
                       color="auto"
                     />
                   </div>
@@ -173,11 +172,11 @@ export const DollarQuotesCard: React.FC<DollarQuotesCardProps> = ({
               {/* Expand Toggle Button Bar */}
               <button
                 onClick={(e) => toggleExpand(quote.type, e)}
-                className="w-full px-3 py-1.5 bg-surface-container/60 dark:bg-[#131822] hover:bg-surface-container dark:hover:bg-[#161B26] border-t border-surface-container-high dark:border-[#1E2638] text-[10px] font-sans font-bold text-slate-900 dark:text-slate-200 flex items-center justify-between transition-colors select-none"
+                className="w-full px-3 py-2 bg-surface-container/60 dark:bg-[#131822] hover:bg-surface-container dark:hover:bg-[#161B26] border-t border-surface-container-high dark:border-[#1E2638] text-xs font-sans font-bold text-slate-900 dark:text-slate-200 flex items-center justify-between transition-colors select-none"
               >
                 <span>{isExpanded ? 'Ocultar Ficha' : 'Ver Ficha Operativa'}</span>
                 <ChevronDown
-                  size={13}
+                  size={14}
                   className={`text-emerald-500 transition-transform duration-300 ${
                     isExpanded ? 'rotate-180' : ''
                   }`}
@@ -186,25 +185,25 @@ export const DollarQuotesCard: React.FC<DollarQuotesCardProps> = ({
 
               {/* Animated Expandable Details Panel */}
               {isExpanded && (
-                <div className="p-3 bg-white/95 dark:bg-[#131822] border-t border-emerald-500/30 text-[11px] font-sans space-y-2 animate-in fade-in slide-in-from-top-2 duration-200 shadow-soft">
+                <div className="p-3.5 bg-white/95 dark:bg-[#131822] border-t border-emerald-500/30 text-xs font-sans space-y-2.5 animate-in fade-in slide-in-from-top-2 duration-200 shadow-soft">
                   <div className="space-y-1">
-                    <span className="font-eyebrow text-[9px] block text-outline dark:text-slate-400">Régimen Impositivo:</span>
-                    <p className="text-slate-900 dark:text-slate-200 text-[10px] leading-snug">{details.taxes}</p>
+                    <span className="font-eyebrow text-[11px] font-bold uppercase block text-slate-500 dark:text-slate-400">Régimen Impositivo:</span>
+                    <p className="text-slate-900 dark:text-slate-200 text-xs leading-relaxed">{details.taxes}</p>
                   </div>
 
-                  <div className="space-y-1 pt-1 border-t border-surface-container-high dark:border-[#1E2638]">
-                    <span className="font-eyebrow text-[9px] block text-outline dark:text-slate-400">Parking & Liquidación:</span>
-                    <p className="text-slate-900 dark:text-slate-200 text-[10px] leading-snug">{details.parking}</p>
+                  <div className="space-y-1 pt-1.5 border-t border-surface-container-high dark:border-[#1E2638]">
+                    <span className="font-eyebrow text-[11px] font-bold uppercase block text-slate-500 dark:text-slate-400">Parking & Liquidación:</span>
+                    <p className="text-slate-900 dark:text-slate-200 text-xs leading-relaxed">{details.parking}</p>
                   </div>
 
-                  <div className="space-y-1 pt-1 border-t border-surface-container-high dark:border-[#1E2638]">
-                    <span className="font-eyebrow text-[9px] block text-outline dark:text-slate-400">Mercado / Ámbito:</span>
-                    <p className="text-slate-900 dark:text-slate-200 text-[10px] leading-snug">{details.market}</p>
+                  <div className="space-y-1 pt-1.5 border-t border-surface-container-high dark:border-[#1E2638]">
+                    <span className="font-eyebrow text-[11px] font-bold uppercase block text-slate-500 dark:text-slate-400">Límite / Cupo:</span>
+                    <p className="text-slate-900 dark:text-slate-200 text-xs leading-relaxed">{details.limit}</p>
                   </div>
 
-                  <div className="pt-1 border-t border-surface-container-high dark:border-[#1E2638]">
-                    <span className="font-eyebrow text-[9px] block text-outline dark:text-slate-400">Operatividad:</span>
-                    <p className="text-on-surface-variant dark:text-slate-300 text-[10px] leading-snug">{details.spreadDetail}</p>
+                  <div className="space-y-1 pt-1.5 border-t border-surface-container-high dark:border-[#1E2638]">
+                    <span className="font-eyebrow text-[11px] font-bold uppercase block text-slate-500 dark:text-slate-400">Mercado de Ejecución:</span>
+                    <p className="text-slate-900 dark:text-slate-200 text-xs leading-relaxed">{details.market}</p>
                   </div>
                 </div>
               )}

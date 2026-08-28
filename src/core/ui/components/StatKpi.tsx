@@ -42,8 +42,8 @@ export const StatKpi: React.FC<StatKpiProps> = ({
       <div className="flex items-start justify-between gap-2 mb-2">
         <span
           className={clsx(
-            'font-eyebrow block truncate text-[11px] font-bold tracking-wider',
-            isNavy ? 'text-slate-300' : 'text-outline dark:text-slate-400'
+            'font-eyebrow block truncate text-xs font-bold tracking-wider',
+            isNavy ? 'text-slate-200' : 'text-slate-600 dark:text-slate-300'
           )}
         >
           {label}
@@ -61,10 +61,10 @@ export const StatKpi: React.FC<StatKpiProps> = ({
       </div>
 
       {/* Middle row: Big Value */}
-      <div className="my-1">
+      <div className="my-1.5">
         <span
           className={clsx(
-            'text-xl sm:text-2xl 2xl:text-3xl font-mono-tabular font-extrabold tracking-tight block',
+            'text-2xl sm:text-3xl 2xl:text-4xl font-mono-tabular font-extrabold tracking-tight block',
             isNavy ? 'text-white' : 'text-slate-900 dark:text-slate-100'
           )}
         >
@@ -73,14 +73,14 @@ export const StatKpi: React.FC<StatKpiProps> = ({
       </div>
 
       {/* Bottom row: Variation & Sparkline */}
-      <div className="mt-2.5 pt-2.5 border-t border-surface-container-highest/60 dark:border-[#1E2638] flex items-center justify-between gap-2 text-xs">
+      <div className="mt-3 pt-3 border-t border-surface-container-highest/60 dark:border-[#1E2638] flex items-center justify-between gap-2 text-xs sm:text-sm">
         {change !== undefined ? (
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-2">
             <TrendIndicator value={change} size="sm" />
             <span
               className={clsx(
-                'text-[10px] font-sans font-medium',
-                isNavy ? 'text-slate-300' : 'text-outline dark:text-slate-400'
+                'text-xs font-sans font-semibold',
+                isNavy ? 'text-slate-300' : 'text-slate-500 dark:text-slate-400'
               )}
             >
               {changePeriod}
@@ -89,8 +89,8 @@ export const StatKpi: React.FC<StatKpiProps> = ({
         ) : footerText ? (
           <span
             className={clsx(
-              'text-[10px] font-sans truncate',
-              isNavy ? 'text-slate-300' : 'text-on-surface-variant dark:text-slate-400'
+              'text-xs font-sans font-medium truncate',
+              isNavy ? 'text-slate-300' : 'text-slate-500 dark:text-slate-400'
             )}
           >
             {footerText}

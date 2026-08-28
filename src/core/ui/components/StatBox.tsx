@@ -47,15 +47,15 @@ export const StatBox: React.FC<StatBoxProps> = ({
         </div>
       )}
       <div className="min-w-0 flex-1">
-        <span className="text-[10px] font-sans text-outline dark:text-slate-400 uppercase font-semibold block truncate">
+        <span className="text-xs font-sans text-slate-500 dark:text-slate-400 uppercase font-bold tracking-wider block truncate mb-1">
           {label}
         </span>
-        <div className="flex items-baseline gap-1.5 flex-wrap">
-          <span className="text-base font-bold font-sans text-slate-900 dark:text-slate-100">
+        <div className="flex items-baseline gap-2 flex-wrap">
+          <span className="text-lg sm:text-xl font-bold font-sans text-slate-900 dark:text-slate-100">
             {primaryValue}
           </span>
           {secondaryValue && (
-            <span className="text-sm font-bold font-sans text-emerald-600 dark:text-emerald-400">
+            <span className="text-sm sm:text-base font-bold font-sans text-emerald-600 dark:text-emerald-400">
               {secondaryValue}
             </span>
           )}
