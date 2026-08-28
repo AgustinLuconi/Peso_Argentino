@@ -31,7 +31,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
               {icon}
             </span>
           )}
-          <h1 className="font-h1">
+          <h1 className="font-h1 text-slate-900 dark:text-slate-100">
             {title}
           </h1>
           {badgeText && (
@@ -40,7 +40,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({
             </Badge>
           )}
         </div>
-        <p className="font-subtitle">
+        <p className="font-subtitle text-slate-600 dark:text-slate-300">
           {subtitle}
         </p>
       </div>

@@ -1,7 +1,8 @@
 import React from 'react';
-import { Search, RefreshCw, Moon, Sun, ArrowRightLeft, Menu, Sparkles, Terminal } from 'lucide-react';
+import { Search, RefreshCw, Moon, Sun, ArrowRightLeft, Menu, Sparkles } from 'lucide-react';
 import { Button } from '../components/Button';
 import { Badge } from '../components/Badge';
+import { SolDeMayo } from '../components/SolDeMayo';
 import { useApp } from '@app/providers/AppContext';
 
 export interface NavbarProps {
@@ -31,7 +32,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   return (
     <header className="sticky top-0 z-50 bg-white/95 dark:bg-[#090C10]/95 backdrop-blur-md border-b border-surface-container-highest dark:border-[#1E2638] shadow-xs transition-colors duration-200">
       <div className="w-full max-w-[2400px] mx-auto px-3 sm:px-5 lg:px-6 2xl:px-8 3xl:px-10 h-14 sm:h-16 flex items-center justify-between gap-2 sm:gap-4">
-        {/* Left: Mobile Toggle & Brand Headline */}
+        {/* Left: Mobile Toggle & Brand Headline con Sol de Mayo */}
         <div className="flex items-center gap-2 sm:gap-4">
           <button
             onClick={onToggleSidebar}
@@ -42,12 +43,12 @@ export const Navbar: React.FC<NavbarProps> = ({
           </button>
 
           <div className="flex items-center gap-2 sm:gap-2.5">
-            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-slate-900 dark:bg-[#131822] border border-emerald-500/40 flex items-center justify-center text-emerald-400 shadow-emerald-glow shrink-0">
-              <Terminal size={17} />
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-amber-500/10 dark:bg-[#131822] border border-amber-500/40 flex items-center justify-center shadow-soft hover:shadow-gold shrink-0 transition-transform duration-200 hover:scale-105">
+              <SolDeMayo size={26} />
             </div>
             <div className="flex flex-col">
               <div className="flex items-center gap-1.5 sm:gap-2">
-                <span className="font-sans font-extrabold text-base sm:text-xl text-primary dark:text-white tracking-tight uppercase truncate">
+                <span className="font-sans font-extrabold text-base sm:text-xl text-slate-900 dark:text-white tracking-tight uppercase truncate">
                   PESO ARGENTINO
                 </span>
                 <Badge variant="emerald" size="sm" className="hidden sm:inline-flex">

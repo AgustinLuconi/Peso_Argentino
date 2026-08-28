@@ -10,8 +10,10 @@ import {
   Shield,
   X,
   CircleDot,
+  Layers,
 } from 'lucide-react';
 import { clsx } from 'clsx';
+import { SolDeMayo } from '../components/SolDeMayo';
 
 export type NavigationFeatureId =
   | 'dashboard'
@@ -51,91 +53,93 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
   isOpen,
   onClose,
 }) => {
-  const [expandedMenu, setExpandedMenu] = useState<string | null>(activeFeature);
+  const [expandedMenu, setExpandedMenu] = useState<NavigationFeatureId | null>(activeFeature);
 
   const navItems: NavItem[] = [
     {
       id: 'dashboard',
       label: 'Dashboard Principal',
-      sublabel: 'Cotizaciones Dólar, Brecha & Macro',
+      sublabel: 'Dólar, Brecha & Macro Oficial',
       icon: <LayoutDashboard size={18} />,
+      badge: 'EN VIVO',
       subItems: [
-        { id: 'quotes', label: 'Monitor de 7 Tipos de Dólar' },
-        { id: 'macro', label: 'Variables Monetarias & Reservas' },
-        { id: 'breach', label: 'Compresión de Brecha Cambiaria' },
+        { id: 'quotes', label: 'Cotizaciones Dólar (DolarApi)' },
+        { id: 'macro', label: 'KPIs Macroeconómicos BCRA' },
+        { id: 'breach', label: 'Brecha Cambiaria Oficial vs CCL' },
       ],
     },
     {
       id: 'markets',
-      label: 'Mercado de Capitales',
-      sublabel: 'Panel Merval, ADRs & Renta Fija',
+      label: 'Mercados & Renta Fija',
+      sublabel: 'BYMA, Merval, Bonos & CEDEARs',
       icon: <TrendingUp size={18} />,
-      badge: 'BYMA/NYSE',
+      badge: 'BYMA',
       subItems: [
-        { id: 'panel-lider', label: 'Acciones Panel Líder BYMA' },
-        { id: 'panel-general', label: 'Panel General Secundario' },
-        { id: 'curva-lecaps', label: 'Curva de Lecaps & Boncaps' },
-        { id: 'adrs', label: 'ADRs Wall Street (USD)' },
-        { id: 'cedears', label: 'CEDEARs en BYMA' },
-        { id: 'bonos-usd', label: 'Bonos Soberanos en USD' },
-        { id: 'bonos-pesos', label: 'Bonos Pesos & Curva CER' },
-        { id: 'bonos-extranjeros', label: 'Bonos Extranjeros & Treasuries' },
-        { id: 'commodities', label: 'Commodities Agro & Energía' },
+        { id: 'panel-lider', label: 'Panel Líder BYMA' },
+        { id: 'panel-general', label: 'Panel General' },
+        { id: 'cedears', label: 'CEDEARs en Wall Street' },
+        { id: 'sovereign-bonds', label: 'Bonos Hard Dollar (AL/GD)' },
+        { id: 'bopreal', label: 'Curva Bopreal BCRA' },
+        { id: 'cer-bonds', label: 'Bonos Tasa Fija & CER' },
+        { id: 'adrs', label: 'ADRs Argentinos en NYSE' },
+        { id: 'commodities', label: 'Commodities del Agro (Matba)' },
       ],
     },
     {
       id: 'lecaps-curve',
-      label: 'Curva de Lecaps & Boncaps',
-      sublabel: 'Estructura Temporal TEM, TNA & TEA',
-      icon: <TrendingUp size={18} className="text-gold" />,
+      label: 'Curva de Lecaps',
+      sublabel: 'Tasas ETTI, TEM & TNA Tesoro',
+      icon: <Layers size={18} />,
       badge: 'TASA FIJA',
       subItems: [
-        { id: 'chart', label: 'Gráfico Dinámico de Curva TEM' },
-        { id: 'simulator', label: 'Simulador de Inversión en Pesos' },
-        { id: 'table', label: 'Ficha Técnica & Tabla Comparativa' },
+        { id: 'curve-chart', label: 'Estructura ETTI (SVG Dinámico)' },
+        { id: 'arbitrage', label: 'Estrategias de Carry Trade' },
+        { id: 'table', label: 'Detalle de Letras & Boncaps' },
       ],
     },
     {
       id: 'bond-detail',
-      label: 'Detalle Bono AL30 & Renta Fija',
-      sublabel: 'Calculadora TIR, Paridad & Cupones',
+      label: 'Análisis Bono AL30',
+      sublabel: 'Calculadora TIR, Paridad & Cash Flow',
       icon: <Calculator size={18} />,
-      badge: 'INTERACTIVO',
+      badge: 'CALCULADORA',
       subItems: [
-        { id: 'calc', label: 'Calculadora de Inversión USD/ARS' },
-        { id: 'waterfall', label: 'Gráfico de Cascada de Flujo' },
-        { id: 'schedule', label: 'Cronograma de Cobros hasta 2030' },
+        { id: 'technical', label: 'Ficha Técnica & Amortización' },
+        { id: 'calculator', label: 'Calculadora de TIR y Rendimiento' },
+        { id: 'cashflow', label: 'Cronograma de Cupones 2025-2030' },
       ],
     },
     {
       id: 'institutional-stats',
-      label: 'Estadísticas BCRA & Macro',
-      sublabel: 'Base Monetaria, LEFIs, Tasas & Reservas',
+      label: 'Estadísticas BCRA',
+      sublabel: 'Balance, Reservas & Agregados',
       icon: <Landmark size={18} />,
+      badge: 'OFICIAL',
       subItems: [
-        { id: 'balance', label: 'Balance Consolidado BCRA' },
-        { id: 'series', label: 'Comparador de Series INDEC' },
-        { id: 'carry', label: 'Simulador de Tasa Real en Pesos' },
-        { id: 'rates', label: 'Cuadro de Tasas TNA/TEA/TEM' },
+        { id: 'balance', label: 'Balance General BCRA' },
+        { id: 'series', label: 'Series Comparativas Macro' },
+        { id: 'carry', label: 'Carry Trade & Tasas Reales' },
+        { id: 'rates', label: 'Tasas de Interés y Plazo Fijo' },
       ],
     },
     {
       id: 'political-analysis',
-      label: 'Análisis Político & Regulatorio',
-      sublabel: 'Monitor Legislativo, DNU & Gobernabilidad',
+      label: 'Análisis Político',
+      sublabel: 'Gobernabilidad, Leyes & RIGI',
       icon: <Scale size={18} />,
-      badge: 'RADAR',
+      badge: 'RIGI',
       subItems: [
-        { id: 'radar', label: 'Radar de Gobernabilidad' },
-        { id: 'rigi', label: 'Pipeline de Proyectos RIGI' },
-        { id: 'laws', label: 'Monitor de Leyes y Decretos' },
+        { id: 'radar', label: 'Radar de Riesgo Político' },
+        { id: 'rigi', label: 'Pipeline de Inversiones RIGI' },
+        { id: 'laws', label: 'Monitoreo de Leyes & DNU' },
       ],
     },
     {
       id: 'news-intelligence',
-      label: 'Intelligence & Noticias',
-      sublabel: 'Feed de Alto Impacto Macroeconómico',
+      label: 'Intelligence Feed',
+      sublabel: 'Noticias en Tiempo Real & IA',
       icon: <Newspaper size={18} />,
+      badge: 'IA FEED',
       subItems: [
         { id: 'brief', label: 'Síntesis Ejecutiva con IA' },
         { id: 'critical', label: 'Cables de Impacto Crítico' },
@@ -158,7 +162,7 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
       {/* Mobile Backdrop */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-primary/70 backdrop-blur-md z-50 lg:hidden transition-opacity duration-300"
+          className="fixed inset-0 bg-slate-950/70 backdrop-blur-md z-50 lg:hidden transition-opacity duration-300"
           onClick={onClose}
         />
       )}
@@ -166,20 +170,23 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
       {/* Sidebar Aside */}
       <aside
         className={clsx(
-          'fixed lg:sticky top-0 lg:top-[4.5rem] left-0 z-50 lg:z-30 h-full lg:h-[calc(100vh-5.5rem)] w-72 2xl:w-80 3xl:w-84 bg-white/95 dark:bg-[#081124]/95 backdrop-blur-md border-r border-surface-container-highest dark:border-[#1a2744] transition-all duration-300 ease-out flex flex-col justify-between overflow-y-auto shrink-0 shadow-lg lg:shadow-none lg:rounded-2xl lg:border',
+          'fixed lg:sticky top-0 lg:top-[4.5rem] left-0 z-50 lg:z-30 h-full lg:h-[calc(100vh-5.5rem)] w-72 2xl:w-80 3xl:w-84 bg-white/95 dark:bg-[#090C10]/95 backdrop-blur-md border-r border-surface-container-highest dark:border-[#1E2638] transition-all duration-300 ease-out flex flex-col justify-between overflow-y-auto shrink-0 shadow-lg lg:shadow-none lg:rounded-2xl lg:border',
           isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         )}
       >
         {/* Navigation List */}
         <div className="p-3 sm:p-4 space-y-4 sm:space-y-6">
           {/* Mobile Header with Close Button */}
-          <div className="flex items-center justify-between lg:hidden border-b border-surface-container-highest pb-3">
-            <span className="font-sans font-black text-base text-primary uppercase">
-              MENÚ INSTITUCIONAL
-            </span>
+          <div className="flex items-center justify-between lg:hidden border-b border-surface-container-highest dark:border-[#1E2638] pb-3">
+            <div className="flex items-center gap-2">
+              <SolDeMayo size={24} />
+              <span className="font-sans font-black text-base text-slate-900 dark:text-white uppercase">
+                PESO ARGENTINO
+              </span>
+            </div>
             <button
               onClick={onClose}
-              className="p-1.5 rounded-full text-outline hover:text-primary hover:bg-surface-container"
+              className="p-1.5 rounded-xl text-outline dark:text-slate-400 hover:text-emerald-500 hover:bg-surface-container dark:hover:bg-[#131822]"
               aria-label="Cerrar menú"
             >
               <X size={18} />
@@ -202,8 +209,8 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
                       className={clsx(
                         'w-full text-left p-2.5 sm:p-3 rounded-xl transition-all duration-200 flex items-start gap-2.5 sm:gap-3 group relative border select-none',
                         isActive
-                          ? 'bg-slate-900 dark:bg-[#131822] text-white dark:text-emerald-400 border-slate-800 dark:border-emerald-500/40 shadow-emerald-glow scale-[1.02] stroke-of-value'
-                          : 'bg-white dark:bg-[#0F141C] hover:bg-surface-container-low dark:hover:bg-[#161B26] text-on-surface dark:text-slate-100 border-transparent hover:border-surface-container-highest dark:hover:border-[#1E2638] hover:translate-x-1'
+                          ? 'bg-slate-950 dark:bg-[#131822] text-white dark:text-emerald-400 border-slate-800 dark:border-emerald-500/50 shadow-emerald-glow scale-[1.02] stroke-of-value'
+                          : 'bg-white dark:bg-[#0F141C] hover:bg-slate-100 dark:hover:bg-[#161B26] text-slate-900 dark:text-slate-100 border-transparent hover:border-surface-container-highest dark:hover:border-[#1E2638] hover:translate-x-1'
                       )}
                     >
                       <span
@@ -211,7 +218,7 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
                           'p-2 rounded-lg shrink-0 transition-colors',
                           isActive
                             ? 'bg-emerald-500/20 text-emerald-400'
-                            : 'bg-surface-container dark:bg-[#161B26] text-on-surface-variant dark:text-slate-300 group-hover:text-emerald-500 dark:group-hover:text-emerald-400'
+                            : 'bg-slate-100 dark:bg-[#161B26] text-slate-600 dark:text-slate-300 group-hover:text-emerald-500 dark:group-hover:text-emerald-400'
                         )}
                       >
                         {item.icon}
@@ -219,7 +226,14 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
 
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between gap-1">
-                          <span className="font-sans font-bold text-xs 2xl:text-sm truncate text-slate-900 dark:text-slate-100">
+                          <span
+                            className={clsx(
+                              'font-sans font-bold text-xs 2xl:text-sm truncate transition-colors',
+                              isActive
+                                ? 'text-white dark:text-emerald-400'
+                                : 'text-slate-900 dark:text-slate-100 group-hover:text-emerald-600 dark:group-hover:text-emerald-400'
+                            )}
+                          >
                             {item.label}
                           </span>
                           {item.badge && (
@@ -237,8 +251,10 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
                         </div>
                         <p
                           className={clsx(
-                            'text-[11px] 2xl:text-xs font-sans truncate mt-0.5',
-                            isActive ? 'text-slate-300 dark:text-emerald-300/80' : 'text-on-surface-variant dark:text-slate-400'
+                            'text-[11px] 2xl:text-xs font-sans truncate mt-0.5 transition-colors',
+                            isActive
+                              ? 'text-slate-300 dark:text-emerald-300/80'
+                              : 'text-on-surface-variant dark:text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-200'
                           )}
                         >
                           {item.sublabel}
