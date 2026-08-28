@@ -30,19 +30,19 @@ export function Table<T>({
   return (
     <div
       className={twMerge(
-        'w-full overflow-x-auto rounded-2xl border border-surface-container-highest dark:border-[#1a2744] bg-white dark:bg-[#081124] shadow-soft',
+        'w-full overflow-x-auto rounded-2xl border border-surface-container-highest dark:border-[#1E2638] bg-white dark:bg-[#0F141C] shadow-soft',
         className
       )}
     >
       <table className="w-full text-left border-collapse">
         <thead>
-          <tr className="bg-surface-container-low dark:bg-[#0c1730] border-b border-surface-container-highest dark:border-[#1a2744]">
+          <tr className="bg-surface-container-low dark:bg-[#131822] border-b border-surface-container-highest dark:border-[#1E2638]">
             {columns.map((col, idx) => (
               <th
                 key={idx}
                 style={{ width: col.width }}
                 className={clsx(
-                  'font-sans text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-outline select-none first:rounded-tl-2xl last:rounded-tr-2xl',
+                  'font-sans text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-outline dark:text-slate-300 select-none first:rounded-tl-2xl last:rounded-tr-2xl',
                   dense ? 'py-2 px-3' : 'py-3 px-4',
                   col.align === 'right' && 'text-right',
                   col.align === 'center' && 'text-center',
@@ -54,12 +54,12 @@ export function Table<T>({
             ))}
           </tr>
         </thead>
-        <tbody className="divide-y divide-surface-container-high dark:divide-[#1a2744] font-sans text-xs">
+        <tbody className="divide-y divide-surface-container-high dark:divide-[#1E2638] font-sans text-xs text-slate-900 dark:text-slate-100">
           {data.length === 0 ? (
             <tr>
               <td
                 colSpan={columns.length}
-                className="text-center py-8 text-outline font-sans text-xs"
+                className="text-center py-8 text-outline dark:text-slate-400 font-sans text-xs"
               >
                 No se encontraron registros disponibles.
               </td>
@@ -72,8 +72,8 @@ export function Table<T>({
                 className={clsx(
                   'transition-all duration-150',
                   onRowClick
-                    ? 'cursor-pointer hover:bg-surface-container-low/80 dark:hover:bg-[#101e3d] hover:translate-x-0.5'
-                    : 'hover:bg-surface-container-lowest dark:hover:bg-[#0c1730]',
+                    ? 'cursor-pointer hover:bg-surface-container-low/80 dark:hover:bg-[#161B26] hover:translate-x-0.5'
+                    : 'hover:bg-surface-container-lowest dark:hover:bg-[#131822]',
                   rowIdx === data.length - 1 && 'first:rounded-bl-2xl last:rounded-br-2xl'
                 )}
               >

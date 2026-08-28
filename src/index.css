@@ -96,18 +96,51 @@
     color: #94A3B8 !important;
   }
 
+  .dark .text-outline-variant {
+    color: #64748B !important;
+  }
+
   .dark .font-subtitle {
     color: #94A3B8 !important;
   }
 
   .dark .font-eyebrow {
-    color: #CBD5E1 !important;
+    color: #94A3B8 !important;
+  }
+
+  .dark th {
+    color: #94A3B8 !important;
+  }
+
+  .dark h1, .dark .font-h1,
+  .dark h2, .dark .font-h2,
+  .dark h3, .dark .font-h3,
+  .dark h4, .dark .font-h4 {
+    color: #F8FAFC !important;
   }
 
   .dark .border-surface-container-highest,
   .dark .border-surface-container-high,
   .dark .border-surface-container {
     border-color: #1E2638 !important;
+  }
+
+  /* Mapeo universal de contenedores legacy oscuros a la paleta Obsidian */
+  .dark .bg-\[\#081124\],
+  .dark .bg-\[\#0c1730\],
+  .dark .bg-\[\#071228\],
+  .dark .bg-\[\#101e3d\],
+  .dark .bg-\[\#040914\],
+  .dark .bg-\[\#050b18\],
+  .dark .bg-\[\#0b1736\] {
+    background-color: #0F141C !important;
+    border-color: #1E2638 !important;
+  }
+
+  .dark .hover\:bg-\[\#101e3d\]:hover,
+  .dark .hover\:bg-\[\#0c1730\]:hover,
+  .dark .hover\:bg-\[\#14244a\]:hover {
+    background-color: #161B26 !important;
   }
 
   /* ========================================================================

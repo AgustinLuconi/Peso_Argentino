@@ -115,10 +115,10 @@ export const DollarQuotesCard: React.FC<DollarQuotesCardProps> = ({
           return (
             <div
               key={quote.type}
-              className={`bg-surface-container-low dark:bg-[#081124] border transition-all duration-300 rounded-2xl overflow-hidden flex flex-col justify-between group shadow-soft ${
+              className={`bg-surface-container-low dark:bg-[#0F141C] border transition-all duration-300 rounded-2xl overflow-hidden flex flex-col justify-between group shadow-soft ${
                 isExpanded
-                  ? 'border-gold shadow-lg bg-champagne-light/30 dark:bg-[#101e3d]'
-                  : 'border-surface-container-high dark:border-[#1a2744] hover:border-gold/60 hover:-translate-y-1 hover:shadow-md'
+                  ? 'border-emerald-500 shadow-lg bg-emerald-500/5 dark:bg-[#131822]'
+                  : 'border-surface-container-high dark:border-[#1E2638] hover:border-emerald-500/60 hover:-translate-y-1 hover:shadow-md'
               }`}
             >
               {/* Card Body */}
@@ -128,7 +128,7 @@ export const DollarQuotesCard: React.FC<DollarQuotesCardProps> = ({
               >
                 {/* Top row: Name & 24h variation */}
                 <div className="flex items-start justify-between gap-1">
-                  <span className="font-sans font-bold text-xs sm:text-sm text-primary uppercase tracking-wide truncate">
+                  <span className="font-sans font-bold text-xs sm:text-sm text-slate-900 dark:text-slate-100 uppercase tracking-wide truncate">
                     {quote.name.split('(')[0]}
                   </span>
                   <TrendIndicator value={quote.variation24h.value} size="sm" />
@@ -136,28 +136,28 @@ export const DollarQuotesCard: React.FC<DollarQuotesCardProps> = ({
 
                 {/* Middle row: Buy / Sell Prices */}
                 <div className="grid grid-cols-2 gap-1.5 my-0.5">
-                  <div className="bg-white/90 dark:bg-[#0c1730] p-2.5 rounded-xl border border-surface-container-highest dark:border-[#1a2744] transition-colors group-hover:border-gold/30 shadow-soft">
-                    <span className="font-eyebrow text-[9px] block">
+                  <div className="bg-white/90 dark:bg-[#131822] p-2.5 rounded-xl border border-surface-container-highest dark:border-[#1E2638] transition-colors group-hover:border-emerald-500/30 shadow-soft">
+                    <span className="font-eyebrow text-[9px] block text-outline dark:text-slate-400">
                       Compra
                     </span>
-                    <span className="text-xs 2xl:text-sm font-mono-tabular font-bold text-on-surface">
+                    <span className="text-xs 2xl:text-sm font-mono-tabular font-bold text-slate-900 dark:text-slate-100">
                       {quote.buyPrice.format({ showCurrency: true })}
                     </span>
                   </div>
-                  <div className="bg-white/90 dark:bg-[#0c1730] p-2.5 rounded-xl border border-surface-container-highest dark:border-[#1a2744] transition-colors group-hover:border-gold/30 shadow-soft">
-                    <span className="font-eyebrow text-[9px] block">
+                  <div className="bg-white/90 dark:bg-[#131822] p-2.5 rounded-xl border border-surface-container-highest dark:border-[#1E2638] transition-colors group-hover:border-emerald-500/30 shadow-soft">
+                    <span className="font-eyebrow text-[9px] block text-outline dark:text-slate-400">
                       Venta
                     </span>
-                    <span className="text-xs 2xl:text-sm font-mono-tabular font-bold text-primary">
+                    <span className="text-xs 2xl:text-sm font-mono-tabular font-bold text-emerald-600 dark:text-emerald-400">
                       {quote.sellPrice.format({ showCurrency: true })}
                     </span>
                   </div>
                 </div>
 
                 {/* Bottom row: Spread & Sparkline */}
-                <div className="pt-2 border-t border-surface-container-highest dark:border-[#1a2744] flex items-center justify-between text-[11px] font-sans text-on-surface-variant">
+                <div className="pt-2 border-t border-surface-container-highest dark:border-[#1E2638] flex items-center justify-between text-[11px] font-sans text-on-surface-variant dark:text-slate-300">
                   <div className="flex items-center gap-1 font-mono-tabular text-[10px]">
-                    <ArrowRightLeft size={11} className="text-outline shrink-0" />
+                    <ArrowRightLeft size={11} className="text-outline dark:text-slate-400 shrink-0" />
                     <span className="truncate">Spr: {quote.spread.format({ showCurrency: true })}</span>
                   </div>
                   <div className="w-14 h-5 shrink-0 ml-1">
@@ -173,12 +173,12 @@ export const DollarQuotesCard: React.FC<DollarQuotesCardProps> = ({
               {/* Expand Toggle Button Bar */}
               <button
                 onClick={(e) => toggleExpand(quote.type, e)}
-                className="w-full px-3 py-1.5 bg-surface-container/60 dark:bg-[#0c1730] hover:bg-surface-container border-t border-surface-container-high dark:border-[#1a2744] text-[10px] font-sans font-bold text-primary flex items-center justify-between transition-colors select-none"
+                className="w-full px-3 py-1.5 bg-surface-container/60 dark:bg-[#131822] hover:bg-surface-container dark:hover:bg-[#161B26] border-t border-surface-container-high dark:border-[#1E2638] text-[10px] font-sans font-bold text-slate-900 dark:text-slate-200 flex items-center justify-between transition-colors select-none"
               >
                 <span>{isExpanded ? 'Ocultar Ficha' : 'Ver Ficha Operativa'}</span>
                 <ChevronDown
                   size={13}
-                  className={`text-gold transition-transform duration-300 ${
+                  className={`text-emerald-500 transition-transform duration-300 ${
                     isExpanded ? 'rotate-180' : ''
                   }`}
                 />
@@ -186,25 +186,25 @@ export const DollarQuotesCard: React.FC<DollarQuotesCardProps> = ({
 
               {/* Animated Expandable Details Panel */}
               {isExpanded && (
-                <div className="p-3 bg-white/95 dark:bg-[#0c1730] border-t border-gold/30 text-[11px] font-sans space-y-2 animate-in fade-in slide-in-from-top-2 duration-200 shadow-soft">
+                <div className="p-3 bg-white/95 dark:bg-[#131822] border-t border-emerald-500/30 text-[11px] font-sans space-y-2 animate-in fade-in slide-in-from-top-2 duration-200 shadow-soft">
                   <div className="space-y-1">
-                    <span className="font-eyebrow text-[9px] block">Régimen Impositivo:</span>
-                    <p className="text-on-surface text-[10px] leading-snug">{details.taxes}</p>
+                    <span className="font-eyebrow text-[9px] block text-outline dark:text-slate-400">Régimen Impositivo:</span>
+                    <p className="text-slate-900 dark:text-slate-200 text-[10px] leading-snug">{details.taxes}</p>
                   </div>
 
-                  <div className="space-y-1 pt-1 border-t border-surface-container-high dark:border-[#1a2744]">
-                    <span className="font-eyebrow text-[9px] block">Parking & Liquidación:</span>
-                    <p className="text-on-surface text-[10px] leading-snug">{details.parking}</p>
+                  <div className="space-y-1 pt-1 border-t border-surface-container-high dark:border-[#1E2638]">
+                    <span className="font-eyebrow text-[9px] block text-outline dark:text-slate-400">Parking & Liquidación:</span>
+                    <p className="text-slate-900 dark:text-slate-200 text-[10px] leading-snug">{details.parking}</p>
                   </div>
 
-                  <div className="space-y-1 pt-1 border-t border-surface-container-high dark:border-[#1a2744]">
-                    <span className="font-eyebrow text-[9px] block">Mercado / Ámbito:</span>
-                    <p className="text-on-surface text-[10px] leading-snug">{details.market}</p>
+                  <div className="space-y-1 pt-1 border-t border-surface-container-high dark:border-[#1E2638]">
+                    <span className="font-eyebrow text-[9px] block text-outline dark:text-slate-400">Mercado / Ámbito:</span>
+                    <p className="text-slate-900 dark:text-slate-200 text-[10px] leading-snug">{details.market}</p>
                   </div>
 
-                  <div className="pt-1 border-t border-surface-container-high dark:border-[#1a2744]">
-                    <span className="font-eyebrow text-[9px] block">Operatividad:</span>
-                    <p className="text-on-surface-variant text-[10px] leading-snug">{details.spreadDetail}</p>
+                  <div className="pt-1 border-t border-surface-container-high dark:border-[#1E2638]">
+                    <span className="font-eyebrow text-[9px] block text-outline dark:text-slate-400">Operatividad:</span>
+                    <p className="text-on-surface-variant dark:text-slate-300 text-[10px] leading-snug">{details.spreadDetail}</p>
                   </div>
                 </div>
               )}
