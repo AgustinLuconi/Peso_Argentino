@@ -35,6 +35,7 @@ export class BackendNewsRepository implements NewsRepositoryPort {
                     title: n.title,
                     summary: n.summary,
                     source: n.source,
+                    scope: n.scope,
                     category: 'macro',
                     impactLevel: n.impactLevel,
                     publishedAt: n.publishedAt,

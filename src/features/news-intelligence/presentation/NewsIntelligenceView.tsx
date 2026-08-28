@@ -12,6 +12,7 @@ export const NewsIntelligenceView: React.FC<{
   activeSubItem?: string | null;
 }> = ({ activeSubItem }) => {
   const [data, setData] = useState<NewsIntelligenceDto | null>(null);
+  const [filterScope, setFilterScope] = useState<'all' | 'nacional' | 'internacional'>('all');
   const [filterImpact, setFilterImpact] = useState<string>('all');
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -52,30 +53,36 @@ export const NewsIntelligenceView: React.FC<{
     return (
       <div className="flex items-center justify-center py-24">
         <div className="flex flex-col items-center gap-3">
-          <RefreshCw className="animate-spin text-primary" size={28} />
-          <span className="font-eyebrow">
-            Sintetizando cables de noticias desde el backend...
+          <RefreshCw className="animate-spin text-primary dark:text-gold" size={28} />
+          <span className="font-eyebrow text-on-surface">
+            Sintetizando cables de noticias nacionales e internacionales...
           </span>
         </div>
       </div>
     );
   }
 
-  const filteredNews = data.newsList.filter((item) => {
-    if (filterImpact === 'all') return true;
-    return item.impactLevel === filterImpact;
+  const allNewsCombined = data.breakingNews ? [data.breakingNews, ...data.newsList] : data.newsList;
+
+  const filteredNews = allNewsCombined.filter((item) => {
+    const matchesImpact = filterImpact === 'all' || item.impactLevel === filterImpact;
+    const matchesScope = filterScope === 'all' || item.scope === filterScope;
+    return matchesImpact && matchesScope;
   });
+
+  const countNacionales = allNewsCombined.filter((n) => n.scope === 'nacional').length;
+  const countInternacionales = allNewsCombined.filter((n) => n.scope === 'internacional').length;
 
   return (
     <div className="space-y-6 animate-page-enter">
       {/* Header Banner */}
-      <div className="bg-white border border-surface-container-highest p-5 sm:p-6 rounded-2xl shadow-tactile stroke-of-value card-interactive flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-white dark:bg-[#071228] border border-surface-container-highest dark:border-[#1a2744] p-5 sm:p-6 rounded-2xl shadow-tactile stroke-of-value card-interactive flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="font-h1 mb-1">
+          <h1 className="font-h1 mb-1 text-primary dark:text-slate-100">
             Intelligence Feed & Noticias Financieras
           </h1>
-          <p className="font-subtitle max-w-3xl">
-            Monitoreo en tiempo real de noticias con impacto macroeconómico directo sobre la deuda soberana, el tipo de cambio y los mercados.
+          <p className="font-subtitle max-w-3xl text-on-surface-variant dark:text-slate-300">
+            Monitoreo en tiempo real de fuentes nacionales (Ámbito, Cronista, Infobae, BCRA) e internacionales (Bloomberg, WSJ, Financial Times, Reuters) con impacto sobre bonos, tipo de cambio y mercados.
           </p>
         </div>
 
@@ -84,7 +91,7 @@ export const NewsIntelligenceView: React.FC<{
             variant="outline"
             size="sm"
             onClick={() => fetchNews(true)}
-            icon={<RefreshCw size={14} className={refreshing ? 'animate-spin text-primary' : ''} />}
+            icon={<RefreshCw size={14} className={refreshing ? 'animate-spin text-primary dark:text-gold' : ''} />}
           >
             {refreshing ? 'Actualizando...' : 'Actualizar Noticias'}
           </Button>
@@ -96,32 +103,46 @@ export const NewsIntelligenceView: React.FC<{
         <ExecutiveBriefCard topAssets={data.topAffectedAssets} />
       </div>
 
-      {/* News Feed with Impact Filters */}
+      {/* News Feed with Scope & Impact Filters */}
       <div id="news-critical-section" className="space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-3.5 rounded-2xl border border-surface-container-highest shadow-soft">
-          <div className="flex items-center gap-2">
-            <Filter size={16} className="text-gold" />
-            <h2 className="font-h3 text-xs sm:text-sm">
-              Cables de Impacto Recientes ({filteredNews.length})
-            </h2>
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 bg-white dark:bg-[#071228] p-3.5 rounded-2xl border border-surface-container-highest dark:border-[#1a2744] shadow-soft">
+          {/* Scope Selector Tabs */}
+          <div className="flex items-center gap-1.5 flex-wrap">
+            {[
+              { id: 'all', label: `Todas (${allNewsCombined.length})` },
+              { id: 'nacional', label: `🇦🇷 Locales / BCRA (${countNacionales})` },
+              { id: 'internacional', label: `🌐 Wall Street & Global (${countInternacionales})` },
+            ].map((s) => (
+              <button
+                key={s.id}
+                onClick={() => setFilterScope(s.id as any)}
+                className={`px-3 py-1.5 text-xs font-sans font-bold rounded-xl transition-all duration-200 ${
+                  filterScope === s.id
+                    ? 'bg-gold text-slate-950 shadow-md font-extrabold'
+                    : 'bg-surface-container-low dark:bg-[#0c1936] text-on-surface hover:bg-surface-container border border-surface-container-highest dark:border-[#1a2744]'
+                }`}
+              >
+                {s.label}
+              </button>
+            ))}
           </div>
 
-          {/* Filter Pills */}
+          {/* Impact Filter Pills */}
           <div className="flex items-center gap-1.5 flex-wrap">
-            <span className="font-eyebrow text-[10px] mr-1">Filtrar:</span>
+            <span className="font-eyebrow text-[10px] mr-1 text-on-surface-variant dark:text-slate-400">Impacto:</span>
             {[
               { id: 'all', label: 'Todos' },
-              { id: 'critico', label: 'Crítico (Mercado)' },
-              { id: 'alto', label: 'Alto Impacto' },
+              { id: 'critico', label: 'Crítico' },
+              { id: 'alto', label: 'Alto' },
               { id: 'moderado', label: 'Moderado' },
             ].map((f) => (
               <button
                 key={f.id}
                 onClick={() => setFilterImpact(f.id)}
-                className={`px-3 py-1 text-xs font-sans font-semibold rounded-full transition-all duration-200 ${
+                className={`px-2.5 py-1 text-xs font-sans font-semibold rounded-full transition-all duration-200 ${
                   filterImpact === f.id
-                    ? 'bg-primary text-white shadow-sm scale-105'
-                    : 'bg-surface-container-low text-on-surface hover:bg-surface-container border border-surface-container-highest'
+                    ? 'bg-primary dark:bg-slate-200 text-white dark:text-slate-950 shadow-xs'
+                    : 'bg-surface-container-low dark:bg-[#0c1936] text-on-surface hover:bg-surface-container border border-surface-container-highest dark:border-[#1a2744]'
                 }`}
               >
                 {f.label}

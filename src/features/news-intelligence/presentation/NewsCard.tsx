@@ -71,12 +71,21 @@ export const NewsCard: React.FC<{
       }`}
     >
       {/* Top Metadata */}
-      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-surface-container-highest pb-2.5">
-        <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-surface-container-highest dark:border-[#1a2744] pb-2.5">
+        <div className="flex items-center gap-1.5 flex-wrap">
           <Badge variant={currentImpact.variant} size="sm">
             {currentImpact.label}
           </Badge>
-          <span className="font-eyebrow text-outline">
+          {news.scope === 'internacional' ? (
+            <span className="px-2 py-0.5 text-[10px] font-sans font-bold bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 rounded-full flex items-center gap-1">
+              🌐 Wall Street
+            </span>
+          ) : (
+            <span className="px-2 py-0.5 text-[10px] font-sans font-bold bg-gold/10 text-gold-dark dark:text-gold border border-gold/20 rounded-full flex items-center gap-1">
+              🇦🇷 Local
+            </span>
+          )}
+          <span className="font-eyebrow text-outline dark:text-slate-300 font-semibold">
             {news.source}
           </span>
           {aiClassification && (
