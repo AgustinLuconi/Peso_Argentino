@@ -322,24 +322,24 @@ export const CommandPaletteModal: React.FC<CommandPaletteModalProps> = ({
               navigator.clipboard.writeText(calculatedResult.result);
               onClose();
             }}
-            className="p-4 mx-3 my-2.5 bg-emerald-500/10 dark:bg-emerald-950/30 border border-emerald-500/40 rounded-2xl cursor-pointer hover:bg-emerald-500/15 transition-colors flex items-center justify-between"
+            className="p-3.5 sm:p-4 mx-3 my-2.5 bg-emerald-500/10 dark:bg-emerald-950/30 border border-emerald-500/40 rounded-2xl cursor-pointer hover:bg-emerald-500/15 transition-colors flex items-center justify-between gap-2 min-w-0 overflow-hidden"
           >
-            <div className="space-y-0.5">
-              <div className="flex items-center gap-2">
-                <Zap size={15} className="text-emerald-500" />
-                <span className="text-xs font-mono font-bold text-slate-700 dark:text-slate-300">
+            <div className="space-y-0.5 min-w-0 flex-1 overflow-hidden">
+              <div className="flex items-center gap-2 min-w-0">
+                <Zap size={15} className="text-emerald-500 shrink-0" />
+                <span className="text-xs font-mono font-bold text-slate-700 dark:text-slate-300 truncate block">
                   {calculatedResult.title}
                 </span>
               </div>
-              <span className="text-xl sm:text-2xl font-mono font-extrabold text-emerald-600 dark:text-emerald-400 block">
+              <span className="text-lg sm:text-xl font-mono font-extrabold text-emerald-600 dark:text-emerald-400 block truncate tracking-tight">
                 {calculatedResult.result}
               </span>
-              <p className="text-[11px] font-sans text-slate-500 dark:text-slate-400">
+              <p className="text-[11px] font-sans text-slate-500 dark:text-slate-400 truncate">
                 {calculatedResult.subtitle} · (Haz clic o Enter para copiar)
               </p>
             </div>
 
-            <kbd className="hidden sm:inline-block px-2.5 py-1 text-xs font-mono font-bold bg-white dark:bg-[#0F141C] text-emerald-500 border border-emerald-500/30 rounded-xl shadow-xs">
+            <kbd className="hidden sm:inline-block px-2.5 py-1 text-xs font-mono font-bold bg-white dark:bg-[#0F141C] text-emerald-500 border border-emerald-500/30 rounded-xl shadow-xs shrink-0">
               Enter ↵
             </kbd>
           </div>

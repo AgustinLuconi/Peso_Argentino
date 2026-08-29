@@ -217,32 +217,32 @@ export const CarryTradeSimulator: React.FC = () => {
               </span>
             </div>
 
-            <div className="mt-3 flex items-baseline justify-between">
-              <div>
-                <span className="text-[11px] font-sans text-slate-600 dark:text-slate-300 block">
+            <div className="mt-3 flex items-baseline justify-between gap-2 flex-wrap sm:flex-nowrap min-w-0">
+              <div className="min-w-0 flex-1">
+                <span className="text-[11px] font-sans text-slate-600 dark:text-slate-300 block truncate">
                   Capital Final Obtenido:
                 </span>
-                <span className="text-xl sm:text-2xl font-mono-tabular font-extrabold text-slate-900 dark:text-white">
+                <span className="text-lg sm:text-xl xl:text-2xl font-mono-tabular font-extrabold text-slate-900 dark:text-white block truncate tracking-tight">
                   ${lecapFinalArs.toLocaleString('es-AR', { maximumFractionDigits: 0 })}
                 </span>
               </div>
 
-              <div className="text-right">
-                <span className="text-[11px] font-sans text-slate-600 dark:text-slate-300 block">
+              <div className="text-right min-w-0 flex-1">
+                <span className="text-[11px] font-sans text-slate-600 dark:text-slate-300 block truncate">
                   Ganancia Neta en Pesos:
                 </span>
-                <span className="text-lg sm:text-xl font-mono-tabular font-extrabold text-emerald-600 dark:text-emerald-400">
+                <span className="text-base sm:text-lg xl:text-xl font-mono-tabular font-extrabold text-emerald-600 dark:text-emerald-400 block truncate tracking-tight">
                   +${lecapProfitArs.toLocaleString('es-AR', { maximumFractionDigits: 0 })}
                 </span>
               </div>
             </div>
 
             {/* Ganancia en Dólares (Carry Trade) */}
-            <div className="mt-3 pt-3 border-t border-emerald-500/30 flex items-center justify-between text-xs font-mono">
-              <span className="text-slate-600 dark:text-slate-300">
+            <div className="mt-3 pt-3 border-t border-emerald-500/30 flex items-center justify-between gap-2 text-xs font-mono min-w-0 truncate">
+              <span className="text-slate-600 dark:text-slate-300 truncate">
                 Rendimiento en Dólares (USD):
               </span>
-              <span className="font-extrabold text-emerald-600 dark:text-emerald-400 flex items-center gap-1">
+              <span className="font-extrabold text-emerald-600 dark:text-emerald-400 flex items-center gap-1 shrink-0">
                 <TrendingUp size={13} /> +US$ {lecapProfitUsd.toFixed(1)} (+{lecapYieldUsdPercent.toFixed(2)}% en USD)
               </span>
             </div>
@@ -250,27 +250,27 @@ export const CarryTradeSimulator: React.FC = () => {
 
           {/* Comparativa con Plazo Fijo & Inflación */}
           <div className="grid grid-cols-2 gap-3">
-            <div className="p-3 bg-surface-container-low dark:bg-[#0F141C] border border-surface-container-high dark:border-[#1E2638] rounded-xl space-y-1">
-              <span className="text-[10px] font-sans font-bold uppercase text-slate-500 dark:text-slate-400 block">
+            <div className="p-3 bg-surface-container-low dark:bg-[#0F141C] border border-surface-container-high dark:border-[#1E2638] rounded-xl space-y-1 min-w-0 overflow-hidden">
+              <span className="text-[10px] font-sans font-bold uppercase text-slate-500 dark:text-slate-400 block truncate">
                 Plazo Fijo Bancario
               </span>
-              <span className="text-sm sm:text-base font-mono font-bold text-slate-900 dark:text-slate-100 block">
+              <span className="text-sm sm:text-base font-mono font-bold text-slate-900 dark:text-slate-100 block truncate tracking-tight">
                 ${pfFinalArs.toLocaleString('es-AR', { maximumFractionDigits: 0 })}
               </span>
-              <span className="text-[10px] font-mono text-slate-500 block">
+              <span className="text-[10px] font-mono text-slate-500 block truncate">
                 Ganancia: +${pfProfitArs.toLocaleString('es-AR', { maximumFractionDigits: 0 })}
               </span>
             </div>
 
-            <div className="p-3 bg-surface-container-low dark:bg-[#0F141C] border border-surface-container-high dark:border-[#1E2638] rounded-xl space-y-1">
-              <span className="text-[10px] font-sans font-bold uppercase text-slate-500 dark:text-slate-400 block">
+            <div className="p-3 bg-surface-container-low dark:bg-[#0F141C] border border-surface-container-high dark:border-[#1E2638] rounded-xl space-y-1 min-w-0 overflow-hidden">
+              <span className="text-[10px] font-sans font-bold uppercase text-slate-500 dark:text-slate-400 block truncate">
                 Inflación Proyectada ({monthlyInflation}%/m)
               </span>
-              <span className="text-sm sm:text-base font-mono font-bold text-amber-500 block">
+              <span className="text-sm sm:text-base font-mono font-bold text-amber-500 block truncate tracking-tight">
                 -${inflationArs.toLocaleString('es-AR', { maximumFractionDigits: 0 })}
               </span>
-              <span className="text-[10px] font-mono text-emerald-500 block font-bold">
-                ✓ Tasa Real Positiva (+{(lecapTotalRate * 100 - inflationTotalRate * 100).toFixed(1)}%)
+              <span className="text-[10px] font-mono text-emerald-500 block font-bold truncate">
+                ✓ Tasa Real (+{(lecapTotalRate * 100 - inflationTotalRate * 100).toFixed(1)}%)
               </span>
             </div>
           </div>

@@ -52,79 +52,79 @@ export const BcraBalanceCard: React.FC<{ balance: BcraBalanceSheet }> = ({
       {/* Grid of Key Balance Sheet Components */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
         {/* Gross Reserves */}
-        <div className="p-4 bg-surface-container-low dark:bg-[#0F141C] rounded-2xl border border-surface-container-high dark:border-[#1E2638] space-y-1.5 hover:-translate-y-1 transition-all duration-200 shadow-soft">
+        <div className="p-4 bg-surface-container-low dark:bg-[#0F141C] rounded-2xl border border-surface-container-high dark:border-[#1E2638] space-y-1.5 hover:-translate-y-1 transition-all duration-200 shadow-soft min-w-0 overflow-hidden">
           <div className="flex items-center justify-between text-outline dark:text-slate-400 text-[10px] uppercase font-bold">
             <span className="font-eyebrow">Reservas Brutas</span>
-            <span className="px-1.5 py-0.2 bg-blue-500/10 text-blue-500 rounded text-[9px] font-mono font-bold">
+            <span className="px-1.5 py-0.5 bg-blue-500/10 text-blue-500 rounded text-[9px] font-mono font-bold">
               {grossReservesScale.scaleLabel}
             </span>
           </div>
-          <span className="text-xl sm:text-2xl font-mono-tabular font-extrabold text-slate-900 dark:text-slate-100 block">
+          <span className="text-lg sm:text-xl xl:text-2xl font-mono-tabular font-extrabold text-slate-900 dark:text-slate-100 block truncate tracking-tight">
             {displayCurrency === 'USD'
               ? grossReservesScale.formatted
               : reservesInArs.format({ compact: true })}
           </span>
-          <span className="text-[11px] text-emerald-600 dark:text-emerald-400 font-mono font-medium block flex items-center justify-between">
-            <span>+US$ 145 M última rueda</span>
-            <span className="text-[10px] text-on-surface-variant dark:text-slate-400">
+          <div className="text-[11px] text-emerald-600 dark:text-emerald-400 font-mono font-medium flex items-center justify-between gap-1 min-w-0 truncate">
+            <span className="truncate">+US$ 145 M última rueda</span>
+            <span className="text-[10px] text-on-surface-variant dark:text-slate-400 truncate shrink-0">
               {displayCurrency === 'USD' ? `≈ ${reservesInArs.format({ compact: true })}` : `≈ ${grossReservesScale.formatted}`}
             </span>
-          </span>
+          </div>
         </div>
 
         {/* Net Reserves */}
-        <div className="p-4 bg-emerald-50/70 dark:bg-emerald-950/20 rounded-2xl border border-emerald-200/60 dark:border-emerald-800/40 space-y-1.5 hover:-translate-y-1 transition-all duration-200 shadow-soft">
+        <div className="p-4 bg-emerald-50/70 dark:bg-emerald-950/20 rounded-2xl border border-emerald-200/60 dark:border-emerald-800/40 space-y-1.5 hover:-translate-y-1 transition-all duration-200 shadow-soft min-w-0 overflow-hidden">
           <div className="flex items-center justify-between text-emerald-800 dark:text-emerald-400 text-[10px] uppercase font-bold">
             <span className="font-eyebrow text-emerald-800 dark:text-emerald-400 font-bold">Reservas Netas</span>
-            <span className="px-1.5 py-0.2 bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 rounded text-[9px] font-mono font-bold">
+            <span className="px-1.5 py-0.5 bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 rounded text-[9px] font-mono font-bold">
               {netReservesScale.scaleLabel}
             </span>
           </div>
-          <span className="text-xl sm:text-2xl font-mono-tabular font-extrabold text-emerald-600 dark:text-emerald-400 block">
+          <span className="text-lg sm:text-xl xl:text-2xl font-mono-tabular font-extrabold text-emerald-600 dark:text-emerald-400 block truncate tracking-tight">
             {displayCurrency === 'USD'
               ? netReservesScale.formatted
               : Money.convert(balance.netReservesUsd.amount, 'USD', 'ARS', referenceUsdRate).format({ compact: true })}
           </span>
-          <span className="text-[11px] text-emerald-700 dark:text-emerald-300 font-sans font-medium block">
+          <span className="text-[11px] text-emerald-700 dark:text-emerald-300 font-sans font-medium block truncate">
             Superávit en terreno positivo
           </span>
         </div>
 
         {/* Monetary Base */}
-        <div className="p-4 bg-surface-container-low dark:bg-[#0F141C] rounded-2xl border border-surface-container-high dark:border-[#1E2638] space-y-1.5 hover:-translate-y-1 transition-all duration-200 shadow-soft">
+        <div className="p-4 bg-surface-container-low dark:bg-[#0F141C] rounded-2xl border border-surface-container-high dark:border-[#1E2638] space-y-1.5 hover:-translate-y-1 transition-all duration-200 shadow-soft min-w-0 overflow-hidden">
           <div className="flex items-center justify-between text-outline dark:text-slate-400 text-[10px] uppercase font-bold">
             <span className="font-eyebrow">Base Monetaria</span>
-            <span className="px-1.5 py-0.2 bg-amber-500/10 text-amber-500 rounded text-[9px] font-mono font-bold">
+            <span className="px-1.5 py-0.5 bg-amber-500/10 text-amber-500 rounded text-[9px] font-mono font-bold">
               {displayCurrency === 'ARS' ? monetaryBaseScale.scaleLabel : 'Millones USD'}
             </span>
           </div>
-          <span className="text-xl sm:text-2xl font-mono-tabular font-extrabold text-slate-900 dark:text-slate-100 block">
+          <span className="text-lg sm:text-xl xl:text-2xl font-mono-tabular font-extrabold text-slate-900 dark:text-slate-100 block truncate tracking-tight">
             {displayCurrency === 'ARS'
               ? monetaryBaseScale.formatted
               : mbInUsd.format({ compact: true })}
           </span>
-          <span className="text-[11px] text-on-surface-variant dark:text-slate-400 font-mono block flex items-center justify-between">
-            <span>Circulante + Encajes</span>
-            <span className="text-[10px]">
+          <div className="text-[11px] text-on-surface-variant dark:text-slate-400 font-mono flex items-center justify-between gap-1 min-w-0 truncate">
+            <span className="truncate">Circulante + Encajes</span>
+            <span className="text-[10px] truncate shrink-0">
               {displayCurrency === 'ARS' ? `≈ ${mbInUsd.format({ compact: true })}` : `≈ ${monetaryBaseScale.formatted}`}
             </span>
-          </span>
+          </div>
         </div>
 
         {/* Private Deposits USD */}
-        <div className="p-4 bg-emerald-500/5 dark:bg-[#0F141C] rounded-2xl border border-emerald-500/30 space-y-1.5 hover:-translate-y-1 transition-all duration-200 shadow-soft">
+        <div className="p-4 bg-emerald-500/5 dark:bg-[#0F141C] rounded-2xl border border-emerald-500/30 space-y-1.5 hover:-translate-y-1 transition-all duration-200 shadow-soft min-w-0 overflow-hidden">
           <div className="flex items-center justify-between text-emerald-700 dark:text-emerald-400 text-[10px] uppercase font-bold">
             <span className="font-eyebrow text-emerald-700 dark:text-emerald-400 font-bold">Depósitos Privados USD</span>
-            <span className="px-1.5 py-0.2 bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 rounded text-[9px] font-mono font-bold">
+            <span className="px-1.5 py-0.5 bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 rounded text-[9px] font-mono font-bold">
               {depositsScale.scaleLabel}
             </span>
           </div>
-          <span className="text-xl sm:text-2xl font-mono-tabular font-extrabold text-slate-900 dark:text-emerald-400 block">
+          <span className="text-lg sm:text-xl xl:text-2xl font-mono-tabular font-extrabold text-slate-900 dark:text-emerald-400 block truncate tracking-tight">
             {displayCurrency === 'USD'
               ? depositsScale.formatted
               : Money.convert(balance.privateDepositsUsd.amount, 'USD', 'ARS', referenceUsdRate).format({ compact: true })}
           </span>
-          <span className="text-[11px] text-emerald-600 dark:text-slate-400 font-mono block">
+          <span className="text-[11px] text-emerald-600 dark:text-slate-400 font-mono block truncate">
             Máximo histórico de la década
           </span>
         </div>

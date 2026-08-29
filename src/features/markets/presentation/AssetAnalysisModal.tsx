@@ -97,30 +97,30 @@ export const AssetAnalysisModal: React.FC<AssetAnalysisModalProps> = ({ ticker, 
             <>
               {/* Price & Primary Stats Grid */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                <div className="bg-surface-container-low dark:bg-white/5 p-3 rounded-xl border border-surface-container-highest dark:border-white/5">
-                  <span className="font-eyebrow text-[10px] block">Precio Spot</span>
-                  <span className="font-mono text-base sm:text-lg font-bold text-primary dark:text-white">
+                <div className="bg-surface-container-low dark:bg-white/5 p-3 rounded-xl border border-surface-container-highest dark:border-white/5 min-w-0 overflow-hidden">
+                  <span className="font-eyebrow text-[10px] block truncate">Precio Spot</span>
+                  <span className="font-mono text-sm sm:text-base lg:text-lg font-bold text-primary dark:text-white block truncate tracking-tight">
                     {data.currency === 'USD' ? 'US$ ' : '$ '}
                     {data.price?.toLocaleString('es-AR', { minimumFractionDigits: 2 })}
                   </span>
                 </div>
 
-                <div className="bg-surface-container-low dark:bg-white/5 p-3 rounded-xl border border-surface-container-highest dark:border-white/5">
-                  <span className="font-eyebrow text-[10px] block">Variación 24h</span>
+                <div className="bg-surface-container-low dark:bg-white/5 p-3 rounded-xl border border-surface-container-highest dark:border-white/5 min-w-0 overflow-hidden">
+                  <span className="font-eyebrow text-[10px] block truncate">Variación 24h</span>
                   <span
-                    className={`font-mono text-base sm:text-lg font-bold flex items-center gap-1 ${
+                    className={`font-mono text-sm sm:text-base lg:text-lg font-bold flex items-center gap-1 truncate ${
                       data.variation24h >= 0 ? 'text-bullish-green' : 'text-bearish-red'
                     }`}
                   >
-                    {data.variation24h >= 0 ? <TrendingUp size={16} /> : <TrendingDown size={16} />}
-                    {data.variation24h > 0 ? `+${data.variation24h}%` : `${data.variation24h}%`}
+                    {data.variation24h >= 0 ? <TrendingUp size={16} className="shrink-0" /> : <TrendingDown size={16} className="shrink-0" />}
+                    <span className="truncate">{data.variation24h > 0 ? `+${data.variation24h}%` : `${data.variation24h}%`}</span>
                   </span>
                 </div>
 
-                <div className="bg-surface-container-low dark:bg-white/5 p-3 rounded-xl border border-surface-container-highest dark:border-white/5">
-                  <span className="font-eyebrow text-[10px] block">RSI (14 Ruedas)</span>
+                <div className="bg-surface-container-low dark:bg-white/5 p-3 rounded-xl border border-surface-container-highest dark:border-white/5 min-w-0 overflow-hidden">
+                  <span className="font-eyebrow text-[10px] block truncate">RSI (14 Ruedas)</span>
                   <span
-                    className={`font-mono text-base sm:text-lg font-bold ${
+                    className={`font-mono text-sm sm:text-base lg:text-lg font-bold truncate block ${
                       data.rsi14 >= 70
                         ? 'text-bearish-red'
                         : data.rsi14 <= 30
@@ -129,17 +129,17 @@ export const AssetAnalysisModal: React.FC<AssetAnalysisModalProps> = ({ ticker, 
                     }`}
                   >
                     {data.rsi14}
-                    <span className="text-[10px] font-sans font-normal ml-1 text-on-surface-variant">
+                    <span className="text-[10px] font-sans font-normal ml-1 text-on-surface-variant truncate">
                       {data.rsi14 >= 70 ? 'Sobrecompra' : data.rsi14 <= 30 ? 'Sobrevendido' : 'Neutro'}
                     </span>
                   </span>
                 </div>
 
-                <div className="bg-surface-container-low dark:bg-white/5 p-3 rounded-xl border border-surface-container-highest dark:border-white/5">
-                  <span className="font-eyebrow text-[10px] block">Beta / Volatilidad</span>
-                  <span className="font-mono text-base sm:text-lg font-bold text-primary dark:text-white">
+                <div className="bg-surface-container-low dark:bg-white/5 p-3 rounded-xl border border-surface-container-highest dark:border-white/5 min-w-0 overflow-hidden">
+                  <span className="font-eyebrow text-[10px] block truncate">Beta / Volatilidad</span>
+                  <span className="font-mono text-sm sm:text-base lg:text-lg font-bold text-primary dark:text-white truncate block">
                     {data.beta || 1.15}
-                    <span className="text-[10px] font-sans font-normal ml-1 text-on-surface-variant">vs Merval</span>
+                    <span className="text-[10px] font-sans font-normal ml-1 text-on-surface-variant truncate">vs Merval</span>
                   </span>
                 </div>
               </div>

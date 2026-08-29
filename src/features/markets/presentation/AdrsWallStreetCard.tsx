@@ -22,29 +22,31 @@ export const AdrsWallStreetCard: React.FC<{ adrs: MarketAsset[] }> = ({
         </span>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3.5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-3.5">
         {adrs.map((adr) => (
           <div
             key={adr.ticker}
-            className="p-3.5 bg-surface-container-low hover:bg-surface-container border border-surface-container-high rounded-2xl transition-all duration-200 hover:-translate-y-1 shadow-soft flex flex-col justify-between"
+            className="p-3.5 bg-surface-container-low hover:bg-surface-container border border-surface-container-high rounded-2xl transition-all duration-200 hover:-translate-y-1 shadow-soft flex flex-col justify-between min-w-0 overflow-hidden"
           >
-            <div className="flex justify-between items-start mb-1">
-              <div>
-                <span className="font-sans font-bold text-xs sm:text-sm text-primary block">
+            <div className="flex justify-between items-start gap-1 mb-1 min-w-0">
+              <div className="min-w-0 flex-1">
+                <span className="font-sans font-bold text-xs sm:text-sm text-primary block truncate">
                   {adr.ticker}
                 </span>
-                <span className="text-[11px] font-sans text-on-surface-variant truncate block max-w-[110px]">
+                <span className="text-[11px] font-sans text-on-surface-variant truncate block max-w-[130px]">
                   {adr.name}
                 </span>
               </div>
-              <TrendIndicator value={adr.variation24h.value} size="sm" />
+              <div className="shrink-0">
+                <TrendIndicator value={adr.variation24h.value} size="sm" />
+              </div>
             </div>
 
-            <div className="my-2 flex items-baseline justify-between">
-              <span className="text-sm sm:text-base font-mono-tabular font-bold text-primary">
+            <div className="my-2 flex items-center justify-between gap-1.5 min-w-0 overflow-hidden">
+              <span className="text-xs sm:text-sm lg:text-[15px] font-mono-tabular font-bold text-primary truncate min-w-0">
                 {adr.lastPrice.format()}
               </span>
-              <div className="w-14 h-4">
+              <div className="w-14 h-4 shrink-0">
                 <MiniSparkline data={adr.sparkline} height={16} color="auto" />
               </div>
             </div>

@@ -25,20 +25,20 @@ export const BondHeaderMetrics: React.FC<{ bond: BondDetail }> = ({ bond }) => {
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
-          <div className="text-right">
-            <span className="font-eyebrow text-slate-400 block mb-0.5">
+        <div className="flex items-center gap-3 min-w-0">
+          <div className="text-right min-w-0">
+            <span className="font-eyebrow text-slate-400 block mb-0.5 truncate">
               Cotización en MEP
             </span>
-            <span className="text-2xl font-mono-tabular font-extrabold text-gold">
+            <span className="text-xl sm:text-2xl font-mono-tabular font-extrabold text-gold block truncate tracking-tight">
               {bond.priceMep.format()}
             </span>
           </div>
-          <div className="text-right pl-3 border-l border-white/15">
-            <span className="font-eyebrow text-slate-400 block mb-0.5">
+          <div className="text-right pl-3 border-l border-white/15 min-w-0">
+            <span className="font-eyebrow text-slate-400 block mb-0.5 truncate">
               Cotización en ARS
             </span>
-            <span className="text-xl font-mono-tabular font-bold text-white">
+            <span className="text-lg sm:text-xl font-mono-tabular font-bold text-white block truncate tracking-tight">
               {bond.priceArs.format()}
             </span>
           </div>
@@ -47,52 +47,52 @@ export const BondHeaderMetrics: React.FC<{ bond: BondDetail }> = ({ bond }) => {
 
       {/* Grid of Key Sovereign Debt Metrics */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5">
-        <div className="p-3.5 bg-primary/60 rounded-2xl border border-gold/20 shadow-soft">
-          <span className="font-eyebrow text-slate-400 block mb-1">Paridad</span>
-          <span className="text-lg font-mono-tabular font-bold text-gold">
+        <div className="p-3.5 bg-primary/60 rounded-2xl border border-gold/20 shadow-soft min-w-0 overflow-hidden">
+          <span className="font-eyebrow text-slate-400 block mb-1 truncate">Paridad</span>
+          <span className="text-base sm:text-lg font-mono-tabular font-bold text-gold block truncate tracking-tight">
             {bond.parity.format({ showSign: false })}
           </span>
-          <span className="text-[10px] text-slate-400 block mt-0.5">Sobre V.T.</span>
+          <span className="text-[10px] text-slate-400 block mt-0.5 truncate">Sobre V.T.</span>
         </div>
 
-        <div className="p-3.5 bg-primary/60 rounded-2xl border border-gold/20 shadow-soft">
-          <span className="font-eyebrow text-slate-400 block mb-1">TIR Anual</span>
-          <span className="text-lg font-mono-tabular font-bold text-bullish-green bg-teal-950/60 px-1 rounded inline-block">
+        <div className="p-3.5 bg-primary/60 rounded-2xl border border-gold/20 shadow-soft min-w-0 overflow-hidden">
+          <span className="font-eyebrow text-slate-400 block mb-1 truncate">TIR Anual</span>
+          <span className="text-base sm:text-lg font-mono-tabular font-bold text-bullish-green bg-teal-950/60 px-1 rounded block truncate tracking-tight">
             {bond.tir.format({ showSign: false })}
           </span>
-          <span className="text-[10px] text-slate-400 block mt-0.5">Tasa Interna Retorno</span>
+          <span className="text-[10px] text-slate-400 block mt-0.5 truncate">Tasa Interna Retorno</span>
         </div>
 
-        <div className="p-3.5 bg-primary/60 rounded-2xl border border-gold/20 shadow-soft">
-          <span className="font-eyebrow text-slate-400 block mb-1">Modified Duration</span>
-          <span className="text-lg font-mono-tabular font-bold text-white">
+        <div className="p-3.5 bg-primary/60 rounded-2xl border border-gold/20 shadow-soft min-w-0 overflow-hidden">
+          <span className="font-eyebrow text-slate-400 block mb-1 truncate">Modified Duration</span>
+          <span className="text-base sm:text-lg font-mono-tabular font-bold text-white block truncate tracking-tight">
             {bond.modifiedDuration} años
           </span>
-          <span className="text-[10px] text-slate-400 block mt-0.5">Sensibilidad tasa</span>
+          <span className="text-[10px] text-slate-400 block mt-0.5 truncate">Sensibilidad tasa</span>
         </div>
 
-        <div className="p-3.5 bg-primary/60 rounded-2xl border border-gold/20 shadow-soft">
-          <span className="font-eyebrow text-slate-400 block mb-1">Dólar Implícito MEP</span>
-          <span className="text-lg font-mono-tabular font-bold text-white">
+        <div className="p-3.5 bg-primary/60 rounded-2xl border border-gold/20 shadow-soft min-w-0 overflow-hidden">
+          <span className="font-eyebrow text-slate-400 block mb-1 truncate">Dólar Implícito MEP</span>
+          <span className="text-base sm:text-lg font-mono-tabular font-bold text-white block truncate tracking-tight">
             ${bond.implicitMepDollar.toFixed(2)}
           </span>
-          <span className="text-[10px] text-slate-400 block mt-0.5">AL30 / AL30D</span>
+          <span className="text-[10px] text-slate-400 block mt-0.5 truncate">AL30 / AL30D</span>
         </div>
 
-        <div className="p-3.5 bg-primary/60 rounded-2xl border border-gold/20 shadow-soft">
-          <span className="font-eyebrow text-slate-400 block mb-1">Vencimiento</span>
-          <span className="text-base font-mono-tabular font-bold text-white">
+        <div className="p-3.5 bg-primary/60 rounded-2xl border border-gold/20 shadow-soft min-w-0 overflow-hidden">
+          <span className="font-eyebrow text-slate-400 block mb-1 truncate">Vencimiento</span>
+          <span className="text-sm sm:text-base font-mono-tabular font-bold text-white block truncate tracking-tight">
             {bond.maturityDate}
           </span>
-          <span className="text-[10px] text-slate-400 block mt-0.5">Amortización total</span>
+          <span className="text-[10px] text-slate-400 block mt-0.5 truncate">Amortización total</span>
         </div>
 
-        <div className="p-3.5 bg-primary/60 rounded-2xl border border-gold/20 shadow-soft">
-          <span className="font-eyebrow text-slate-400 block mb-1">Cupón Vigente</span>
-          <span className="text-lg font-mono-tabular font-bold text-gold">
+        <div className="p-3.5 bg-primary/60 rounded-2xl border border-gold/20 shadow-soft min-w-0 overflow-hidden">
+          <span className="font-eyebrow text-slate-400 block mb-1 truncate">Cupón Vigente</span>
+          <span className="text-base sm:text-lg font-mono-tabular font-bold text-gold block truncate tracking-tight">
             {bond.couponRate.format({ showSign: false })}
           </span>
-          <span className="text-[10px] text-slate-400 block mt-0.5">Step-up semestral</span>
+          <span className="text-[10px] text-slate-400 block mt-0.5 truncate">Step-up semestral</span>
         </div>
       </div>
     </Card>

@@ -175,44 +175,44 @@ export const InteractiveYieldCalculator: React.FC<{ bond: BondDetail }> = ({
 
       {/* Projection Results Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-        <div className="p-4 bg-surface-container-low rounded-2xl border border-surface-container-high hover:-translate-y-1 transition-all duration-200 shadow-soft">
-          <span className="font-eyebrow block mb-1">
+        <div className="p-4 bg-surface-container-low rounded-2xl border border-surface-container-high hover:-translate-y-1 transition-all duration-200 shadow-soft min-w-0 overflow-hidden">
+          <span className="font-eyebrow block mb-1 truncate">
             Nominales Comprados (V.N.)
           </span>
-          <span className="text-lg sm:text-xl font-mono-tabular font-bold text-primary block">
+          <span className="text-base sm:text-lg lg:text-xl font-mono-tabular font-bold text-primary block truncate tracking-tight">
             {simulation.nominalBondsPurchased.toLocaleString('es-AR')}
           </span>
-          <span className="text-[10px] text-outline block mt-0.5">Títulos en cartera</span>
+          <span className="text-[10px] text-outline block mt-0.5 truncate">Títulos en cartera</span>
         </div>
 
-        <div className="p-4 bg-surface-container-low rounded-2xl border border-surface-container-high hover:-translate-y-1 transition-all duration-200 shadow-soft">
-          <span className="font-eyebrow block mb-1">
+        <div className="p-4 bg-surface-container-low rounded-2xl border border-surface-container-high hover:-translate-y-1 transition-all duration-200 shadow-soft min-w-0 overflow-hidden">
+          <span className="font-eyebrow block mb-1 truncate">
             Costo Efectivo USD
           </span>
-          <span className="text-lg sm:text-xl font-mono-tabular font-bold text-primary block">
+          <span className="text-base sm:text-lg lg:text-xl font-mono-tabular font-bold text-primary block truncate tracking-tight">
             US$ {simulation.totalCostUsd.toLocaleString('es-AR', { maximumFractionDigits: 2 })}
           </span>
-          <span className="text-[10px] text-outline block mt-0.5">Capital invertido</span>
+          <span className="text-[10px] text-outline block mt-0.5 truncate">Capital invertido</span>
         </div>
 
-        <div className="p-4 bg-champagne-light/60 dark:bg-[#101e3d] rounded-2xl border border-gold/40 hover:-translate-y-1 transition-all duration-200 shadow-soft">
-          <span className="font-eyebrow text-secondary font-bold block mb-1">
+        <div className="p-4 bg-champagne-light/60 dark:bg-[#101e3d] rounded-2xl border border-gold/40 hover:-translate-y-1 transition-all duration-200 shadow-soft min-w-0 overflow-hidden">
+          <span className="font-eyebrow text-secondary font-bold block mb-1 truncate">
             Cobro Total Proyectado
           </span>
-          <span className="text-lg sm:text-xl font-mono-tabular font-bold text-primary block">
+          <span className="text-base sm:text-lg lg:text-xl font-mono-tabular font-bold text-primary block truncate tracking-tight">
             US$ {simulation.totalCashFlowToCollectUsd.toLocaleString('es-AR', { maximumFractionDigits: 2 })}
           </span>
-          <span className="text-[10px] text-secondary block mt-0.5">Cupones + Amortización</span>
+          <span className="text-[10px] text-secondary block mt-0.5 truncate">Cupones + Amortización</span>
         </div>
 
-        <div className="p-4 bg-teal-50 dark:bg-teal-950/40 rounded-2xl border border-teal-200 dark:border-teal-800 hover:-translate-y-1 transition-all duration-200 shadow-soft">
-          <span className="font-eyebrow text-bullish-green font-bold block mb-1">
+        <div className="p-4 bg-teal-50 dark:bg-teal-950/40 rounded-2xl border border-teal-200 dark:border-teal-800 hover:-translate-y-1 transition-all duration-200 shadow-soft min-w-0 overflow-hidden">
+          <span className="font-eyebrow text-bullish-green font-bold block mb-1 truncate">
             Ganancia Neta en USD
           </span>
-          <span className="text-lg sm:text-xl font-mono-tabular font-bold text-bullish-green block">
+          <span className="text-base sm:text-lg lg:text-xl font-mono-tabular font-bold text-bullish-green block truncate tracking-tight">
             +US$ {simulation.netProfitUsd.toLocaleString('es-AR', { maximumFractionDigits: 2 })}
           </span>
-          <span className="text-[10px] text-teal-700 dark:text-teal-400 block mt-0.5">
+          <span className="text-[10px] text-teal-700 dark:text-teal-400 block mt-0.5 truncate">
             Retorno: +{simulation.totalRoiPercentage.toFixed(1)}% total
           </span>
         </div>

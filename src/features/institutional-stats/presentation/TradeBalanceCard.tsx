@@ -34,39 +34,39 @@ export const TradeBalanceCard: React.FC<{
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         {/* Exports */}
-        <div className="p-3.5 bg-surface-container-low rounded-2xl border border-surface-container-high space-y-1 hover:-translate-y-0.5 transition-all shadow-soft">
+        <div className="p-3.5 bg-surface-container-low rounded-2xl border border-surface-container-high space-y-1 hover:-translate-y-0.5 transition-all shadow-soft min-w-0 overflow-hidden">
           <div className="flex items-center justify-between text-outline text-[10px] uppercase font-bold">
             <span className="font-eyebrow">Exportaciones</span>
-            <ArrowUpRight size={13} className="text-bullish-green" />
+            <ArrowUpRight size={13} className="text-bullish-green shrink-0" />
           </div>
-          <span className="text-lg font-mono-tabular font-extrabold text-primary block">
+          <span className="text-base sm:text-lg font-mono-tabular font-extrabold text-primary block truncate tracking-tight">
             US$ {(tradeSummary.exportsUsd / 1_000_000_000).toFixed(1)} B
           </span>
-          <span className="text-[10px] text-outline block">Agro, Energía & Minería</span>
+          <span className="text-[10px] text-outline block truncate">Agro, Energía & Minería</span>
         </div>
 
         {/* Imports */}
-        <div className="p-3.5 bg-surface-container-low rounded-2xl border border-surface-container-high space-y-1 hover:-translate-y-0.5 transition-all shadow-soft">
+        <div className="p-3.5 bg-surface-container-low rounded-2xl border border-surface-container-high space-y-1 hover:-translate-y-0.5 transition-all shadow-soft min-w-0 overflow-hidden">
           <div className="flex items-center justify-between text-outline text-[10px] uppercase font-bold">
             <span className="font-eyebrow">Importaciones</span>
-            <ArrowDownLeft size={13} className="text-on-surface-variant" />
+            <ArrowDownLeft size={13} className="text-on-surface-variant shrink-0" />
           </div>
-          <span className="text-lg font-mono-tabular font-extrabold text-primary block">
+          <span className="text-base sm:text-lg font-mono-tabular font-extrabold text-primary block truncate tracking-tight">
             US$ {(tradeSummary.importsUsd / 1_000_000_000).toFixed(1)} B
           </span>
-          <span className="text-[10px] text-outline block">Bienes de Capital</span>
+          <span className="text-[10px] text-outline block truncate">Bienes de Capital</span>
         </div>
 
         {/* Surplus */}
-        <div className="p-3.5 bg-teal-50 rounded-2xl border border-teal-200 space-y-1 hover:-translate-y-0.5 transition-all shadow-soft">
-          <div className="flex items-center justify-between text-teal-800 text-[10px] uppercase font-bold">
-            <span className="font-eyebrow text-teal-800">Superávit Neto</span>
-            <Scale size={13} className="text-bullish-green" />
+        <div className="p-3.5 bg-teal-50 dark:bg-teal-950/30 rounded-2xl border border-teal-200 dark:border-teal-800/40 space-y-1 hover:-translate-y-0.5 transition-all shadow-soft min-w-0 overflow-hidden">
+          <div className="flex items-center justify-between text-teal-800 dark:text-teal-400 text-[10px] uppercase font-bold">
+            <span className="font-eyebrow text-teal-800 dark:text-teal-400">Superávit Neto</span>
+            <Scale size={13} className="text-bullish-green shrink-0" />
           </div>
-          <span className="text-lg font-mono-tabular font-extrabold text-bullish-green block">
+          <span className="text-base sm:text-lg font-mono-tabular font-extrabold text-bullish-green block truncate tracking-tight">
             +US$ {(tradeSummary.surplusUsd / 1_000_000_000).toFixed(1)} B
           </span>
-          <span className="text-[10px] text-teal-700 block">Saldo a favor</span>
+          <span className="text-[10px] text-teal-700 dark:text-teal-400 block truncate">Saldo a favor</span>
         </div>
       </div>
     </Card>

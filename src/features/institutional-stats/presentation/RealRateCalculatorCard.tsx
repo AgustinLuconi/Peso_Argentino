@@ -84,34 +84,34 @@ export const RealRateCalculatorCard: React.FC = () => {
 
       {/* Results grid */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
-        <div className="p-4 bg-surface-container-low rounded-2xl border border-surface-container-high hover:-translate-y-1 transition-all duration-200 shadow-soft">
-          <span className="font-eyebrow block mb-1">
+        <div className="p-4 bg-surface-container-low rounded-2xl border border-surface-container-high hover:-translate-y-1 transition-all duration-200 shadow-soft min-w-0 overflow-hidden">
+          <span className="font-eyebrow block mb-1 truncate">
             Tasa Efectiva Mensual (TEM)
           </span>
-          <span className="text-lg sm:text-xl font-mono-tabular font-bold text-primary block">
+          <span className="text-base sm:text-lg lg:text-xl font-mono-tabular font-bold text-primary block truncate tracking-tight">
             +{temMonthly.toFixed(2)}%
           </span>
-          <span className="text-[10px] text-outline block mt-0.5">Rendimiento nominal</span>
+          <span className="text-[10px] text-outline block mt-0.5 truncate">Rendimiento nominal</span>
         </div>
 
-        <div className="p-4 bg-teal-50 rounded-2xl border border-teal-200 hover:-translate-y-1 transition-all duration-200 shadow-soft">
-          <span className="font-eyebrow text-bullish-green font-bold block mb-1">
+        <div className="p-4 bg-teal-50 dark:bg-teal-950/30 rounded-2xl border border-teal-200 dark:border-teal-800/40 hover:-translate-y-1 transition-all duration-200 shadow-soft min-w-0 overflow-hidden">
+          <span className="font-eyebrow text-bullish-green font-bold block mb-1 truncate">
             Tasa Real Mensual (ex-post)
           </span>
-          <span className="text-lg sm:text-xl font-mono-tabular font-bold text-bullish-green block">
+          <span className="text-base sm:text-lg lg:text-xl font-mono-tabular font-bold text-bullish-green block truncate tracking-tight">
             {realRateMonthly >= 0 ? `+${realRateMonthly.toFixed(2)}%` : `${realRateMonthly.toFixed(2)}%`}
           </span>
-          <span className="text-[10px] text-teal-700 block mt-0.5">Ganancia sobre IPC</span>
+          <span className="text-[10px] text-teal-700 dark:text-teal-400 block mt-0.5 truncate">Ganancia sobre IPC</span>
         </div>
 
-        <div className="p-4 bg-champagne-light/60 rounded-2xl border border-gold/40 hover:-translate-y-1 transition-all duration-200 shadow-soft">
-          <span className="font-eyebrow text-secondary font-bold block mb-1">
+        <div className="p-4 bg-champagne-light/60 dark:bg-[#131822] rounded-2xl border border-gold/40 hover:-translate-y-1 transition-all duration-200 shadow-soft min-w-0 overflow-hidden">
+          <span className="font-eyebrow text-secondary font-bold block mb-1 truncate">
             Tasa Real Anualizada
           </span>
-          <span className="text-lg sm:text-xl font-mono-tabular font-bold text-primary block">
+          <span className="text-base sm:text-lg lg:text-xl font-mono-tabular font-bold text-primary block truncate tracking-tight">
             {realRateAnnualized >= 0 ? `+${realRateAnnualized.toFixed(1)}%` : `${realRateAnnualized.toFixed(1)}%`}
           </span>
-          <span className="text-[10px] text-secondary block mt-0.5">Retorno real proyectado</span>
+          <span className="text-[10px] text-secondary block mt-0.5 truncate">Retorno real proyectado</span>
         </div>
       </div>
     </Card>

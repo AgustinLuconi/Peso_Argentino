@@ -158,19 +158,19 @@ export const QuickCurrencyConverter: React.FC<QuickCurrencyConverterProps> = ({
         </div>
 
         {/* Big Converted Result Display Card */}
-        <div className="p-6 bg-slate-950 dark:bg-[#111622] text-white rounded-2xl border border-emerald-500/40 shadow-tactile flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 overflow-hidden">
-          <div className="space-y-1">
-            <span className="text-xs sm:text-sm font-bold uppercase tracking-wider text-emerald-400 block">
+        <div className="p-5 sm:p-6 bg-slate-950 dark:bg-[#111622] text-white rounded-2xl border border-emerald-500/40 shadow-tactile flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 overflow-hidden min-w-0">
+          <div className="space-y-1 min-w-0 flex-1 overflow-hidden">
+            <span className="text-xs sm:text-sm font-bold uppercase tracking-wider text-emerald-400 block truncate">
               Resultado Estimado al tipo de cambio {currentRateObj.shortName}:
             </span>
-            <div className="text-3xl sm:text-4xl lg:text-5xl font-mono-tabular font-black text-white tracking-tight">
+            <div className="text-2xl sm:text-3xl lg:text-4xl font-mono-tabular font-black text-white tracking-tight truncate block">
               {direction === 'ARS_TO_USD'
                 ? `US$ ${convertedResult.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
                 : `$ ${convertedResult.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
             </div>
           </div>
 
-          <div className="px-4 py-2 rounded-xl bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-mono text-sm font-bold shrink-0">
+          <div className="px-3.5 py-2 rounded-xl bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-mono text-xs sm:text-sm font-bold shrink-0 truncate">
             {direction === 'ARS_TO_USD'
               ? `1 USD = $${rate.toLocaleString('es-AR', { minimumFractionDigits: 2 })}`
               : `$1 ARS = US$ ${(1 / rate).toFixed(4)}`}
@@ -180,10 +180,10 @@ export const QuickCurrencyConverter: React.FC<QuickCurrencyConverterProps> = ({
         {/* Comparison across all dollar quotes */}
         <div className="space-y-3 pt-1">
           <div className="flex items-center justify-between">
-            <span className="font-eyebrow text-slate-700 dark:text-slate-300 block text-xs font-bold">
+            <span className="font-eyebrow text-slate-700 dark:text-slate-300 block text-xs font-bold truncate">
               Comparativa simultánea con todas las cotizaciones:
             </span>
-            <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">
+            <span className="text-xs text-slate-500 dark:text-slate-400 font-mono shrink-0 hidden sm:inline">
               Haz clic para seleccionar
             </span>
           </div>
@@ -200,22 +200,22 @@ export const QuickCurrencyConverter: React.FC<QuickCurrencyConverterProps> = ({
                 <div
                   key={d.type}
                   onClick={() => setSelectedType(d.type)}
-                  className={`p-3.5 sm:p-4 rounded-2xl border transition-all duration-200 cursor-pointer ${
+                  className={`p-3 sm:p-4 rounded-2xl border transition-all duration-200 cursor-pointer min-w-0 overflow-hidden ${
                     isCurrent
                       ? 'bg-emerald-500/10 dark:bg-emerald-500/15 border-emerald-500 shadow-md scale-[1.02]'
                       : 'bg-white dark:bg-[#0F141C] hover:bg-slate-50 dark:hover:bg-[#161B26] border-slate-200 dark:border-[#1E2638] hover:border-emerald-500/40 hover:-translate-y-0.5'
                   }`}
                 >
-                  <div className="flex justify-between items-center gap-1 mb-2">
+                  <div className="flex justify-between items-center gap-1 mb-1.5 min-w-0">
                     <span className="font-bold text-xs sm:text-sm text-slate-900 dark:text-white truncate">
                       {d.shortName}
                     </span>
-                    <span className="font-mono text-xs font-bold text-slate-500 dark:text-slate-400 shrink-0">
+                    <span className="font-mono text-[11px] sm:text-xs font-bold text-slate-500 dark:text-slate-400 shrink-0">
                       ${d.rate.toLocaleString('es-AR', { maximumFractionDigits: 0 })}
                     </span>
                   </div>
 
-                  <div className="font-mono-tabular font-extrabold text-base sm:text-lg text-emerald-600 dark:text-emerald-400">
+                  <div className="font-mono-tabular font-extrabold text-sm sm:text-base text-emerald-600 dark:text-emerald-400 truncate block tracking-tight">
                     {direction === 'ARS_TO_USD'
                       ? `US$ ${res.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
                       : `$ ${res.toLocaleString('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`}
