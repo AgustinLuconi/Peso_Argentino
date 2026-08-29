@@ -80,9 +80,6 @@ export class DolarApiQuoteRepository implements DashboardRepositoryPort {
         })
     );
 
-    const fallback = new MockDashboardRepository();
-    const mockData = (fallback as any).fallbackMetrics || {};
-
     const kpis: MacroKpi[] = [
       new MacroKpi({
         id: 'riesgo-pais',

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Activity, CheckCircle2, ShieldCheck, ChevronDown, RefreshCw, Zap } from 'lucide-react';
+import { ShieldCheck, ChevronDown } from 'lucide-react';
 
 export const ApiStatusBadge: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);

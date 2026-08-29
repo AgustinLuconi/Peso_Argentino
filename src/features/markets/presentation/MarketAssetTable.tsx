@@ -4,14 +4,13 @@ import { Table, Column } from '@core/ui/components/Table';
 import { TrendIndicator } from '@core/ui/components/TrendIndicator';
 import { Badge } from '@core/ui/components/Badge';
 import { Button } from '@core/ui/components/Button';
-import { ArrowUpDown, ArrowUp, ArrowDown, BarChart2, Search } from 'lucide-react';
+import { BarChart2, Search } from 'lucide-react';
 
 export interface MarketAssetTableProps {
   assets: MarketAsset[];
   onSelectAsset?: (asset: MarketAsset) => void;
   onOpenAnalysis?: (ticker: string) => void;
   showBondMetrics?: boolean;
-  showForeignBondMetrics?: boolean;
 }
 
 type SortField = 'ticker' | 'lastPrice' | 'variation24h' | 'tir' | 'paridad' | 'rsi14';
@@ -22,7 +21,6 @@ export const MarketAssetTable: React.FC<MarketAssetTableProps> = ({
   onSelectAsset,
   onOpenAnalysis,
   showBondMetrics = false,
-  showForeignBondMetrics = false,
 }) => {
   const [sortField, setSortField] = useState<SortField>('variation24h');
   const [sortOrder, setSortOrder] = useState<SortOrder>('desc');

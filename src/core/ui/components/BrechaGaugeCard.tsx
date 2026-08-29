@@ -1,8 +1,7 @@
 import React from 'react';
 import { Card } from './Card';
 import { Badge } from './Badge';
-import { ShieldCheck, AlertTriangle, ArrowUpRight, Gauge, Info } from 'lucide-react';
-import { useApp } from '@app/providers/AppContext';
+import { ShieldCheck, AlertTriangle, Gauge, Info } from 'lucide-react';
 
 export interface BrechaGaugeCardProps {
   officialPrice?: number;

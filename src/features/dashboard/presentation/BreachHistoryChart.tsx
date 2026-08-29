@@ -1,8 +1,8 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { TimeSeries } from '@core/domain/TimeSeries';
 import { Card } from '@core/ui/components/Card';
 import { Badge } from '@core/ui/components/Badge';
-import { TrendingDown, Calendar, Sparkles, CheckCircle2 } from 'lucide-react';
+import { TrendingDown } from 'lucide-react';
 
 export interface BreachHistoryChartProps {
   timeSeries?: TimeSeries;

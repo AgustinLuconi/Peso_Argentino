@@ -1,30 +1,24 @@
 import React, { useState } from 'react';
 import { Card } from '@core/ui/components/Card';
 import { Badge } from '@core/ui/components/Badge';
-import { Button } from '@core/ui/components/Button';
 import {
   Calculator,
   TrendingUp,
-  DollarSign,
-  Layers,
-  ArrowRight,
-  ShieldCheck,
   Zap,
   RotateCcw,
-  Sparkles,
 } from 'lucide-react';
 import { useApp } from '@app/providers/AppContext';
 
 export const CarryTradeSimulator: React.FC = () => {
-  const { displayCurrency, formatMoney, referenceUsdRate } = useApp();
+  const { referenceUsdRate } = useApp();
 
   // Estados del simulador
   const [initialCapital, setInitialCapital] = useState<number>(5000000); // $5.000.000 por defecto
   const [daysTerm, setDaysTerm] = useState<number>(30); // 30 días
   const [lecapTna, setLecapTna] = useState<number>(43.5); // 43.5% TNA
   const [plazoFijoTna, setPlazoFijoTna] = useState<number>(34.0); // 34.0% TNA
-  const [monthlyInflation, setMonthlyInflation] = useState<number>(2.5); // 2.5% mensual estimada
-  const [monthlyDevaluation, setMonthlyDevaluation] = useState<number>(1.5); // 1.5% crawl mensual
+  const monthlyInflation = 2.5; // 2.5% mensual estimada
+  const monthlyDevaluation = 1.5; // 1.5% crawl mensual
 
   // Cálculos matemáticos
   const termMonths = daysTerm / 30;

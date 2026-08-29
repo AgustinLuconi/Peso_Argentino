@@ -1,4 +1,3 @@
-import { Prettify } from '@core/types/type-utils';
 import { API_CONFIG } from '@core/config/api.config';
 
 export interface LlmClassificationDto {

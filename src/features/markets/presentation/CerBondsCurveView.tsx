@@ -1,9 +1,8 @@
 import React, { useState, useMemo } from 'react';
 import { Card } from '@core/ui/components/Card';
 import { Badge } from '@core/ui/components/Badge';
-import { Button } from '@core/ui/components/Button';
 import { PageHeader } from '@core/ui/components/PageHeader';
-import { TrendingUp, ShieldCheck, Calculator, ArrowUpRight, Flame, Percent } from 'lucide-react';
+import { TrendingUp, ShieldCheck } from 'lucide-react';
 
 export interface CerBondItem {
   ticker: string;

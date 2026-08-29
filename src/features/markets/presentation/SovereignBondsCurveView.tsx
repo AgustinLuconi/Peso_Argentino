@@ -3,18 +3,7 @@ import { Card } from '@core/ui/components/Card';
 import { Badge } from '@core/ui/components/Badge';
 import { Button } from '@core/ui/components/Button';
 import { PageHeader } from '@core/ui/components/PageHeader';
-import { Money } from '@core/domain/Money';
-import {
-  TrendingUp,
-  Shield,
-  Layers,
-  Scale,
-  Award,
-  ArrowRight,
-  Calculator,
-  CheckCircle2,
-  HelpCircle,
-} from 'lucide-react';
+import { TrendingUp, Calculator } from 'lucide-react';
 
 export interface SovereignBondItem {
   ticker: string;

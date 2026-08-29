@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Sparkles, Send, X, Bot, User, Cpu, ShieldCheck, ArrowRight, CornerDownLeft, RefreshCw } from 'lucide-react';
+import { Send, X, Bot, User, RefreshCw } from 'lucide-react';
 import { LlmApiClient } from '@features/news-intelligence/infrastructure/LlmApiClient';
-import { Badge } from './Badge';
 
 interface Message {
   id: string;

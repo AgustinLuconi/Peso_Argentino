@@ -220,7 +220,6 @@ export const MarketsView: React.FC<{
               <MarketAssetTable
                 assets={bondsForeign}
                 showBondMetrics={true}
-                showForeignBondMetrics={true}
                 onOpenAnalysis={(ticker) => setSelectedAnalysisTicker(ticker)}
               />
             )}

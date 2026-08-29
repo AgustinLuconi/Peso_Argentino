@@ -1,5 +1,4 @@
 import { Money } from '@core/domain/Money';
-import { Percentage } from '@core/domain/Percentage';
 
 export interface BcraBalanceSheetProps {
   grossReservesUsd: number;

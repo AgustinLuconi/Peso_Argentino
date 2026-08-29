@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TrendingUp, TrendingDown, DollarSign, Activity, Sparkles, Check } from 'lucide-react';
+import { TrendingUp, TrendingDown, Check } from 'lucide-react';
 import { useApp } from '@app/providers/AppContext';
 
 export interface TickerItem {
@@ -12,7 +12,7 @@ export interface TickerItem {
 }
 
 export const LiveTickerTape: React.FC = () => {
-  const { referenceUsdRate, displayCurrency } = useApp();
+  const { referenceUsdRate } = useApp();
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
   const mepRate = referenceUsdRate > 0 ? referenceUsdRate : 1335.5;

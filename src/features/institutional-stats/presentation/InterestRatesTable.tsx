@@ -1,9 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { InterestRateMetric } from '../domain/InterestRateMetric';
-import { Table, Column } from '@core/ui/components/Table';
-import { Badge } from '@core/ui/components/Badge';
 import { Card } from '@core/ui/components/Card';
-import { Button } from '@core/ui/components/Button';
 import { Money } from '@core/domain/Money';
 import {
   Percent,
@@ -12,9 +9,6 @@ import {
   Building2,
   Landmark,
   Calculator,
-  Award,
-  ArrowUpRight,
-  ShieldCheck,
 } from 'lucide-react';
 
 export interface WalletYieldItem {
@@ -42,8 +36,8 @@ const EXTENDED_RATES_DATA: WalletYieldItem[] = [
   { name: 'LEFIs BCRA (Política)', type: 'BCRA', tna: 40.0, tem: 3.29, tea: 48.2, dailyYieldPer100k: 109.5, liquidity: 'INMEDIATA' },
 ];
 
-export const InterestRatesTable: React.FC<{ rates: InterestRateMetric[] }> = ({
-  rates,
+export const InterestRatesTable: React.FC<{ rates?: InterestRateMetric[] }> = ({
+  rates: _rates,
 }) => {
   const [metricMode, setMetricMode] = useState<'tem' | 'tna' | 'tea' | 'dailyYieldPer100k'>('tem');
   const [filterType, setFilterType] = useState<'ALL' | 'WALLET' | 'BANK' | 'BCRA'>('ALL');
@@ -54,7 +48,6 @@ export const InterestRatesTable: React.FC<{ rates: InterestRateMetric[] }> = ({
   }, [filterType]);
 
   const maxVal = Math.max(...EXTENDED_RATES_DATA.map((r) => r[metricMode]));
-  const minVal = Math.min(...EXTENDED_RATES_DATA.map((r) => r[metricMode]));
 
   const metricTitles = {
     tem: 'TEM Mensual (% m/m)',

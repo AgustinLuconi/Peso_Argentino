@@ -15,9 +15,7 @@ import {
   Moon,
   DollarSign,
   Zap,
-  Check,
 } from 'lucide-react';
-import { Badge } from './Badge';
 import { useApp } from '@app/providers/AppContext';
 import { NavigationFeatureId } from '../layout/SidebarNavigation';
 

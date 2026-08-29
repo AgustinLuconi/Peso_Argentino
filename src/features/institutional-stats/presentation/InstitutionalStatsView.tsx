@@ -10,7 +10,7 @@ import { InstitutionalStatsDto } from '../application/InstitutionalStatsReposito
 import { Button } from '@core/ui/components/Button';
 import { PageHeader } from '@core/ui/components/PageHeader';
 import { smartCache } from '@core/infrastructure/SmartCacheAdapter';
-import { RefreshCw, CheckCircle2 } from 'lucide-react';
+import { RefreshCw } from 'lucide-react';
 
 export const InstitutionalStatsView: React.FC<{
   activeSubItem?: string | null;

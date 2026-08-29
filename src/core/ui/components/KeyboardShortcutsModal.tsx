@@ -1,5 +1,5 @@
 import React from 'react';
-import { Command, X, Keyboard, Sparkles, Search, ArrowRightLeft, RefreshCw } from 'lucide-react';
+import { X, Keyboard } from 'lucide-react';
 import { Badge } from './Badge';
 
 export interface KeyboardShortcutsModalProps {

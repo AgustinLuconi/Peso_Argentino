@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Modal } from './Modal';
 import { Button } from './Button';
-import { Badge } from './Badge';
-import { ArrowRightLeft, DollarSign, TrendingUp, Sparkles } from 'lucide-react';
+import { ArrowRightLeft } from 'lucide-react';
 
 export interface QuickCurrencyConverterProps {
   isOpen: boolean;

@@ -38,3 +38,32 @@ export type DeepReadonly<T> = T extends (infer R)[]
 
 // 7. ValueOf helper
 export type ValueOf<T> = T[keyof T];
+
+// 8. Domain Branded Types
+export type Ticker = Brand<string, 'Ticker'>;
+export type Isin = Brand<string, 'Isin'>;
+
+export function asTicker(symbol: string): Ticker {
+  return symbol.trim().toUpperCase() as Ticker;
+}
+
+export function asIsin(code: string): Isin {
+  return code.trim().toUpperCase() as Isin;
+}
+
+// 9. Non-empty Array
+export type NonEmptyArray<T> = readonly [T, ...T[]];
+
+// 10. Type-safe Result pattern
+export type Result<T, E = Error> =
+  | { readonly ok: true; readonly value: T }
+  | { readonly ok: false; readonly error: E };
+
+export const Result = {
+  ok<T>(value: T): Result<T, never> {
+    return { ok: true, value };
+  },
+  err<E>(error: E): Result<never, E> {
+    return { ok: false, error };
+  },
+} as const;

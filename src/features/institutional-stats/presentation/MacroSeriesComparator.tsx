@@ -5,7 +5,6 @@ import { Tabs } from '@core/ui/components/Tabs';
 import { Badge } from '@core/ui/components/Badge';
 import { LineChart, TrendingUp, TrendingDown, Calendar } from 'lucide-react';
 import { useApp } from '@app/providers/AppContext';
-import { Money } from '@core/domain/Money';
 
 export const MacroSeriesComparator: React.FC<{ series: MacroComparativeData }> = ({
   series,

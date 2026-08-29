@@ -1,23 +1,15 @@
 import React, { useState, useMemo } from 'react';
 import { Card } from '@core/ui/components/Card';
 import { Badge } from '@core/ui/components/Badge';
-import { Button } from '@core/ui/components/Button';
 import { PageHeader } from '@core/ui/components/PageHeader';
 import { StatBox } from '@core/ui/components/StatBox';
 import { Money } from '@core/domain/Money';
 import {
   TrendingUp,
   Calculator,
-  Calendar,
   ShieldCheck,
-  Sparkles,
-  ArrowUpRight,
-  Info,
-  Layers,
   Award,
   Clock,
-  ArrowRight,
-  Filter,
   CheckCircle2,
 } from 'lucide-react';
 

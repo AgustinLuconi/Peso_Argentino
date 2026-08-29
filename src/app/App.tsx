@@ -17,9 +17,7 @@ import { ErrorBoundary } from '@core/ui/components/ErrorBoundary';
 export const App: React.FC = () => {
   const {
     activeFeature,
-    setActiveFeature,
     activeSubItem,
-    setActiveSubItem,
     navigateTo,
     selectedBondTicker,
     setSelectedBondTicker,

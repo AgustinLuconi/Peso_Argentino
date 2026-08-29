@@ -2,7 +2,6 @@ import {
   InstitutionalStatsRepositoryPort,
   InstitutionalStatsDto,
 } from '../application/InstitutionalStatsRepositoryPort';
-import { BcraBalanceSheet } from '../domain/BcraBalanceSheet';
 import { InterestRateMetric } from '../domain/InterestRateMetric';
 import { TimeSeries } from '@core/domain/TimeSeries';
 import { smartCache, CACHE_TTL } from '@core/infrastructure/SmartCacheAdapter';
@@ -24,7 +23,7 @@ export class BackendInstitutionalStatsRepository
           const fallbackData = await this.fallbackRepo.getInstitutionalStats();
 
           // Fetch full historical series from Neon Backend API
-          const [macroRes, ratesRes, ipcSeriesRes, reservasSeriesRes, baseMonSeriesRes, balanzaSeriesRes] = await Promise.all([
+          const [ratesRes, ipcSeriesRes, reservasSeriesRes, baseMonSeriesRes, balanzaSeriesRes] = await Promise.all([
             fetch(API_CONFIG.getEndpoint('/api/v1/macro/overview')).catch(() => null),
             fetch(API_CONFIG.getEndpoint('/api/v1/rates/plazos-fijos')).catch(() => null),
             fetch(API_CONFIG.getEndpoint('/api/v1/macro/series/ipc?limit=100')).catch(() => null),

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { CashFlowItem } from '../domain/BondDetail';
-import { BarChart3, DollarSign, Calendar, TrendingUp } from 'lucide-react';
+import { BarChart3, Calendar, TrendingUp } from 'lucide-react';
 
 export interface CashFlowWaterfallChartProps {
   cashFlows: CashFlowItem[];

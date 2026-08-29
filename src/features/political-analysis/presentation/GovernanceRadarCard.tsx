@@ -2,7 +2,7 @@ import React from 'react';
 import { PoliticalRiskIndex } from '../domain/PoliticalRiskIndex';
 import { Card } from '@core/ui/components/Card';
 import { Badge } from '@core/ui/components/Badge';
-import { Scale, CheckCircle2 } from 'lucide-react';
+import { Scale } from 'lucide-react';
 
 export const GovernanceRadarCard: React.FC<{ riskIndex: PoliticalRiskIndex }> = ({
   riskIndex,

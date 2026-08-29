@@ -2,7 +2,7 @@ import React from 'react';
 import { BcraBalanceSheet } from '../domain/BcraBalanceSheet';
 import { Card } from '@core/ui/components/Card';
 import { Badge } from '@core/ui/components/Badge';
-import { Landmark, ShieldCheck, DollarSign, Wallet, CheckCircle2, Info } from 'lucide-react';
+import { Landmark, CheckCircle2 } from 'lucide-react';
 import { useApp } from '@app/providers/AppContext';
 import { Money } from '@core/domain/Money';
 
