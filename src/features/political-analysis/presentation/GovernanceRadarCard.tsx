@@ -44,8 +44,8 @@ export const GovernanceRadarCard: React.FC<{ riskIndex: PoliticalRiskIndex }> = 
         </div>
       </div>
 
-      {/* Progress Bars Metric Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5 pt-1">
+      {/* Progress Bars Metric Grid (2 balanced rows) */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-1">
         {metrics.map((m, i) => (
           <div
             key={i}

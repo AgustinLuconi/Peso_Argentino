@@ -45,8 +45,8 @@ export const BondHeaderMetrics: React.FC<{ bond: BondDetail }> = ({ bond }) => {
         </div>
       </div>
 
-      {/* Grid of Key Sovereign Debt Metrics */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5">
+      {/* Grid of Key Sovereign Debt Metrics (2 balanced rows of 3 items) */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-3.5">
         <div className="p-3.5 bg-primary/60 rounded-2xl border border-gold/20 shadow-soft min-w-0 overflow-hidden">
           <span className="font-eyebrow text-slate-400 block mb-1 truncate">Paridad</span>
           <span className="text-base sm:text-lg font-mono-tabular font-bold text-gold block truncate tracking-tight">
