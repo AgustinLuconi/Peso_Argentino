@@ -160,71 +160,77 @@ export const NewsCard: React.FC<{
         </div>
         <ChevronDown
           size={14}
-          className={`text-gold transition-transform duration-300 ${
+          className={`text-gold transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
             isExpanded ? 'rotate-180' : ''
           }`}
         />
       </button>
 
-      {/* Expandable Editorial Deep-Dive Drawer */}
-      {isExpanded && (
-        <div className="p-4 bg-champagne-light/30 dark:bg-surface-container rounded-2xl border border-gold/40 text-xs font-sans space-y-2.5 animate-in fade-in slide-in-from-top-2 duration-200 shadow-soft">
-          {aiClassification ? (
-            <div className="space-y-3">
-              <div className="flex items-center justify-between pb-2 border-b border-gold/20">
-                <span className="font-eyebrow text-gold font-bold flex items-center gap-1.5">
-                  <CheckCircle2 size={14} className="text-bullish-green" />
-                  Clasificación IA: {aiClassification.provider}
-                </span>
-                <span className="font-mono text-[10px] text-outline">
-                  Confianza: {(aiClassification.confidenceScore * 100).toFixed(0)}%
-                </span>
+      {/* Fluid Expandable Editorial Deep-Dive Drawer */}
+      <div
+        className={`accordion-content-wrapper ${
+          isExpanded ? 'is-open' : ''
+        }`}
+      >
+        <div className="accordion-content-inner">
+          <div className="p-4 bg-champagne-light/30 dark:bg-surface-container rounded-2xl border border-gold/40 text-xs font-sans space-y-2.5 shadow-soft my-1">
+            {aiClassification ? (
+              <div className="space-y-3">
+                <div className="flex items-center justify-between pb-2 border-b border-gold/20">
+                  <span className="font-eyebrow text-gold font-bold flex items-center gap-1.5">
+                    <CheckCircle2 size={14} className="text-bullish-green" />
+                    Clasificación IA: {aiClassification.provider}
+                  </span>
+                  <span className="font-mono text-[10px] text-outline">
+                    Confianza: {(aiClassification.confidenceScore * 100).toFixed(0)}%
+                  </span>
+                </div>
+                <div className="space-y-1">
+                  <span className="font-eyebrow text-primary block">Resumen Ejecutivo IA:</span>
+                  <p className="text-on-surface leading-relaxed text-xs">{aiClassification.executiveSummary}</p>
+                </div>
+                <div className="space-y-1 pt-1.5 border-t border-gold/20">
+                  <span className="font-eyebrow text-primary block">Canal de Transmisión:</span>
+                  <p className="text-on-surface-variant leading-relaxed text-xs">{aiClassification.transmissionChannel}</p>
+                </div>
+                <div className="space-y-1 pt-1.5 border-t border-gold/20">
+                  <span className="font-eyebrow text-primary block">Consenso de Mercado:</span>
+                  <p className="text-on-surface-variant leading-relaxed text-xs">{aiClassification.marketConsensus}</p>
+                </div>
               </div>
-              <div className="space-y-1">
-                <span className="font-eyebrow text-primary block">Resumen Ejecutivo IA:</span>
-                <p className="text-on-surface leading-relaxed text-xs">{aiClassification.executiveSummary}</p>
-              </div>
-              <div className="space-y-1 pt-1.5 border-t border-gold/20">
-                <span className="font-eyebrow text-primary block">Canal de Transmisión:</span>
-                <p className="text-on-surface-variant leading-relaxed text-xs">{aiClassification.transmissionChannel}</p>
-              </div>
-              <div className="space-y-1 pt-1.5 border-t border-gold/20">
-                <span className="font-eyebrow text-primary block">Consenso de Mercado:</span>
-                <p className="text-on-surface-variant leading-relaxed text-xs">{aiClassification.marketConsensus}</p>
-              </div>
-            </div>
-          ) : (
-            <>
-              <div className="space-y-1">
-                <span className="font-eyebrow text-secondary font-bold block">
-                  Marco de Política Económica:
-                </span>
-                <p className="text-on-surface leading-relaxed text-xs">
-                  {extended.leadAnalysis}
-                </p>
-              </div>
+            ) : (
+              <>
+                <div className="space-y-1">
+                  <span className="font-eyebrow text-secondary font-bold block">
+                    Marco de Política Económica:
+                  </span>
+                  <p className="text-on-surface leading-relaxed text-xs">
+                    {extended.leadAnalysis}
+                  </p>
+                </div>
 
-              <div className="space-y-1 pt-1.5 border-t border-gold/20">
-                <span className="font-eyebrow text-primary block">
-                  Mecanismo de Transmisión Financiera:
-                </span>
-                <p className="text-on-surface-variant leading-relaxed text-xs">
-                  {extended.transmissionChannel}
-                </p>
-              </div>
+                <div className="space-y-1 pt-1.5 border-t border-gold/20">
+                  <span className="font-eyebrow text-primary block">
+                    Mecanismo de Transmisión Financiera:
+                  </span>
+                  <p className="text-on-surface-variant leading-relaxed text-xs">
+                    {extended.transmissionChannel}
+                  </p>
+                </div>
 
-              <div className="space-y-1 pt-1.5 border-t border-gold/20">
-                <span className="font-eyebrow text-primary block">
-                  Visión de Mesas de Dinero (Consenso):
-                </span>
-                <p className="text-on-surface-variant leading-relaxed text-xs">
-                  {extended.marketConsensus}
-                </p>
-              </div>
-            </>
-          )}
+                <div className="space-y-1 pt-1.5 border-t border-gold/20">
+                  <span className="font-eyebrow text-primary block">
+                    Visión de Mesas de Dinero (Consenso):
+                  </span>
+                  <p className="text-on-surface-variant leading-relaxed text-xs">
+                    {extended.marketConsensus}
+                  </p>
+                </div>
+              </>
+            )}
+          </div>
         </div>
-      )}
+      </div>
 
       {/* Footer: Affected Assets & Sentiment */}
       <div className="pt-2 flex flex-wrap items-center justify-between gap-2 text-xs font-sans">

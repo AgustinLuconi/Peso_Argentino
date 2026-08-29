@@ -114,48 +114,54 @@ export const LegislativeTrackerTable: React.FC<{
                   <span className="font-mono-tabular text-xs text-outline hidden md:inline">
                     {item.date}
                   </span>
-                  <div className={`p-1 rounded-full text-outline transition-transform duration-300 ${isExpanded ? 'rotate-180 bg-surface-container text-primary' : ''}`}>
+                  <div className={`p-1 rounded-full text-outline transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${isExpanded ? 'rotate-180 bg-surface-container text-primary' : ''}`}>
                     <ChevronDown size={16} />
                   </div>
                 </div>
               </div>
 
-              {/* Expandable Content Tray */}
-              {isExpanded && (
-                <div className="px-4 pb-4 pt-2 border-t border-surface-container-high dark:border-[#1a2744] bg-surface-container-low/40 dark:bg-[#0c1730] text-xs font-sans space-y-3 animate-in fade-in slide-in-from-top-2 duration-200">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <div className="p-3.5 bg-white dark:bg-[#101e3d] rounded-2xl border border-surface-container-highest dark:border-[#1a2744] space-y-1 shadow-soft">
-                      <span className="font-eyebrow text-primary block">
-                        Capítulos y Ejes Principales:
-                      </span>
-                      <p className="text-on-surface text-xs leading-relaxed">
-                        {details.chapters}
-                      </p>
+              {/* Fluid Expandable Content Tray */}
+              <div
+                className={`accordion-content-wrapper ${
+                  isExpanded ? 'is-open' : ''
+                }`}
+              >
+                <div className="accordion-content-inner">
+                  <div className="px-4 pb-4 pt-2 border-t border-surface-container-high dark:border-[#1a2744] bg-surface-container-low/40 dark:bg-[#0c1730] text-xs font-sans space-y-3">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                      <div className="p-3.5 bg-white dark:bg-[#101e3d] rounded-2xl border border-surface-container-highest dark:border-[#1a2744] space-y-1 shadow-soft">
+                        <span className="font-eyebrow text-primary block">
+                          Capítulos y Ejes Principales:
+                        </span>
+                        <p className="text-on-surface text-xs leading-relaxed">
+                          {details.chapters}
+                        </p>
+                      </div>
+
+                      <div className="p-3.5 bg-white dark:bg-[#101e3d] rounded-2xl border border-surface-container-highest dark:border-[#1a2744] space-y-1 shadow-soft">
+                        <span className="font-eyebrow text-primary block">
+                          Votación Parlamentaria:
+                        </span>
+                        <p className="text-on-surface text-xs leading-relaxed">
+                          {details.votes}
+                        </p>
+                      </div>
                     </div>
 
-                    <div className="p-3.5 bg-white dark:bg-[#101e3d] rounded-2xl border border-surface-container-highest dark:border-[#1a2744] space-y-1 shadow-soft">
-                      <span className="font-eyebrow text-primary block">
-                        Votación Parlamentaria:
-                      </span>
-                      <p className="text-on-surface text-xs leading-relaxed">
-                        {details.votes}
-                      </p>
-                    </div>
-                  </div>
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-2 border-t border-surface-container-high dark:border-[#1a2744] text-[11px]">
+                      <div className="flex items-center gap-1.5 text-bullish-green font-semibold">
+                        <ShieldCheck size={14} />
+                        <span>{details.regulatoryDecree}</span>
+                      </div>
 
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-2 border-t border-surface-container-high dark:border-[#1a2744] text-[11px]">
-                    <div className="flex items-center gap-1.5 text-bullish-green font-semibold">
-                      <ShieldCheck size={14} />
-                      <span>{details.regulatoryDecree}</span>
-                    </div>
-
-                    <div className="flex items-center gap-1.5 text-secondary font-medium">
-                      <Landmark size={14} />
-                      <span>Impacto Fiscal: {details.fiscalImpact}</span>
+                      <div className="flex items-center gap-1.5 text-secondary font-medium">
+                        <Landmark size={14} />
+                        <span>Impacto Fiscal: {details.fiscalImpact}</span>
+                      </div>
                     </div>
                   </div>
                 </div>
-              )}
+              </div>
             </div>
           );
         })}

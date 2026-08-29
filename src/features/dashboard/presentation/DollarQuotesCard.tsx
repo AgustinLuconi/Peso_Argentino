@@ -182,36 +182,42 @@ export const DollarQuotesCard: React.FC<DollarQuotesCardProps> = ({
                 <span>{isExpanded ? 'Ocultar Ficha' : 'Ver Ficha Operativa'}</span>
                 <ChevronDown
                   size={14}
-                  className={`text-emerald-500 transition-transform duration-300 ${
+                  className={`text-emerald-500 transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
                     isExpanded ? 'rotate-180' : ''
                   }`}
                 />
               </button>
 
-              {/* Animated Expandable Details Panel */}
-              {isExpanded && (
-                <div className="p-3.5 bg-white/95 dark:bg-[#131822] border-t border-emerald-500/30 text-xs font-sans space-y-2.5 animate-in fade-in slide-in-from-top-2 duration-200 shadow-soft">
-                  <div className="space-y-1">
-                    <span className="font-eyebrow text-[11px] font-bold uppercase block text-slate-500 dark:text-slate-400">Régimen Impositivo:</span>
-                    <p className="text-slate-900 dark:text-slate-200 text-xs leading-relaxed">{details.taxes}</p>
-                  </div>
+              {/* Fluid Animated Expandable Details Panel */}
+              <div
+                className={`accordion-content-wrapper ${
+                  isExpanded ? 'is-open' : ''
+                }`}
+              >
+                <div className="accordion-content-inner">
+                  <div className="p-3.5 bg-white/95 dark:bg-[#131822] border-t border-emerald-500/30 text-xs font-sans space-y-2.5 shadow-soft">
+                    <div className="space-y-1">
+                      <span className="font-eyebrow text-[11px] font-bold uppercase block text-slate-500 dark:text-slate-400">Régimen Impositivo:</span>
+                      <p className="text-slate-900 dark:text-slate-200 text-xs leading-relaxed">{details.taxes}</p>
+                    </div>
 
-                  <div className="space-y-1 pt-1.5 border-t border-surface-container-high dark:border-[#1E2638]">
-                    <span className="font-eyebrow text-[11px] font-bold uppercase block text-slate-500 dark:text-slate-400">Parking & Liquidación:</span>
-                    <p className="text-slate-900 dark:text-slate-200 text-xs leading-relaxed">{details.parking}</p>
-                  </div>
+                    <div className="space-y-1 pt-1.5 border-t border-surface-container-high dark:border-[#1E2638]">
+                      <span className="font-eyebrow text-[11px] font-bold uppercase block text-slate-500 dark:text-slate-400">Parking & Liquidación:</span>
+                      <p className="text-slate-900 dark:text-slate-200 text-xs leading-relaxed">{details.parking}</p>
+                    </div>
 
-                  <div className="space-y-1 pt-1.5 border-t border-surface-container-high dark:border-[#1E2638]">
-                    <span className="font-eyebrow text-[11px] font-bold uppercase block text-slate-500 dark:text-slate-400">Límite / Cupo:</span>
-                    <p className="text-slate-900 dark:text-slate-200 text-xs leading-relaxed">{details.limit}</p>
-                  </div>
+                    <div className="space-y-1 pt-1.5 border-t border-surface-container-high dark:border-[#1E2638]">
+                      <span className="font-eyebrow text-[11px] font-bold uppercase block text-slate-500 dark:text-slate-400">Límite / Cupo:</span>
+                      <p className="text-slate-900 dark:text-slate-200 text-xs leading-relaxed">{details.limit}</p>
+                    </div>
 
-                  <div className="space-y-1 pt-1.5 border-t border-surface-container-high dark:border-[#1E2638]">
-                    <span className="font-eyebrow text-[11px] font-bold uppercase block text-slate-500 dark:text-slate-400">Mercado de Ejecución:</span>
-                    <p className="text-slate-900 dark:text-slate-200 text-xs leading-relaxed">{details.market}</p>
+                    <div className="space-y-1 pt-1.5 border-t border-surface-container-high dark:border-[#1E2638]">
+                      <span className="font-eyebrow text-[11px] font-bold uppercase block text-slate-500 dark:text-slate-400">Mercado de Ejecución:</span>
+                      <p className="text-slate-900 dark:text-slate-200 text-xs leading-relaxed">{details.market}</p>
+                    </div>
                   </div>
                 </div>
-              )}
+              </div>
             </div>
           );
         })}

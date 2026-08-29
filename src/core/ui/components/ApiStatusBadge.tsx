@@ -21,7 +21,7 @@ export const ApiStatusBadge: React.FC = () => {
         <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
         <span className="hidden sm:inline">En Vivo</span>
         <span className="text-[10px] text-emerald-500/70 dark:text-emerald-400/70 hidden md:inline">45ms</span>
-        <ChevronDown size={12} className={`transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+        <ChevronDown size={12} className={`transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${isOpen ? 'rotate-180' : ''}`} />
       </button>
 
       {/* Popover de Estado de APIs */}
@@ -31,7 +31,7 @@ export const ApiStatusBadge: React.FC = () => {
             className="fixed inset-0 z-40"
             onClick={() => setIsOpen(false)}
           />
-          <div className="absolute right-0 top-full mt-2 w-72 sm:w-80 bg-white dark:bg-[#0F141C] border border-surface-container-highest dark:border-[#1E2638] rounded-2xl shadow-tactile p-3.5 z-50 animate-in fade-in zoom-in-95 duration-150 space-y-3">
+          <div className="absolute right-0 top-full mt-2 w-72 sm:w-80 bg-white dark:bg-[#0F141C] border border-surface-container-highest dark:border-[#1E2638] rounded-2xl shadow-tactile p-3.5 z-50 animate-in fade-in zoom-in-95 duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] space-y-3">
             <div className="flex items-center justify-between border-b border-surface-container-highest dark:border-[#1E2638] pb-2">
               <div className="flex items-center gap-1.5 text-xs font-sans font-bold text-slate-900 dark:text-slate-100">
                 <ShieldCheck size={15} className="text-emerald-500" />

@@ -273,47 +273,55 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
                         </p>
                       </div>
 
-                      <div className="shrink-0 self-center text-outline-variant dark:text-slate-400 group-hover:text-emerald-500 dark:group-hover:text-slate-100 transition-transform duration-200">
+                      <div className="shrink-0 self-center text-outline-variant dark:text-slate-400 group-hover:text-emerald-500 dark:group-hover:text-emerald-100 transition-transform duration-200">
                         <ChevronDown
                           size={14}
                           className={clsx(
-                            'transition-transform duration-200',
+                            'transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]',
                             isMenuOpen ? 'rotate-180 text-emerald-400' : ''
                           )}
                         />
                       </div>
                     </button>
 
-                    {/* Expandable Sub-items Accordion */}
-                    {isMenuOpen && item.subItems && (
-                      <div className="pl-9 pr-2 py-1 space-y-1 animate-in fade-in slide-in-from-top-1 duration-200">
-                        {item.subItems.map((sub) => {
-                          const isSubActive = isActive && activeSubItem === sub.id;
+                    {/* Fluid Expandable Sub-items Accordion */}
+                    {item.subItems && (
+                      <div
+                        className={`accordion-content-wrapper ${
+                          isMenuOpen ? 'is-open' : ''
+                        }`}
+                      >
+                        <div className="accordion-content-inner">
+                          <div className="pl-9 pr-2 py-1 space-y-1">
+                            {item.subItems.map((sub) => {
+                              const isSubActive = isActive && activeSubItem === sub.id;
 
-                          return (
-                            <button
-                              key={sub.id}
-                              onClick={() => handleSubItemClick(item.id, sub.id)}
-                              className={clsx(
-                                'w-full text-left py-1.5 px-3 rounded-lg text-xs font-sans transition-all duration-150 flex items-center gap-2 group',
-                                isSubActive
-                                  ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 font-bold border-l-2 border-emerald-500'
-                                  : 'text-on-surface-variant dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-300 hover:bg-surface-container dark:hover:bg-[#161B26]'
-                              )}
-                            >
-                              <CircleDot
-                                size={10}
-                                className={clsx(
-                                  'shrink-0 transition-colors',
-                                  isSubActive
-                                    ? 'text-emerald-500 fill-emerald-500'
-                                    : 'text-outline dark:text-slate-500 group-hover:text-emerald-400'
-                                )}
-                              />
-                              <span className="truncate">{sub.label}</span>
-                            </button>
-                          );
-                        })}
+                              return (
+                                <button
+                                  key={sub.id}
+                                  onClick={() => handleSubItemClick(item.id, sub.id)}
+                                  className={clsx(
+                                    'w-full text-left py-1.5 px-3 rounded-lg text-xs font-sans transition-all duration-150 flex items-center gap-2 group',
+                                    isSubActive
+                                      ? 'bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 font-bold border-l-2 border-emerald-500'
+                                      : 'text-on-surface-variant dark:text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-300 hover:bg-surface-container dark:hover:bg-[#161B26]'
+                                  )}
+                                >
+                                  <CircleDot
+                                    size={10}
+                                    className={clsx(
+                                      'shrink-0 transition-colors',
+                                      isSubActive
+                                        ? 'text-emerald-500 fill-emerald-500'
+                                        : 'text-outline dark:text-slate-500 group-hover:text-emerald-400'
+                                    )}
+                                  />
+                                  <span className="truncate">{sub.label}</span>
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </div>
                       </div>
                     )}
                   </div>
