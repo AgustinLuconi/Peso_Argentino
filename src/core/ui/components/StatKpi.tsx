@@ -61,10 +61,10 @@ export const StatKpi: React.FC<StatKpiProps> = ({
       </div>
 
       {/* Middle row: Big Value */}
-      <div className="my-1.5">
+      <div className="my-1.5 min-w-0 overflow-hidden">
         <span
           className={clsx(
-            'text-2xl sm:text-3xl 2xl:text-4xl font-mono-tabular font-extrabold tracking-tight block',
+            'text-xl sm:text-2xl lg:text-2xl 2xl:text-3xl font-mono-tabular font-extrabold tracking-tight block truncate',
             isNavy ? 'text-white' : 'text-slate-900 dark:text-slate-100'
           )}
         >

@@ -50,9 +50,9 @@ export const MervalIndicesHeader: React.FC<{ indices: MarketIndexData[] }> = ({
           </div>
 
           {/* Big Index Value */}
-          <div className="my-3 flex items-baseline justify-between">
+          <div className="my-2.5 flex items-baseline justify-between min-w-0 overflow-hidden">
             <span
-              className={`text-2xl sm:text-3xl font-mono-tabular font-extrabold tracking-tight ${
+              className={`text-xl sm:text-2xl lg:text-3xl font-mono-tabular font-extrabold tracking-tight truncate ${
                 index === 0 ? 'text-white' : 'text-primary'
               }`}
             >
