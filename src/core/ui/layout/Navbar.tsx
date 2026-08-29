@@ -22,7 +22,15 @@ export const Navbar: React.FC<NavbarProps> = ({
   onSearchClick,
   onOpenShortcuts,
 }) => {
-  const { theme, toggleTheme, setIsConverterOpen, setIsAiModalOpen, displayCurrency, setDisplayCurrency } = useApp();
+  const {
+    theme,
+    toggleTheme,
+    setIsConverterOpen,
+    setIsAiModalOpen,
+    displayCurrency,
+    setDisplayCurrency,
+    navigateTo,
+  } = useApp();
 
   const currentDate = new Date().toLocaleDateString('es-AR', {
     weekday: 'short',
@@ -30,6 +38,11 @@ export const Navbar: React.FC<NavbarProps> = ({
     month: 'short',
     year: 'numeric',
   });
+
+  const handleLogoClick = () => {
+    navigateTo('dashboard');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <header className="sticky top-0 z-50 bg-white/95 dark:bg-[#090C10]/95 backdrop-blur-md border-b border-surface-container-highest dark:border-[#1E2638] shadow-xs transition-colors duration-200">
@@ -44,8 +57,14 @@ export const Navbar: React.FC<NavbarProps> = ({
             <Menu size={20} />
           </button>
 
-          <div className="flex items-center gap-2 sm:gap-2.5">
-            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl overflow-hidden flex items-center justify-center shadow-soft hover:scale-105 transition-transform duration-200 shrink-0">
+          <button
+            type="button"
+            onClick={handleLogoClick}
+            className="flex items-center gap-2 sm:gap-2.5 text-left group cursor-pointer rounded-xl p-1 -m-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold transition-all"
+            title="Ir al Inicio (Dashboard)"
+            aria-label="Ir al Inicio de Peso Argentino"
+          >
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl overflow-hidden flex items-center justify-center shadow-soft group-hover:scale-105 group-active:scale-95 transition-transform duration-200 shrink-0">
               <img
                 src="/favicon.svg"
                 alt="Sol de Mayo"
@@ -54,7 +73,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
             <div className="flex flex-col">
               <div className="flex items-center gap-1.5 sm:gap-2">
-                <span className="font-sans font-extrabold text-base sm:text-xl text-slate-900 dark:text-white tracking-tight uppercase truncate">
+                <span className="font-sans font-extrabold text-base sm:text-xl text-slate-900 dark:text-white tracking-tight uppercase truncate group-hover:text-gold transition-colors">
                   PESO ARGENTINO
                 </span>
                 <Badge variant="emerald" size="sm" className="hidden sm:inline-flex">
@@ -65,7 +84,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 {currentDate} · Bolsa & Mercados Argentinos
               </span>
             </div>
-          </div>
+          </button>
         </div>
 
         {/* Center: Active View Breadcrumb */}

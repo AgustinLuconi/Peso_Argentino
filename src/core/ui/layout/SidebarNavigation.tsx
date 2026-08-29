@@ -177,16 +177,25 @@ export const SidebarNavigation: React.FC<SidebarNavigationProps> = ({
         <div className="p-3 sm:p-4 space-y-4 sm:space-y-6">
           {/* Mobile Header with Close Button */}
           <div className="flex items-center justify-between lg:hidden border-b border-surface-container-highest dark:border-[#1E2638] pb-3">
-            <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => {
+                onSelectFeature('dashboard');
+                onClose();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className="flex items-center gap-2 text-left group cursor-pointer"
+              title="Ir al Inicio (Dashboard)"
+            >
               <img
                 src="/favicon.svg"
                 alt="Sol de Mayo"
-                className="w-6 h-6 object-contain"
+                className="w-6 h-6 object-contain group-hover:scale-105 transition-transform"
               />
-              <span className="font-sans font-black text-base text-slate-900 dark:text-white uppercase">
+              <span className="font-sans font-black text-base text-slate-900 dark:text-white uppercase group-hover:text-emerald-400 transition-colors">
                 PESO ARGENTINO
               </span>
-            </div>
+            </button>
             <button
               onClick={onClose}
               className="p-1.5 rounded-xl text-outline dark:text-slate-400 hover:text-emerald-500 hover:bg-surface-container dark:hover:bg-[#131822]"

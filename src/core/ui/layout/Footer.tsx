@@ -14,14 +14,19 @@ export const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 sm:gap-8 pt-6 border-t border-white/10">
           {/* Brand Col */}
           <div className="md:col-span-2 space-y-3">
-            <div className="flex items-center gap-2.5">
-              <span className="font-sans font-extrabold text-lg sm:text-xl text-white tracking-tight">
+            <button
+              type="button"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="flex items-center gap-2.5 text-left group cursor-pointer"
+              title="Volver al inicio"
+            >
+              <span className="font-sans font-extrabold text-lg sm:text-xl text-white tracking-tight group-hover:text-gold transition-colors">
                 PESO ARGENTINO
               </span>
               <span className="text-[10px] font-mono px-2 py-0.5 bg-primary-container text-gold border border-gold/30 rounded-full">
                 PORTAL INSTITUCIONAL
               </span>
-            </div>
+            </button>
             <p className="text-xs font-sans text-slate-300 max-w-xl leading-relaxed">
               Plataforma integral de monitoreo financiero, seguimiento de activos bursátiles, balance del Banco Central de la República Argentina y radar de análisis macroeconómico y regulatorio.
             </p>
