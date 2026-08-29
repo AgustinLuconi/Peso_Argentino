@@ -1,49 +1,55 @@
 import { DatabaseConnection } from '../database/DatabaseConnection';
+import { DatabaseMigrations } from '../database/DatabaseMigrations';
 
 interface ArgentinaDatosInflationItem {
-  fecha: string;
-  valor: number;
+  readonly fecha: string;
+  readonly valor: number;
 }
 
 interface ArgentinaDatosRiesgoItem {
-  fecha: string;
-  valor: number;
+  readonly fecha: string;
+  readonly valor: number;
 }
 
 interface ArgentinaDatosPlazoFijoItem {
-  entidad: string;
-  tnaClientes: number;
-  tnaNoClientes?: number;
+  readonly entidad: string;
+  readonly tnaClientes: number;
+  readonly tnaNoClientes?: number;
 }
 
 interface ArglyIpcResponse {
-  data?: {
-    indice_ipc: number;
-    mes: number;
-    nombre_mes: string;
-    anio: number;
-    fecha_publicacion: string;
-    fecha_proximo_informe: string;
+  readonly data?: {
+    readonly indice_ipc: number;
+    readonly mes: number;
+    readonly nombre_mes: string;
+    readonly anio: number;
+    readonly fecha_publicacion: string;
+    readonly fecha_proximo_informe: string;
   };
 }
 
 interface DolarItem {
-  casa: string;
-  nombre: string;
-  compra: number;
-  venta: number;
-  fechaActualizacion: string;
+  readonly casa: string;
+  readonly nombre: string;
+  readonly compra: number;
+  readonly venta: number;
+  readonly fechaActualizacion: string;
 }
 
 export async function syncMacroeconomicData(): Promise<{
-  ipcUpdated: number;
-  riesgoUpdated: number;
-  ratesUpdated: number;
-  dolarUpdated: number;
-  summaryMarkdown: string;
+  readonly ipcUpdated: number;
+  readonly riesgoUpdated: number;
+  readonly ratesUpdated: number;
+  readonly dolarUpdated: number;
+  readonly summaryMarkdown: string;
 }> {
-  console.log('[MacroSync] 🚀 Iniciando sincronización de datos con ArgentinaDatos, Argly y DolarApi...');
-  const db = DatabaseConnection.getInstance();
+  console.log('[MacroSync] 🚀 Iniciando sincronización de datos con ArgentinaDatos, Argly y DolarApi en Neon...');
+
+  if (DatabaseConnection.isConfigured()) {
+    await DatabaseMigrations.runMigrations();
+  } else {
+    console.warn('[MacroSync] ⚠️ DATABASE_URL no configurada. Saltando inserción en Neon.');
+  }
 
   let ipcCount = 0;
   let riesgoCount = 0;
@@ -64,22 +70,21 @@ export async function syncMacroeconomicData(): Promise<{
   try {
     console.log('[MacroSync] 📥 Consultando serie de inflación en ArgentinaDatos & Argly...');
     const [argDatosRes, arglyRes] = await Promise.allSettled([
-      fetch('https://api.argentinadatos.com/v1/finanzas/indices/inflacion').then((r) => r.json() as Promise<ArgentinaDatosInflationItem[]>),
+      fetch('https://api.argentinadatos.com/v1/finanzas/indices/inflacion').then((r) => r.json() as Promise<readonly ArgentinaDatosInflationItem[]>),
       fetch('https://api.argly.com.ar/v1/ipc').then((r) => r.json() as Promise<ArglyIpcResponse>),
     ]);
-
-    const insertMacro = db.prepare(`
-      INSERT OR REPLACE INTO macro_series (series_code, period, value, unit, source)
-      VALUES (?, ?, ?, ?, ?)
-    `);
-
-    db.exec('BEGIN TRANSACTION;');
 
     if (argDatosRes.status === 'fulfilled' && Array.isArray(argDatosRes.value)) {
       for (const item of argDatosRes.value) {
         if (item.fecha && typeof item.valor === 'number') {
           const period = item.fecha.substring(0, 7); // 'YYYY-MM'
-          insertMacro.run('ipc', period, item.valor, '% m/m', 'INDEC / ArgentinaDatos');
+          await DatabaseConnection.execute(
+            `INSERT INTO macro_series (series_code, period, value, unit, source)
+             VALUES ($1, $2, $3, $4, $5)
+             ON CONFLICT (series_code, period)
+             DO UPDATE SET value = EXCLUDED.value, unit = EXCLUDED.unit, source = EXCLUDED.source, updated_at = NOW()`,
+            ['ipc', period, item.valor, '% m/m', 'INDEC / ArgentinaDatos']
+          );
           ipcCount++;
         }
       }
@@ -88,16 +93,20 @@ export async function syncMacroeconomicData(): Promise<{
     if (arglyRes.status === 'fulfilled' && arglyRes.value?.data) {
       const d = arglyRes.value.data;
       const period = `${d.anio}-${String(d.mes).padStart(2, '0')}`;
-      insertMacro.run('ipc', period, d.indice_ipc, '% m/m', 'INDEC / Argly');
+      await DatabaseConnection.execute(
+        `INSERT INTO macro_series (series_code, period, value, unit, source)
+         VALUES ($1, $2, $3, $4, $5)
+         ON CONFLICT (series_code, period)
+         DO UPDATE SET value = EXCLUDED.value, unit = EXCLUDED.unit, source = EXCLUDED.source, updated_at = NOW()`,
+        ['ipc', period, d.indice_ipc, '% m/m', 'INDEC / Argly']
+      );
       latestIpcValue = `${d.indice_ipc}%`;
       latestIpcMonth = `${d.nombre_mes} ${d.anio}`;
       nextIpcDate = d.fecha_proximo_informe || nextIpcDate;
     }
 
-    db.exec('COMMIT;');
-    console.log(`[MacroSync] ✅ Inflación IPC sincronizada: ${ipcCount} períodos actualizados.`);
+    console.log(`[MacroSync] ✅ Inflación IPC sincronizada: ${ipcCount} períodos actualizados en Neon.`);
   } catch (err) {
-    db.exec('ROLLBACK;');
     console.error('[MacroSync] ⚠️ Error al sincronizar inflación:', err);
   }
 
@@ -106,23 +115,21 @@ export async function syncMacroeconomicData(): Promise<{
     console.log('[MacroSync] 📥 Consultando serie de Riesgo País en ArgentinaDatos...');
     const riesgoRes = await fetch('https://api.argentinadatos.com/v1/finanzas/indices/riesgo-pais');
     if (riesgoRes.ok) {
-      const list = (await riesgoRes.json()) as ArgentinaDatosRiesgoItem[];
+      const list = (await riesgoRes.json()) as readonly ArgentinaDatosRiesgoItem[];
       if (Array.isArray(list) && list.length > 0) {
-        const insertMacro = db.prepare(`
-          INSERT OR REPLACE INTO macro_series (series_code, period, value, unit, source)
-          VALUES (?, ?, ?, ?, ?)
-        `);
-
-        db.exec('BEGIN TRANSACTION;');
-        // Guardar últimos 60 registros mensuales/semanales
         for (const item of list.slice(-60)) {
           if (item.fecha && typeof item.valor === 'number') {
             const period = item.fecha.substring(0, 7);
-            insertMacro.run('riesgo_pais', period, item.valor, 'bps', 'J.P. Morgan / ArgentinaDatos');
+            await DatabaseConnection.execute(
+              `INSERT INTO macro_series (series_code, period, value, unit, source)
+               VALUES ($1, $2, $3, $4, $5)
+               ON CONFLICT (series_code, period)
+               DO UPDATE SET value = EXCLUDED.value, unit = EXCLUDED.unit, source = EXCLUDED.source, updated_at = NOW()`,
+              ['riesgo_pais', period, item.valor, 'bps', 'J.P. Morgan / ArgentinaDatos']
+            );
             riesgoCount++;
           }
         }
-        db.exec('COMMIT;');
 
         const last = list[list.length - 1];
         latestRiesgoVal = last.valor;
@@ -139,26 +146,24 @@ export async function syncMacroeconomicData(): Promise<{
     console.log('[MacroSync] 📥 Consultando tasas de Plazos Fijos en ArgentinaDatos...');
     const pfRes = await fetch('https://api.argentinadatos.com/v1/finanzas/tasas/plazoFijo');
     if (pfRes.ok) {
-      const banks = (await pfRes.json()) as ArgentinaDatosPlazoFijoItem[];
+      const banks = (await pfRes.json()) as readonly ArgentinaDatosPlazoFijoItem[];
       if (Array.isArray(banks) && banks.length > 0) {
-        const insertRate = db.prepare(`
-          INSERT OR REPLACE INTO bank_rates (entity_name, rate_type, tna, tea, tem)
-          VALUES (?, ?, ?, ?, ?)
-        `);
-
-        db.exec('BEGIN TRANSACTION;');
         for (const b of banks) {
           if (b.entidad && typeof b.tnaClientes === 'number') {
-            // Convert to percentage if decimal (0.30 -> 30)
             const tna = b.tnaClientes < 1 ? Number((b.tnaClientes * 100).toFixed(2)) : b.tnaClientes;
             const tem = Number(((tna * 30) / 365).toFixed(2));
             const tea = Number(((Math.pow(1 + tem / 100, 12) - 1) * 100).toFixed(2));
 
-            insertRate.run(b.entidad, 'plazo_fijo', tna, tea, tem);
+            await DatabaseConnection.execute(
+              `INSERT INTO bank_rates (entity_name, rate_type, tna, tea, tem)
+               VALUES ($1, $2, $3, $4, $5)
+               ON CONFLICT (entity_name, rate_type)
+               DO UPDATE SET tna = EXCLUDED.tna, tea = EXCLUDED.tea, tem = EXCLUDED.tem, updated_at = NOW()`,
+              [b.entidad, 'plazo_fijo', tna, tea, tem]
+            );
             ratesCount++;
           }
         }
-        db.exec('COMMIT;');
         console.log(`[MacroSync] ✅ Tasas de Plazo Fijo sincronizadas: ${ratesCount} entidades.`);
       }
     }
@@ -171,14 +176,9 @@ export async function syncMacroeconomicData(): Promise<{
     console.log('[MacroSync] 📥 Consultando cotizaciones del Dólar en DolarApi...');
     const dolarRes = await fetch('https://dolarapi.com/v1/dolares');
     if (dolarRes.ok) {
-      const dolares = (await dolarRes.json()) as DolarItem[];
+      const dolares = (await dolarRes.json()) as readonly DolarItem[];
       if (Array.isArray(dolares) && dolares.length > 0) {
-        const insertQuote = db.prepare(`
-          INSERT INTO quotes_history (quote_type, name, buy_price, sell_price, spread, variation_24h, recorded_at)
-          VALUES (?, ?, ?, ?, ?, ?, datetime('now', 'localtime'))
-        `);
-
-        const mapping: Record<string, { type: string; name: string }> = {
+        const mapping: Record<string, { readonly type: string; readonly name: string }> = {
           oficial: { type: 'oficial', name: 'Dólar Oficial (BNA)' },
           blue: { type: 'blue', name: 'Dólar Libre / Blue' },
           bolsa: { type: 'mep', name: 'Dólar MEP (Bolsa AL30)' },
@@ -191,7 +191,6 @@ export async function syncMacroeconomicData(): Promise<{
         let ofVenta = 0;
         let cclVenta = 0;
 
-        db.exec('BEGIN TRANSACTION;');
         for (const item of dolares) {
           const conf = mapping[item.casa];
           if (conf) {
@@ -199,7 +198,11 @@ export async function syncMacroeconomicData(): Promise<{
             const sell = item.venta;
             const spread = Number((sell - buy).toFixed(2));
 
-            insertQuote.run(conf.type, conf.name, buy, sell, spread, 0.1);
+            await DatabaseConnection.execute(
+              `INSERT INTO quotes_history (quote_type, name, buy_price, sell_price, spread, variation_24h)
+               VALUES ($1, $2, $3, $4, $5, $6)`,
+              [conf.type, conf.name, buy, sell, spread, 0.1]
+            );
             dolarCount++;
 
             if (conf.type === 'oficial') {
@@ -215,13 +218,12 @@ export async function syncMacroeconomicData(): Promise<{
             }
           }
         }
-        db.exec('COMMIT;');
 
         if (ofVenta > 0 && cclVenta > 0) {
           dynamicBreach = `${(((cclVenta - ofVenta) / ofVenta) * 100).toFixed(2)}%`;
         }
 
-        console.log(`[MacroSync] ✅ Cotizaciones del Dólar sincronizadas: ${dolarCount} tipos insertados.`);
+        console.log(`[MacroSync] ✅ Cotizaciones del Dólar sincronizadas: ${dolarCount} tipos insertados en Neon.`);
       }
     }
   } catch (err) {
@@ -233,10 +235,10 @@ export async function syncMacroeconomicData(): Promise<{
 
   const summaryMarkdown = `
 # 🇦🇷 Reporte de Sincronización Macroeconómica Automática
-**Peso Argentino — Sync Engine (ArgentinaDatos, Argly, DolarApi & SQLite)**
+**Peso Argentino — Sync Engine (ArgentinaDatos, Argly, DolarApi & Neon PostgreSQL)**
 
 * **Fecha de Ejecución**: \`${syncTime} (Hora Argentina)\`
-* **Base de Datos**: \`server/data/peso_argentino.db\`
+* **Base de Datos**: \`Neon Serverless PostgreSQL (Cloud)\`
 
 ---
 
@@ -253,13 +255,13 @@ export async function syncMacroeconomicData(): Promise<{
 
 ---
 
-### 🏛️ 2. Resumen de Sincronización en SQLite
+### 🏛️ 2. Resumen de Sincronización en Neon PostgreSQL
 * 📈 **Inflación IPC**: \`${ipcCount}\` registros históricos procesados.
 * 🛡️ **Riesgo País**: \`${riesgoCount}\` registros sincronizados.
 * 🏦 **Tasas Bancarias**: \`${ratesCount}\` entidades bancarias actualizadas.
 * 💵 **Cotizaciones del Dólar**: \`${dolarCount}\` tipos de cambio registrados en \`quotes_history\`.
 
-> 💡 *Sincronización ejecutada automáticamente vía GitHub Actions Workflow.*
+> 💡 *Sincronización ejecutada automáticamente en Neon Serverless Cloud.*
 `;
 
   return {
@@ -272,10 +274,15 @@ export async function syncMacroeconomicData(): Promise<{
 }
 
 // Ejecución directa si se llama por CLI
-syncMacroeconomicData().then((res) => {
-  console.log(res.summaryMarkdown);
-  process.exit(0);
-}).catch((err) => {
-  console.error('[MacroSync] Fatal Error:', err);
-  process.exit(1);
-});
+if (process.argv[1]?.endsWith('SyncMacroData.ts')) {
+  syncMacroeconomicData()
+    .then((res) => {
+      console.log(res.summaryMarkdown);
+      DatabaseConnection.close();
+      process.exit(0);
+    })
+    .catch((err) => {
+      console.error('[MacroSync] Fatal Error:', err);
+      process.exit(1);
+    });
+}

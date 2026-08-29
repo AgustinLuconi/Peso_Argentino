@@ -7,13 +7,14 @@ import {
 } from '../domain/LlmTypes';
 import { globalCache } from '../../../core/cache/MemoryCache';
 import { AiNewsArchiveRepository } from '../../../core/database/repositories/AiNewsArchiveRepository';
+import { DatabaseConnection } from '../../../core/database/DatabaseConnection';
 
 export class LlmService {
   private static readonly TTL_CLASSIFY = 60 * 60 * 1000; // 1 hour RAM cache
 
   static async classify(input: NewsClassificationInput): Promise<NewsClassificationOutput> {
-    // 1. Check in SQLite Persistent Database first (0ms)
-    const stored = AiNewsArchiveRepository.findByTitle(input.title);
+    // 1. Check in Neon Persistent Database first
+    const stored = await AiNewsArchiveRepository.findByTitle(input.title);
     if (stored) {
       return stored;
     }
@@ -29,33 +30,34 @@ export class LlmService {
       LlmService.TTL_CLASSIFY
     );
 
-    // 3. Persist to SQLite for future sessions
-    AiNewsArchiveRepository.saveClassification(input, result);
+    // 3. Persist to Neon for future sessions
+    await AiNewsArchiveRepository.saveClassification(input, result);
 
     return result;
   }
 
-  static async chat(messages: readonly ChatMessage[], macroContext?: any): Promise<ChatResponse> {
+  static async chat(messages: readonly ChatMessage[], macroContext?: unknown): Promise<ChatResponse> {
     return await GeminiLlmAdapter.chat(messages, macroContext);
   }
 
-  static getEngineStatus() {
+  static async getEngineStatus() {
     const hasGeminiKey = Boolean(process.env.GEMINI_API_KEY);
-    const totalStored = AiNewsArchiveRepository.getArchiveCount();
+    const totalStored = await AiNewsArchiveRepository.getArchiveCount();
 
     return {
       activeEngine: hasGeminiKey ? 'Google Gemini Flash (Free Tier)' : 'Financial NLP Engine Local (100% Gratis)',
       freeTierEnabled: true,
       hasCustomApiKey: hasGeminiKey,
       costPerQueryUsd: 0,
-      persistentStorage: 'SQLite (WAL Mode)',
+      persistentStorage: DatabaseConnection.getEngineName(),
+      databaseConfigured: DatabaseConnection.isConfigured(),
       totalClassifiedNewsInDb: totalStored,
       supportedFeatures: [
         'Clasificación y Análisis de Sentimiento de Noticias',
         'Canales de Transmisión Macroeconómica',
         'Copiloto Financiero IA (Q&A Interactivo)',
         'Análisis de Deuda Soberana y Carry Trade',
-        'Persistencia Permanente en Base de Datos SQLite',
+        'Persistencia Permanente en Neon PostgreSQL Serverless',
       ],
     };
   }

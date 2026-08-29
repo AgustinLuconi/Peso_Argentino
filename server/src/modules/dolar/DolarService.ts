@@ -1,32 +1,40 @@
 import { globalCache } from '../../core/cache/MemoryCache';
 import { HttpClient } from '../../core/http/HttpClient';
-import { QuotesHistoryRepository } from '../../core/database/repositories/QuotesHistoryRepository';
+import { QuotesHistoryRepository, QuoteHistoryPoint } from '../../core/database/repositories/QuotesHistoryRepository';
 
 export interface DollarQuoteDto {
-  type: string;
-  name: string;
-  buyPrice: number;
-  sellPrice: number;
-  spread: number;
-  spreadPercent: number;
-  breachPercent: number;
-  variation24h: number;
-  sparkline: number[];
-  updatedAt: string;
-  source: string;
+  readonly type: string;
+  readonly name: string;
+  readonly buyPrice: number;
+  readonly sellPrice: number;
+  readonly spread: number;
+  readonly spreadPercent: number;
+  readonly breachPercent: number;
+  readonly variation24h: number;
+  readonly sparkline: readonly number[];
+  readonly updatedAt: string;
+  readonly source: string;
+}
+
+interface DolarApiRawItem {
+  readonly casa: string;
+  readonly nombre: string;
+  readonly compra: number;
+  readonly venta: number;
+  readonly fechaActualizacion: string;
 }
 
 export class DolarService {
   private static readonly TTL_MS = 30 * 1000; // 30 seconds
 
-  static async getQuotes(): Promise<DollarQuoteDto[]> {
+  static async getQuotes(): Promise<readonly DollarQuoteDto[]> {
     return globalCache.getOrSet(
       'dolar_quotes_v1',
       async () => {
         try {
-          const rawItems = await HttpClient.get<any[]>('https://dolarapi.com/v1/dolares');
+          const rawItems = await HttpClient.get<readonly DolarApiRawItem[]>('https://dolarapi.com/v1/dolares');
 
-          const mapping: Record<string, { type: string; name: string }> = {
+          const mapping: Record<string, { readonly type: string; readonly name: string }> = {
             oficial: { type: 'oficial', name: 'Dólar Oficial (BNA)' },
             blue: { type: 'blue', name: 'Dólar Libre / Blue' },
             bolsa: { type: 'mep', name: 'Dólar MEP (Bolsa AL30)' },
@@ -53,7 +61,7 @@ export class DolarService {
                   : 0;
 
               // Coherent dynamic sparkline
-              const sparkline = [
+              const sparkline: readonly number[] = [
                 Number((sell * 0.991).toFixed(2)),
                 Number((sell * 0.993).toFixed(2)),
                 Number((sell * 0.995).toFixed(2)),
@@ -83,9 +91,9 @@ export class DolarService {
             }
           }
 
-          // Persistir snapshot en la base de datos SQLite para histórico
+          // Persistir snapshot en la base de datos Neon PostgreSQL
           if (quotes.length > 0) {
-            QuotesHistoryRepository.saveSnapshot(quotes as any);
+            await QuotesHistoryRepository.saveSnapshot(quotes as any);
           }
 
           return quotes;
@@ -98,7 +106,11 @@ export class DolarService {
     );
   }
 
-  static getHistory(type: string, limit: number = 30, timeframe?: string) {
-    return QuotesHistoryRepository.getHistory(type, limit, timeframe);
+  static async getHistory(
+    type: string,
+    limit: number = 30,
+    timeframe?: string
+  ): Promise<readonly QuoteHistoryPoint[]> {
+    return await QuotesHistoryRepository.getHistory(type, limit, timeframe);
   }
 }

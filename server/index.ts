@@ -27,62 +27,77 @@ try {
   // Ignored in environments where process.env is preloaded
 }
 
-// 1. Initialize SQLite Database & Run Migrations
-DatabaseMigrations.runMigrations();
+async function bootstrap() {
+  // 1. Initialize Neon PostgreSQL Database & Run Migrations
+  if (DatabaseConnection.isConfigured()) {
+    try {
+      await DatabaseMigrations.runMigrations();
+    } catch (err) {
+      console.warn('[Bootstrap] ⚠️ Error durante la inicialización de migraciones en Neon:', err);
+    }
+  } else {
+    console.log('[Bootstrap] ℹ️ Base de datos remota Neon no configurada. Operando en modo memoria caché.');
+  }
 
-const app = express();
-const PORT = process.env.PORT || 3001;
+  const app = express();
+  const PORT = process.env.PORT || 3001;
 
-// CORS & Body parser
-app.use(
-  cors({
-    origin: '*',
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  })
-);
-app.use(express.json());
+  // CORS & Body parser
+  app.use(
+    cors({
+      origin: '*',
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    })
+  );
+  app.use(express.json());
 
-// Request logging middleware
-app.use((req, res, next) => {
-  const start = Date.now();
-  res.on('finish', () => {
-    const duration = Date.now() - start;
-    console.log(`[${req.method}] ${req.originalUrl} -> ${res.statusCode} (${duration}ms)`);
+  // Request logging middleware
+  app.use((req, res, next) => {
+    const start = Date.now();
+    res.on('finish', () => {
+      const duration = Date.now() - start;
+      console.log(`[${req.method}] ${req.originalUrl} -> ${res.statusCode} (${duration}ms)`);
+    });
+    next();
   });
-  next();
-});
 
-// API Routes
-app.use('/api/v1', v1Router);
-app.use('/api', v1Router); // Alias for convenience
+  // API Routes
+  app.use('/api/v1', v1Router);
+  app.use('/api', v1Router); // Alias for convenience
 
-// 404 handler
-app.use((req, res) => {
-  res.status(404).json({ success: false, error: 'Endpoint no encontrado en Peso Argentino API' });
-});
-
-const server = app.listen(PORT, () => {
-  console.log(`\n================================================================`);
-  console.log(`🚀 Peso Argentino Backend API activo en: http://localhost:${PORT}`);
-  console.log(`📡 Ingesta Pública: DolarApi + ArgentinaDatos + Argly`);
-  console.log(`🗄️ Base de Datos: SQLite (WAL Mode) en ${DatabaseConnection.getDbPath()}`);
-  console.log(`⚡ Caché en memoria de alta velocidad & Background Sync Worker`);
-  console.log(`🤖 Motor IA: ${process.env.GEMINI_API_KEY ? 'Google Gemini Flash Lite Free' : 'Local Financial NLP Engine'}`);
-  console.log(`================================================================\n`);
-
-  // Start background periodic sync worker
-  SyncWorker.start();
-});
-
-// Graceful shutdown
-const shutdown = () => {
-  SyncWorker.stop();
-  DatabaseConnection.close();
-  server.close(() => {
-    console.log('Servidor backend y base de datos detenidos correctamente.');
-    process.exit(0);
+  // 404 handler
+  app.use((_req, res) => {
+    res.status(404).json({ success: false, error: 'Endpoint no encontrado en Peso Argentino API' });
   });
-};
 
-process.on('SIGTERM', shutdown);
-process.on('SIGINT', shutdown);
+  const server = app.listen(PORT, () => {
+    console.log(`\n================================================================`);
+    console.log(`🚀 Peso Argentino Backend API activo en: http://localhost:${PORT}`);
+    console.log(`📡 Ingesta Pública: DolarApi + ArgentinaDatos + Argly`);
+    console.log(`🗄️ Base de Datos: ${DatabaseConnection.getEngineName()} (${DatabaseConnection.isConfigured() ? 'Cloud Conectado' : 'Modo Offline / Caché RAM'})`);
+    console.log(`⚡ Caché en memoria de alta velocidad & Background Sync Worker`);
+    console.log(`🤖 Motor IA: ${process.env.GEMINI_API_KEY ? 'Google Gemini Flash Lite Free' : 'Local Financial NLP Engine'}`);
+    console.log(`================================================================\n`);
+
+    // Start background periodic sync worker
+    SyncWorker.start();
+  });
+
+  // Graceful shutdown
+  const shutdown = () => {
+    SyncWorker.stop();
+    DatabaseConnection.close();
+    server.close(() => {
+      console.log('Servidor backend y base de datos detenidos correctamente.');
+      process.exit(0);
+    });
+  };
+
+  process.on('SIGTERM', shutdown);
+  process.on('SIGINT', shutdown);
+}
+
+bootstrap().catch((err) => {
+  console.error('[Bootstrap] ❌ Error fatal al iniciar el servidor:', err);
+  process.exit(1);
+});

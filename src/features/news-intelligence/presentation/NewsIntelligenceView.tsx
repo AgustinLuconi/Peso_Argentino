@@ -6,6 +6,7 @@ import { BackendNewsRepository } from '../infrastructure/BackendNewsRepository';
 import { NewsIntelligenceDto } from '../application/NewsRepositoryPort';
 import { Button } from '@core/ui/components/Button';
 import { PageHeader } from '@core/ui/components/PageHeader';
+import { NewsletterSubscriptionCard } from '@core/ui/components/NewsletterSubscriptionCard';
 import { smartCache } from '@core/infrastructure/SmartCacheAdapter';
 import { RefreshCw, Filter } from 'lucide-react';
 
@@ -176,6 +177,11 @@ export const NewsIntelligenceView: React.FC<{
           {filteredNews.map((item) => (
             <NewsCard key={item.id} news={item} />
           ))}
+        </div>
+
+        {/* Newsletter Subscription Banner */}
+        <div className="pt-6">
+          <NewsletterSubscriptionCard />
         </div>
       </div>
     </div>

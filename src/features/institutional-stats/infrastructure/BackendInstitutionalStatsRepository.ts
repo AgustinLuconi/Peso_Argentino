@@ -23,7 +23,7 @@ export class BackendInstitutionalStatsRepository
         try {
           const fallbackData = await this.fallbackRepo.getInstitutionalStats();
 
-          // Fetch full historical series from SQLite Backend API
+          // Fetch full historical series from Neon Backend API
           const [macroRes, ratesRes, ipcSeriesRes, reservasSeriesRes, baseMonSeriesRes, balanzaSeriesRes] = await Promise.all([
             fetch(API_CONFIG.getEndpoint('/api/v1/macro/overview')).catch(() => null),
             fetch(API_CONFIG.getEndpoint('/api/v1/rates/plazos-fijos')).catch(() => null),

@@ -14,32 +14,36 @@ export class MacroSeriesRepository {
   /**
    * Obtiene la serie histórica de un indicador específico ordenado cronológicamente
    */
-  static getSeries(seriesCode: string, limit: number = 100): readonly MacroSeriesPoint[] {
-    const db = DatabaseConnection.getInstance();
-    const query = db.prepare(`
-      SELECT 
+  static async getSeries(
+    seriesCode: string,
+    limit: number = 100
+  ): Promise<readonly MacroSeriesPoint[]> {
+    const rows = await DatabaseConnection.query<MacroSeriesPoint>(
+      `SELECT 
         id,
-        series_code as seriesCode,
+        series_code as "seriesCode",
         period,
-        value,
+        value::float as value,
         unit,
         source,
-        updated_at as updatedAt
+        updated_at as "updatedAt"
       FROM macro_series
-      WHERE series_code = ?
+      WHERE series_code = $1
       ORDER BY period ASC
-      LIMIT ?
-    `);
+      LIMIT $2`,
+      [seriesCode, limit]
+    );
 
-    return query.all(seriesCode, limit) as unknown as MacroSeriesPoint[];
+    return rows;
   }
 
   /**
    * Obtiene todos los códigos de series disponibles en la base de datos
    */
-  static getAvailableSeries(): string[] {
-    const db = DatabaseConnection.getInstance();
-    const rows = db.prepare('SELECT DISTINCT series_code as code FROM macro_series ORDER BY series_code ASC').all() as { code: string }[];
+  static async getAvailableSeries(): Promise<readonly string[]> {
+    const rows = await DatabaseConnection.query<{ code: string }>(
+      'SELECT DISTINCT series_code as code FROM macro_series ORDER BY series_code ASC'
+    );
     return rows.map((r) => r.code);
   }
 }

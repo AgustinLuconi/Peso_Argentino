@@ -14,40 +14,34 @@ export interface QuoteHistoryPoint {
 
 export class QuotesHistoryRepository {
   /**
-   * Guarda un lote de cotizaciones actuales en el histórico persistente
+   * Guarda un lote de cotizaciones actuales en el histórico persistente de Neon
    */
-  static saveSnapshot(quotes: readonly DolarQuote[]): void {
-    const db = DatabaseConnection.getInstance();
-    const insertStmt = db.prepare(`
-      INSERT INTO quotes_history (quote_type, name, buy_price, sell_price, spread, variation_24h)
-      VALUES (?, ?, ?, ?, ?, ?)
-    `);
+  static async saveSnapshot(quotes: readonly DolarQuote[]): Promise<void> {
+    if (!DatabaseConnection.isConfigured() || quotes.length === 0) {
+      return;
+    }
 
-    db.exec('BEGIN TRANSACTION;');
     try {
       for (const q of quotes) {
-        insertStmt.run(
-          q.type,
-          q.name,
-          q.buyPrice,
-          q.sellPrice,
-          q.spread,
-          q.variation24h
+        await DatabaseConnection.execute(
+          `INSERT INTO quotes_history (quote_type, name, buy_price, sell_price, spread, variation_24h)
+           VALUES ($1, $2, $3, $4, $5, $6)`,
+          [q.type, q.name, q.buyPrice, q.sellPrice, q.spread, q.variation24h]
         );
       }
-      db.exec('COMMIT;');
     } catch (err) {
-      db.exec('ROLLBACK;');
-      console.error('[QuotesHistoryRepository] Error al guardar snapshot en SQLite:', err);
+      console.error('[QuotesHistoryRepository] Error al guardar snapshot en Neon:', err);
     }
   }
 
   /**
    * Obtiene la serie histórica de una cotización específica según timeframe (1M, 3M, 6M, 1Y, 3Y, ALL)
    */
-  static getHistory(quoteType: string, limit: number = 30, timeframe?: string): readonly QuoteHistoryPoint[] {
-    const db = DatabaseConnection.getInstance();
-
+  static async getHistory(
+    quoteType: string,
+    limit: number = 30,
+    timeframe?: string
+  ): Promise<readonly QuoteHistoryPoint[]> {
     let days = 30;
     if (timeframe) {
       switch (timeframe.toUpperCase()) {
@@ -76,32 +70,36 @@ export class QuotesHistoryRepository {
       days = limit;
     }
 
-    const query = db.prepare(`
-      SELECT 
+    const rows = await DatabaseConnection.query<QuoteHistoryPoint>(
+      `SELECT 
         id,
-        quote_type as quoteType,
+        quote_type as "quoteType",
         name,
-        buy_price as buyPrice,
-        sell_price as sellPrice,
-        spread,
-        variation_24h as variation24h,
-        recorded_at as recordedAt
+        buy_price::float as "buyPrice",
+        sell_price::float as "sellPrice",
+        spread::float as spread,
+        variation_24h::float as "variation24h",
+        recorded_at as "recordedAt"
       FROM quotes_history
-      WHERE quote_type = ?
+      WHERE quote_type = $1
       ORDER BY recorded_at DESC
-      LIMIT ?
-    `);
+      LIMIT $2`,
+      [quoteType, days]
+    );
 
-    const rows = query.all(quoteType, days) as unknown as QuoteHistoryPoint[];
-    return rows.reverse();
+    // Retornar en orden cronológico ascendente para gráficos
+    return [...rows].reverse();
   }
 
   /**
    * Obtiene el conteo total de registros históricos guardados
    */
-  static getTotalRecordsCount(): number {
-    const db = DatabaseConnection.getInstance();
-    const result = db.prepare('SELECT COUNT(*) as total FROM quotes_history').get() as { total: number };
-    return result?.total || 0;
+  static async getTotalRecordsCount(): Promise<number> {
+    const result = await DatabaseConnection.queryOne<{ total: string | number }>(
+      'SELECT COUNT(*)::int as total FROM quotes_history'
+    );
+
+    if (!result) return 0;
+    return typeof result.total === 'number' ? result.total : Number(result.total) || 0;
   }
 }

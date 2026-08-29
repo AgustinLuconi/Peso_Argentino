@@ -1,11 +1,17 @@
 import React from 'react';
 import { Shield } from 'lucide-react';
+import { NewsletterSubscriptionCard } from '../components/NewsletterSubscriptionCard';
 
 export const Footer: React.FC = () => {
   return (
     <footer className="mt-12 sm:mt-16 bg-primary text-white border-t-2 border-gold/40">
-      <div className="w-full max-w-[2400px] mx-auto px-4 sm:px-6 lg:px-8 2xl:px-10 3xl:px-12 py-8 sm:py-10">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 sm:gap-8 mb-8">
+      <div className="w-full max-w-[2400px] mx-auto px-4 sm:px-6 lg:px-8 2xl:px-10 3xl:px-12 py-8 sm:py-10 space-y-10">
+        {/* Newsletter Section */}
+        <div id="newsletter-section">
+          <NewsletterSubscriptionCard />
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 sm:gap-8 pt-6 border-t border-white/10">
           {/* Brand Col */}
           <div className="md:col-span-2 space-y-3">
             <div className="flex items-center gap-2.5">

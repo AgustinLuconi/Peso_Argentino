@@ -1,60 +1,60 @@
 import { DatabaseConnection } from './DatabaseConnection';
+import { DatabaseMigrations } from './DatabaseMigrations';
 
 /**
- * Script de población histórica de alta precisión macroeconómica y cambiaria
+ * Script de población histórica de alta precisión macroeconómica y cambiaria en Neon PostgreSQL
  * Cubre series desde 2020 hasta 2026 con calibración institucional.
  */
-export function populateHistoricalData(): void {
-  const db = DatabaseConnection.getInstance();
+export async function populateHistoricalData(): Promise<void> {
+  if (!DatabaseConnection.isConfigured()) {
+    console.error('❌ ERROR: DATABASE_URL de Neon no configurada.');
+    console.error('👉 Configura DATABASE_URL en tu archivo .env para poblar la base de datos.');
+    return;
+  }
 
-  console.log('[Historical Seeder] ⏳ Iniciando población de series históricas multi-anuales...');
+  // Asegurar esquema creado
+  await DatabaseMigrations.runMigrations();
 
-  // 1. Población de Series Macroeconómicas (INDEC, BCRA, MECON)
-  const insertMacro = db.prepare(`
-    INSERT OR REPLACE INTO macro_series (series_code, period, value, unit, source)
-    VALUES (?, ?, ?, ?, ?)
-  `);
-
-  db.exec('BEGIN TRANSACTION;');
+  console.log('[Historical Seeder] ⏳ Iniciando población de series históricas multi-anuales en Neon...');
 
   try {
+    // 1. Población de Series Macroeconómicas (INDEC, BCRA, MECON)
     // A. Inflación Mensual IPC INDEC (2020-01 a 2026-07)
-    const ipcData: [string, number][] = [
-      // 2020
+    const ipcData: readonly [string, number][] = [
       ['2020-01', 2.3], ['2020-02', 2.0], ['2020-03', 3.3], ['2020-04', 1.5],
       ['2020-05', 1.5], ['2020-06', 2.2], ['2020-07', 1.9], ['2020-08', 2.7],
       ['2020-09', 2.8], ['2020-10', 3.8], ['2020-11', 3.2], ['2020-12', 4.0],
-      // 2021
       ['2021-01', 4.0], ['2021-02', 3.6], ['2021-03', 4.8], ['2021-04', 4.1],
       ['2021-05', 3.3], ['2021-06', 3.2], ['2021-07', 3.0], ['2021-08', 2.5],
       ['2021-09', 3.5], ['2021-10', 3.5], ['2021-11', 2.5], ['2021-12', 3.8],
-      // 2022
       ['2022-01', 3.9], ['2022-02', 4.7], ['2022-03', 6.7], ['2022-04', 6.0],
       ['2022-05', 5.1], ['2022-06', 5.3], ['2022-07', 7.4], ['2022-08', 7.0],
       ['2022-09', 6.2], ['2022-10', 6.3], ['2022-11', 4.9], ['2022-12', 5.1],
-      // 2023
       ['2023-01', 6.0], ['2023-02', 6.6], ['2023-03', 7.7], ['2023-04', 8.4],
       ['2023-05', 7.8], ['2023-06', 6.0], ['2023-07', 6.3], ['2023-08', 12.4],
       ['2023-09', 12.7], ['2023-10', 8.3], ['2023-11', 12.8], ['2023-12', 25.5],
-      // 2024
       ['2024-01', 20.6], ['2024-02', 13.2], ['2024-03', 11.0], ['2024-04', 8.8],
       ['2024-05', 4.2], ['2024-06', 4.6], ['2024-07', 4.0], ['2024-08', 4.2],
       ['2024-09', 3.5], ['2024-10', 2.7], ['2024-11', 2.4], ['2024-12', 2.7],
-      // 2025
       ['2025-01', 2.3], ['2025-02', 2.1], ['2025-03', 2.2], ['2025-04', 1.8],
       ['2025-05', 1.7], ['2025-06', 1.5], ['2025-07', 1.4], ['2025-08', 1.5],
       ['2025-09', 1.6], ['2025-10', 1.4], ['2025-11', 1.3], ['2025-12', 1.5],
-      // 2026
       ['2026-01', 1.6], ['2026-02', 1.5], ['2026-03', 1.4], ['2026-04', 1.3],
       ['2026-05', 1.2], ['2026-06', 1.1], ['2026-07', 1.1],
     ];
 
     for (const [period, val] of ipcData) {
-      insertMacro.run('ipc', period, val, '% m/m', 'INDEC');
+      await DatabaseConnection.execute(
+        `INSERT INTO macro_series (series_code, period, value, unit, source)
+         VALUES ($1, $2, $3, $4, $5)
+         ON CONFLICT (series_code, period)
+         DO UPDATE SET value = EXCLUDED.value, unit = EXCLUDED.unit, source = EXCLUDED.source, updated_at = NOW()`,
+        ['ipc', period, val, '% m/m', 'INDEC']
+      );
     }
 
     // B. Reservas Internacionales Brutas BCRA (Millones USD)
-    const reservasData: [string, number][] = [
+    const reservasData: readonly [string, number][] = [
       ['2020-01', 44680], ['2020-06', 43240], ['2020-12', 39410],
       ['2021-06', 42430], ['2021-12', 39660],
       ['2022-06', 42780], ['2022-12', 44588],
@@ -65,11 +65,17 @@ export function populateHistoricalData(): void {
     ];
 
     for (const [period, val] of reservasData) {
-      insertMacro.run('reservas', period, val, 'Millones USD', 'BCRA');
+      await DatabaseConnection.execute(
+        `INSERT INTO macro_series (series_code, period, value, unit, source)
+         VALUES ($1, $2, $3, $4, $5)
+         ON CONFLICT (series_code, period)
+         DO UPDATE SET value = EXCLUDED.value, unit = EXCLUDED.unit, source = EXCLUDED.source, updated_at = NOW()`,
+        ['reservas', period, val, 'Millones USD', 'BCRA']
+      );
     }
 
     // C. Base Monetaria (Miles de Millones ARS / Billones)
-    const baseMonetariaData: [string, number][] = [
+    const baseMonetariaData: readonly [string, number][] = [
       ['2020-12', 2470],
       ['2021-12', 3680],
       ['2022-12', 5240],
@@ -80,11 +86,17 @@ export function populateHistoricalData(): void {
     ];
 
     for (const [period, val] of baseMonetariaData) {
-      insertMacro.run('base_monetaria', period, val, 'Miles de Millones ARS', 'BCRA');
+      await DatabaseConnection.execute(
+        `INSERT INTO macro_series (series_code, period, value, unit, source)
+         VALUES ($1, $2, $3, $4, $5)
+         ON CONFLICT (series_code, period)
+         DO UPDATE SET value = EXCLUDED.value, unit = EXCLUDED.unit, source = EXCLUDED.source, updated_at = NOW()`,
+        ['base_monetaria', period, val, 'Miles de Millones ARS', 'BCRA']
+      );
     }
 
     // D. Riesgo País EMBI+ Argentina (Puntos Básicos / bps)
-    const riesgoPaisData: [string, number][] = [
+    const riesgoPaisData: readonly [string, number][] = [
       ['2020-12', 1370],
       ['2021-12', 1690],
       ['2022-07', 2900], ['2022-12', 2210],
@@ -95,11 +107,17 @@ export function populateHistoricalData(): void {
     ];
 
     for (const [period, val] of riesgoPaisData) {
-      insertMacro.run('riesgo_pais', period, val, 'bps', 'J.P. Morgan');
+      await DatabaseConnection.execute(
+        `INSERT INTO macro_series (series_code, period, value, unit, source)
+         VALUES ($1, $2, $3, $4, $5)
+         ON CONFLICT (series_code, period)
+         DO UPDATE SET value = EXCLUDED.value, unit = EXCLUDED.unit, source = EXCLUDED.source, updated_at = NOW()`,
+        ['riesgo_pais', period, val, 'bps', 'J.P. Morgan']
+      );
     }
 
     // E. Superávit Financiero Mensual SPN (Miles de Millones ARS)
-    const superavitData: [string, number][] = [
+    const superavitData: readonly [string, number][] = [
       ['2023-01', -204], ['2023-06', -611], ['2023-12', -5280],
       ['2024-01', 518], ['2024-02', 338], ['2024-03', 276], ['2024-04', 17],
       ['2024-05', 1183], ['2024-06', 238], ['2024-07', 90], ['2024-08', 35],
@@ -109,11 +127,17 @@ export function populateHistoricalData(): void {
     ];
 
     for (const [period, val] of superavitData) {
-      insertMacro.run('superavit_fiscal', period, val, 'Miles de Millones ARS', 'MECON');
+      await DatabaseConnection.execute(
+        `INSERT INTO macro_series (series_code, period, value, unit, source)
+         VALUES ($1, $2, $3, $4, $5)
+         ON CONFLICT (series_code, period)
+         DO UPDATE SET value = EXCLUDED.value, unit = EXCLUDED.unit, source = EXCLUDED.source, updated_at = NOW()`,
+        ['superavit_fiscal', period, val, 'Miles de Millones ARS', 'MECON']
+      );
     }
 
     // F. Saldo Comercial Mensual ICA INDEC (Millones USD)
-    const balanzaData: [string, number][] = [
+    const balanzaData: readonly [string, number][] = [
       ['2023-01', -484], ['2023-06', -1727], ['2023-12', 1018],
       ['2024-01', 797], ['2024-03', 2059], ['2024-05', 2656], ['2024-07', 935],
       ['2024-09', 981], ['2024-11', 1240], ['2024-12', 1580],
@@ -122,11 +146,17 @@ export function populateHistoricalData(): void {
     ];
 
     for (const [period, val] of balanzaData) {
-      insertMacro.run('balanza_comercial', period, val, 'Millones USD', 'INDEC');
+      await DatabaseConnection.execute(
+        `INSERT INTO macro_series (series_code, period, value, unit, source)
+         VALUES ($1, $2, $3, $4, $5)
+         ON CONFLICT (series_code, period)
+         DO UPDATE SET value = EXCLUDED.value, unit = EXCLUDED.unit, source = EXCLUDED.source, updated_at = NOW()`,
+        ['balanza_comercial', period, val, 'Millones USD', 'INDEC']
+      );
     }
 
     // G. Tasa de Política Monetaria BCRA (TNA %)
-    const tasaData: [string, number][] = [
+    const tasaData: readonly [string, number][] = [
       ['2020-01', 50.0], ['2020-12', 38.0],
       ['2021-12', 38.0],
       ['2022-01', 40.0], ['2022-06', 52.0], ['2022-09', 75.0], ['2022-12', 75.0],
@@ -137,48 +167,24 @@ export function populateHistoricalData(): void {
     ];
 
     for (const [period, val] of tasaData) {
-      insertMacro.run('tasa_politica', period, val, 'TNA %', 'BCRA');
+      await DatabaseConnection.execute(
+        `INSERT INTO macro_series (series_code, period, value, unit, source)
+         VALUES ($1, $2, $3, $4, $5)
+         ON CONFLICT (series_code, period)
+         DO UPDATE SET value = EXCLUDED.value, unit = EXCLUDED.unit, source = EXCLUDED.source, updated_at = NOW()`,
+        ['tasa_politica', period, val, 'TNA %', 'BCRA']
+      );
     }
 
-    db.exec('COMMIT;');
-    console.log('[Historical Seeder] ✅ Series macroeconómicas insertadas con éxito.');
-  } catch (err) {
-    db.exec('ROLLBACK;');
-    console.error('[Historical Seeder] ❌ Error en series macro:', err);
-  }
+    console.log('[Historical Seeder] ✅ Series macroeconómicas insertadas con éxito en Neon.');
 
-  // 2. Población de Histórico Diario de Cotizaciones del Dólar (2022 a 2026)
-  console.log('[Historical Seeder] ⏳ Generando histórico diario de 7 tipos de dólar (2022 - 2026)...');
+    // 2. Histórico Diario de Cotizaciones del Dólar (2022 a 2026)
+    console.log('[Historical Seeder] ⏳ Generando histórico diario de 7 tipos de dólar (2022 - 2026)...');
 
-  const insertQuote = db.prepare(`
-    INSERT INTO quotes_history (quote_type, name, buy_price, sell_price, spread, variation_24h, recorded_at)
-    VALUES (?, ?, ?, ?, ?, ?, ?)
-  `);
-
-  // Borrar data previa para re-poblar limpia
-  db.exec('DELETE FROM quotes_history;');
-
-  db.exec('BEGIN TRANSACTION;');
-
-  try {
     const startDate = new Date('2022-01-01T15:00:00Z');
     const endDate = new Date('2026-08-27T15:00:00Z');
 
     let currentDate = new Date(startDate);
-
-    // Definición de hitos clave para interpolación
-    // 2022-01-01: Oficial 103, Blue 208, MEP 198, CCL 205
-    // 2022-07-22: Oficial 130, Blue 338, MEP 315, CCL 326 (Crisis Guzmán/Batakis)
-    // 2022-12-31: Oficial 177, Blue 346, MEP 328, CCL 344
-    // 2023-04-25: Oficial 220, Blue 495, MEP 445, CCL 460
-    // 2023-08-14: Oficial 350, Blue 685, MEP 650, CCL 710 (Post-PASO)
-    // 2023-10-20: Oficial 350, Blue 1050, MEP 890, CCL 1020 (Pre-Elección)
-    // 2023-12-13: Oficial 800, Blue 1070, MEP 995, CCL 1010 (Devaluación Caputo)
-    // 2024-06-20: Oficial 905, Blue 1300, MEP 1240, CCL 1280
-    // 2024-12-31: Oficial 1015, Blue 1210, MEP 1150, CCL 1180
-    // 2025-06-30: Oficial 1080, Blue 1230, MEP 1190, CCL 1210
-    // 2025-12-31: Oficial 1150, Blue 1240, MEP 1205, CCL 1225
-    // 2026-08-27: Oficial 1210, Blue 1220, MEP 1205, CCL 1215
 
     const milestones = [
       { date: new Date('2022-01-01'), oficial: 103, blue: 208, mep: 198, ccl: 205 },
@@ -193,12 +199,11 @@ export function populateHistoricalData(): void {
       { date: new Date('2025-06-30'), oficial: 1080, blue: 1230, mep: 1190, ccl: 1210 },
       { date: new Date('2025-12-31'), oficial: 1150, blue: 1240, mep: 1205, ccl: 1225 },
       { date: new Date('2026-08-27'), oficial: 1210, blue: 1220, mep: 1205, ccl: 1215 },
-    ];
+    ] as const;
 
     let totalInserted = 0;
 
     while (currentDate <= endDate) {
-      // Find interpolation segment
       const curTime = currentDate.getTime();
       let segStart = milestones[0];
       let segEnd = milestones[1];
@@ -214,9 +219,8 @@ export function populateHistoricalData(): void {
       const totalSpan = segEnd.date.getTime() - segStart.date.getTime();
       const progress = totalSpan > 0 ? (curTime - segStart.date.getTime()) / totalSpan : 0;
 
-      // Base linear interpolation + daily deterministic pseudo-noise
       const daySeed = (currentDate.getDate() * 13 + currentDate.getMonth() * 7) % 100;
-      const noise = (daySeed - 50) / 1500; // ±0.3%
+      const noise = (daySeed - 50) / 1500;
 
       const oficialBase = segStart.oficial + (segEnd.oficial - segStart.oficial) * progress;
       const blueBase = (segStart.blue + (segEnd.blue - segStart.blue) * progress) * (1 + noise);
@@ -255,28 +259,34 @@ export function populateHistoricalData(): void {
       ];
 
       for (const q of quotesForDay) {
-        insertQuote.run(
-          q.type,
-          q.name,
-          Number(q.buy.toFixed(2)),
-          Number(q.sell.toFixed(2)),
-          Number(q.spread.toFixed(2)),
-          0.05,
-          dateStr
+        await DatabaseConnection.execute(
+          `INSERT INTO quotes_history (quote_type, name, buy_price, sell_price, spread, variation_24h, recorded_at)
+           VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+          [
+            q.type,
+            q.name,
+            Number(q.buy.toFixed(2)),
+            Number(q.sell.toFixed(2)),
+            Number(q.spread.toFixed(2)),
+            0.05,
+            dateStr,
+          ]
         );
         totalInserted++;
       }
 
-      // Next day (+24 hours)
       currentDate.setDate(currentDate.getDate() + 1);
     }
 
-    db.exec('COMMIT;');
-    console.log(`[Historical Seeder] ✅ Cotizaciones históricas insertadas: ${totalInserted} registros (2022-2026).`);
+    console.log(`[Historical Seeder] ✅ Cotizaciones históricas insertadas: ${totalInserted} registros en Neon (2022-2026).`);
   } catch (err) {
-    db.exec('ROLLBACK;');
-    console.error('[Historical Seeder] ❌ Error en cotizaciones históricas:', err);
+    console.error('[Historical Seeder] ❌ Error en población histórica en Neon:', err);
   }
 }
 
-populateHistoricalData();
+// Ejecutar si se invoca directo via CLI (`npm run db:seed`)
+if (process.argv[1]?.endsWith('PopulateHistoricalData.ts')) {
+  populateHistoricalData().then(() => {
+    DatabaseConnection.close();
+  });
+}

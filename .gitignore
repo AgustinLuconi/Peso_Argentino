@@ -56,8 +56,8 @@ dist-ssr/
 .env.test.local
 .env.production.local
 
-# SQLite Local Database files (Allow main .db file, ignore WAL & SHM temp logs)
-server/data/*.db-wal
-server/data/*.db-shm
-*.sqlite-wal
-*.sqlite-shm
+# Database artifacts
+*.db
+*.db-*
+*.sqlite
+*.sqlite-*
