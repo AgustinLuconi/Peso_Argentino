@@ -106,8 +106,8 @@ export const DollarQuotesCard: React.FC<DollarQuotesCardProps> = ({
         </Badge>
       </div>
 
-      {/* Grid of Quotes with Expandable Drawer */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-6 3xl:grid-cols-7 gap-3 sm:gap-4 items-stretch">
+      {/* Grid of Quotes with 2 balanced rows on desktop/tablet */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-stretch">
         {quotes.map((quote) => {
           const isExpanded = expandedQuote === quote.type;
           const details = getQuoteDetails(quote.type, quote);
@@ -124,11 +124,11 @@ export const DollarQuotesCard: React.FC<DollarQuotesCardProps> = ({
               {/* Card Body */}
               <div
                 onClick={() => onSelectQuote && onSelectQuote(quote)}
-                className="p-3.5 sm:p-4 cursor-pointer flex flex-col justify-between flex-1 gap-2.5 min-w-0"
+                className="p-4 sm:p-4.5 cursor-pointer flex flex-col justify-between flex-1 gap-3 min-w-0"
               >
                 {/* Top row: Name & 24h variation */}
-                <div className="flex items-center justify-between gap-1.5 min-w-0">
-                  <span className="font-sans font-bold text-xs sm:text-sm text-slate-900 dark:text-slate-100 uppercase tracking-wide truncate min-w-0">
+                <div className="flex items-center justify-between gap-2 min-w-0">
+                  <span className="font-sans font-bold text-xs sm:text-sm text-slate-900 dark:text-slate-100 uppercase tracking-wide truncate">
                     {quote.name.split('(')[0].trim()}
                   </span>
                   <div className="shrink-0">
@@ -136,35 +136,35 @@ export const DollarQuotesCard: React.FC<DollarQuotesCardProps> = ({
                   </div>
                 </div>
 
-                {/* Middle row: Buy / Sell Prices with safe container padding & typography */}
-                <div className="grid grid-cols-2 gap-2 my-0.5">
-                  <div className="bg-white/90 dark:bg-[#131822] px-2.5 py-2 rounded-xl border border-surface-container-highest dark:border-[#1E2638] transition-colors group-hover:border-emerald-500/30 shadow-soft overflow-hidden min-w-0 flex flex-col justify-center">
-                    <span className="font-eyebrow text-[10px] sm:text-[11px] font-bold uppercase block text-slate-500 dark:text-slate-400 mb-0.5 truncate">
+                {/* Middle row: Buy / Sell Prices with spacious readable boxes */}
+                <div className="grid grid-cols-2 gap-2.5 my-1">
+                  <div className="bg-white dark:bg-[#131822] px-3 py-2.5 rounded-xl border border-surface-container-highest dark:border-[#1E2638] transition-colors group-hover:border-emerald-500/30 shadow-soft overflow-hidden min-w-0 flex flex-col justify-center">
+                    <span className="font-eyebrow text-[10px] sm:text-xs font-bold uppercase block text-slate-500 dark:text-slate-400 mb-0.5">
                       Compra
                     </span>
-                    <span className="text-xs sm:text-[13px] 2xl:text-sm font-mono-tabular font-bold text-slate-900 dark:text-slate-100 block truncate tracking-tight">
+                    <span className="text-sm sm:text-base lg:text-[17px] font-mono-tabular font-extrabold text-slate-900 dark:text-slate-100 block tracking-tight">
                       {quote.buyPrice.format({ showCurrency: true })}
                     </span>
                   </div>
-                  <div className="bg-white/90 dark:bg-[#131822] px-2.5 py-2 rounded-xl border border-surface-container-highest dark:border-[#1E2638] transition-colors group-hover:border-emerald-500/30 shadow-soft overflow-hidden min-w-0 flex flex-col justify-center">
-                    <span className="font-eyebrow text-[10px] sm:text-[11px] font-bold uppercase block text-slate-500 dark:text-slate-400 mb-0.5 truncate">
+                  <div className="bg-white dark:bg-[#131822] px-3 py-2.5 rounded-xl border border-surface-container-highest dark:border-[#1E2638] transition-colors group-hover:border-emerald-500/30 shadow-soft overflow-hidden min-w-0 flex flex-col justify-center">
+                    <span className="font-eyebrow text-[10px] sm:text-xs font-bold uppercase block text-slate-500 dark:text-slate-400 mb-0.5">
                       Venta
                     </span>
-                    <span className="text-xs sm:text-[13px] 2xl:text-sm font-mono-tabular font-bold text-emerald-600 dark:text-emerald-400 block truncate tracking-tight">
+                    <span className="text-sm sm:text-base lg:text-[17px] font-mono-tabular font-extrabold text-emerald-600 dark:text-emerald-400 block tracking-tight">
                       {quote.sellPrice.format({ showCurrency: true })}
                     </span>
                   </div>
                 </div>
 
                 {/* Bottom row: Spread & Sparkline */}
-                <div className="pt-2 border-t border-surface-container-highest dark:border-[#1E2638] flex items-center justify-between gap-1 text-xs font-sans text-on-surface-variant dark:text-slate-300 min-w-0">
-                  <div className="flex items-center gap-1 font-mono-tabular text-[11px] sm:text-xs font-semibold min-w-0 truncate">
-                    <ArrowRightLeft size={12} className="text-slate-400 dark:text-slate-500 shrink-0" />
+                <div className="pt-2.5 border-t border-surface-container-highest dark:border-[#1E2638] flex items-center justify-between gap-2 text-xs font-sans text-on-surface-variant dark:text-slate-300 min-w-0">
+                  <div className="flex items-center gap-1.5 font-mono-tabular text-xs font-semibold min-w-0 truncate">
+                    <ArrowRightLeft size={13} className="text-slate-400 dark:text-slate-500 shrink-0" />
                     <span className="truncate text-slate-600 dark:text-slate-300">
                       Spr: {quote.spread.format({ showCurrency: true })}
                     </span>
                   </div>
-                  <div className="w-14 sm:w-16 h-5 shrink-0 ml-1">
+                  <div className="w-16 sm:w-20 h-5 shrink-0 ml-1">
                     <MiniSparkline
                       data={quote.historicalSparkline}
                       height={20}
