@@ -115,7 +115,11 @@ export const App: React.FC = () => {
       onOpenShortcuts={() => setIsShortcutsOpen(true)}
     >
       {/* Route Switcher wrapped in ErrorBoundary */}
-      <ErrorBoundary fallbackTitle="Error al cargar el módulo seleccionado">
+      <ErrorBoundary
+        key={activeFeature}
+        fallbackTitle="Módulo en actualización de datos"
+        fallbackDescription="Estamos sincronizando los indicadores y cotizaciones oficiales de este módulo. Puedes reintentar o navegar a otra sección."
+      >
         {activeFeature === 'dashboard' && (
           <DashboardView
             activeSubItem={activeSubItem}

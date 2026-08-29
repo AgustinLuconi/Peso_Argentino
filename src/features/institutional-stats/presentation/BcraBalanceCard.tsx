@@ -11,15 +11,20 @@ export const BcraBalanceCard: React.FC<{ balance: BcraBalanceSheet }> = ({
 }) => {
   const { displayCurrency, formatMoney, referenceUsdRate } = useApp();
 
-  // Escalas y conversiones
-  const grossReservesScale = Money.formatScale(balance.grossReservesUsd.amount, 'USD');
-  const netReservesScale = Money.formatScale(balance.netReservesUsd.amount, 'USD');
-  const monetaryBaseScale = Money.formatScale(balance.monetaryBaseArs.amount, 'ARS');
-  const depositsScale = Money.formatScale(balance.privateDepositsUsd.amount, 'USD');
+  // Escalas y conversiones defensivas
+  const grossReservesAmount = balance?.grossReservesUsd?.amount ?? 0;
+  const netReservesAmount = balance?.netReservesUsd?.amount ?? 0;
+  const monetaryBaseAmount = balance?.monetaryBaseArs?.amount ?? 0;
+  const depositsAmount = balance?.privateDepositsUsd?.amount ?? 0;
+
+  const grossReservesScale = Money.formatScale(grossReservesAmount, 'USD');
+  const netReservesScale = Money.formatScale(netReservesAmount, 'USD');
+  const monetaryBaseScale = Money.formatScale(monetaryBaseAmount, 'ARS');
+  const depositsScale = Money.formatScale(depositsAmount, 'USD');
 
   // Equivalentes
-  const mbInUsd = Money.convert(balance.monetaryBaseArs.amount, 'ARS', 'USD', referenceUsdRate);
-  const reservesInArs = Money.convert(balance.grossReservesUsd.amount, 'USD', 'ARS', referenceUsdRate);
+  const mbInUsd = Money.convert(monetaryBaseAmount, 'ARS', 'USD', referenceUsdRate);
+  const reservesInArs = Money.convert(grossReservesAmount, 'USD', 'ARS', referenceUsdRate);
 
   return (
     <Card variant="default" accent="navy" className="space-y-4">
@@ -83,7 +88,7 @@ export const BcraBalanceCard: React.FC<{ balance: BcraBalanceSheet }> = ({
           <span className="text-lg sm:text-xl xl:text-2xl font-mono-tabular font-extrabold text-emerald-600 dark:text-emerald-400 block truncate tracking-tight">
             {displayCurrency === 'USD'
               ? netReservesScale.formatted
-              : Money.convert(balance.netReservesUsd.amount, 'USD', 'ARS', referenceUsdRate).format({ compact: true })}
+              : Money.convert(balance?.netReservesUsd?.amount ?? 0, 'USD', 'ARS', referenceUsdRate).format({ compact: true })}
           </span>
           <span className="text-[11px] text-emerald-700 dark:text-emerald-300 font-sans font-medium block truncate">
             Superávit en terreno positivo
@@ -122,7 +127,7 @@ export const BcraBalanceCard: React.FC<{ balance: BcraBalanceSheet }> = ({
           <span className="text-lg sm:text-xl xl:text-2xl font-mono-tabular font-extrabold text-slate-900 dark:text-emerald-400 block truncate tracking-tight">
             {displayCurrency === 'USD'
               ? depositsScale.formatted
-              : Money.convert(balance.privateDepositsUsd.amount, 'USD', 'ARS', referenceUsdRate).format({ compact: true })}
+              : Money.convert(balance?.privateDepositsUsd?.amount ?? 0, 'USD', 'ARS', referenceUsdRate).format({ compact: true })}
           </span>
           <span className="text-[11px] text-emerald-600 dark:text-slate-400 font-mono block truncate">
             Máximo histórico de la década
@@ -144,13 +149,13 @@ export const BcraBalanceCard: React.FC<{ balance: BcraBalanceSheet }> = ({
           <div className="flex justify-between items-center text-xs py-1 border-b border-surface-container-high dark:border-[#1E2638]">
             <span className="text-on-surface-variant dark:text-slate-300 font-sans">Billetes y Monedas en Poder del Público:</span>
             <span className="font-mono-tabular font-bold text-slate-900 dark:text-slate-100">
-              {formatMoney(balance.circulatingCashArs.amount, 'ARS')}
+              {formatMoney(balance?.circulatingCashArs?.amount ?? 0, 'ARS')}
             </span>
           </div>
           <div className="flex justify-between items-center text-xs py-1">
             <span className="text-on-surface-variant dark:text-slate-300 font-sans">Encajes / Cuenta Corriente Bancos en BCRA:</span>
             <span className="font-mono-tabular font-bold text-slate-900 dark:text-slate-100">
-              {formatMoney(balance.bankReservesArs.amount, 'ARS')}
+              {formatMoney(balance?.bankReservesArs?.amount ?? 0, 'ARS')}
             </span>
           </div>
         </div>
@@ -173,7 +178,7 @@ export const BcraBalanceCard: React.FC<{ balance: BcraBalanceSheet }> = ({
           <div className="flex justify-between items-center text-xs py-1">
             <span className="text-on-surface-variant dark:text-slate-300 font-sans">LEFIs del Tesoro (Absorción de Liquidez):</span>
             <span className="font-mono-tabular font-bold text-slate-900 dark:text-slate-100">
-              {formatMoney(balance.lefiTreasuryArs.amount, 'ARS')}
+              {formatMoney(balance?.lefiTreasuryArs?.amount ?? 0, 'ARS')}
             </span>
           </div>
         </div>

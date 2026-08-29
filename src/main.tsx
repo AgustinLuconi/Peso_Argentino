@@ -7,7 +7,10 @@ import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <ErrorBoundary fallbackTitle="Error crítico en la aplicación">
+    <ErrorBoundary
+      fallbackTitle="Plataforma en actualización"
+      fallbackDescription="Estamos actualizando el monitor financiero en tiempo real. Por favor, reintenta en unos instantes."
+    >
       <AppProvider>
         <App />
       </AppProvider>
