@@ -10,7 +10,7 @@ export interface NewsletterTopic {
   readonly category: 'local' | 'international';
   readonly name: string;
   readonly description: string;
-  readonly icon: string;
+  readonly badge: string;
 }
 
 export const NEWSLETTER_TOPICS: readonly NewsletterTopic[] = [
@@ -20,42 +20,42 @@ export const NEWSLETTER_TOPICS: readonly NewsletterTopic[] = [
     category: 'local',
     name: 'Dólar & Brecha Cambiaria',
     description: 'Cotizaciones en vivo, brecha CCL/Oficial, futuros Rofex y volumen',
-    icon: 'DollarSign',
+    badge: 'Dólar & Brecha',
   },
   {
     id: 'macro_inflacion',
     category: 'local',
     name: 'Inflación & Tasas BCRA',
     description: 'IPC INDEC, tasas de plazos fijos de 32 bancos, LEFI y rendimientos reales',
-    icon: 'TrendingUp',
+    badge: 'Inflación & Tasas BCRA',
   },
   {
     id: 'bonos_lecaps',
     category: 'local',
     name: 'Curva Lecaps & Bonos',
     description: 'TIRs de AL30/GD30, paridades, curva de Lecaps y licitaciones del Tesoro',
-    icon: 'LineChart',
+    badge: 'Curva Lecaps & Bonos',
   },
   {
     id: 'acciones_merval',
     category: 'local',
     name: 'Renta Variable & Merval',
     description: 'Panel Líder BYMA, ADRs argentinos en Wall Street y balances corporativos',
-    icon: 'BarChart2',
+    badge: 'Renta Variable & Merval',
   },
   {
     id: 'rigi_energia',
     category: 'local',
     name: 'RIGI, Minería & Energía',
     description: 'Grandes inversiones en Vaca Muerta, GNL, Cobre y Litio en el marco RIGI',
-    icon: 'Zap',
+    badge: 'RIGI, Minería & Energía',
   },
   {
     id: 'balance_bcra',
     category: 'local',
     name: 'Balance BCRA & Reservas',
     description: 'Compras netas en el MULC, reservas brutas y evolución de la base monetaria',
-    icon: 'Building2',
+    badge: 'Balance BCRA & Reservas',
   },
 
   // 🌎 Mercado Internacional & Geopolítica
@@ -64,28 +64,28 @@ export const NEWSLETTER_TOPICS: readonly NewsletterTopic[] = [
     category: 'international',
     name: 'Reserva Federal & Tasas EE.UU.',
     description: 'Decisiones de la Fed, Treasuries a 10 años y política monetaria de EE.UU.',
-    icon: 'Globe',
+    badge: 'Reserva Federal & Tasas EE.UU.',
   },
   {
     id: 'commodities_agro_oil',
     category: 'international',
-    name: 'Commodities & Agro/Petróleo',
+    name: 'Commodities (Agro & Petróleo)',
     description: 'Precios de Soja en Chicago, Maíz, Petróleo Brent/WTI y Gas Natural',
-    icon: 'Wheat',
+    badge: 'Commodities (Agro & Petróleo)',
   },
   {
     id: 'wall_street_global',
     category: 'international',
     name: 'Wall Street & Mercados Globales',
     description: 'S&P 500, Nasdaq, VIX y desempeño de Mercados Emergentes',
-    icon: 'Activity',
+    badge: 'Wall Street & Mercados Globales',
   },
   {
     id: 'fmi_deuda_externa',
     category: 'international',
     name: 'FMI & Deuda Soberana',
     description: 'Revisiones de metas del Fondo Monetario, vencimientos y Club de París',
-    icon: 'ShieldCheck',
+    badge: 'FMI & Deuda Soberana',
   },
 ] as const;
 
@@ -180,58 +180,224 @@ export class NewsletterService {
     const activeSubscribers = await NewsletterRepository.getActiveSubscribersCount();
 
     return {
-      activeSubscribers: Math.max(activeSubscribers, 1420), // Social proof base
+      activeSubscribers: Math.max(activeSubscribers, 1420),
       availableFrequencies: [
         { id: 'daily', name: 'Diario al Cierre', schedule: 'Lunes a Viernes 17:30 hs' },
         { id: 'weekly', name: 'Semanal', schedule: 'Fines de semana' },
-        { id: 'monthly', name: 'Cierre Mensual Consolidado', schedule: 'Último día hábil del mes' },
+        { id: 'monthly', name: 'Cierre Mensual', schedule: 'Último día hábil del mes' },
       ],
       topics: NEWSLETTER_TOPICS,
     };
   }
 
   /**
-   * Retorna una edición de muestra interactiva
+   * Retorna una edición de muestra interactiva con formato estructurado de email financiero profesional
    */
   static getSamplePreview() {
+    const now = new Date();
+    const dateFormatted = now.toLocaleDateString('es-AR', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });
+
     return {
-      edition: 'Edición #148 · Cierre de Mercados & Panorama Macro',
-      date: new Date().toLocaleDateString('es-AR', {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      }),
+      metadata: {
+        from: 'Peso Argentino Intelligence <newsletter@pesoargentino.com.ar>',
+        to: 'analista@institucional.com.ar',
+        subject: 'Briefing Financiero #148 | Cierre de Mercados: Compresión de brecha al 14.08%, compras netas del BCRA y curva de bonos firme',
+        date: `${dateFormatted}, 17:45 hs (Hora Argentina)`,
+        preheader: 'Resumen ejecutivo diario de variables cambiarias, monetarias y mercados globales para operadores y analistas.',
+        editionNumber: '#148',
+      },
       executiveSummary:
-        'Jornada con compresión de la brecha cambiaria (CCL en $1.215 vs Oficial $1.210). En el plano local, el BCRA sumó compras en el MULC y los bonos soberanos AL30/GD30 cerraron con paridades firmes. A nivel internacional, Wall Street digiere las minutas de la Fed y el petróleo Brent repunta 1.2%.',
-      sections: [
+        'Jornada con marcada estabilidad en el frente cambiario. La brecha entre el dólar CCL y el Oficial Mayorista se comprimió hasta 14.08%. El Banco Central finalizó la rueda con saldo comprador de USD 45 millones en el MULC, llevando las Reservas Brutas a USD 30.412 millones. En renta fija, los bonos soberanos AL30 y GD30 mantuvieron paridades récord sobre 58% con el Riesgo País consolidado en 505 bps.',
+      keyHighlights: [
+        'Dólar CCL cerró en $1.215,00 con una brecha cambiaria en mínimos del 14.08%.',
+        'El BCRA extendió su racha compradora sumando USD 45M en la jornada.',
+        'La curva de Lecaps opera con tasas mensuales promedio de 3.20% TEM con alta demanda.',
+        'En EE.UU., el S&P 500 y Nasdaq cerraron al alza tras las declaraciones moderadas de la Fed.',
+      ],
+      quotes: [
         {
-          title: '💵 Dólar & Mercado Cambiario',
-          highlight: 'Brecha en mínimos de 14.08%',
-          bullets: [
-            'Dólar Oficial BNA: $1.210,00',
-            'Dólar Blue: $1.220,00',
-            'Dólar CCL: $1.215,00',
-            'Dólar MEP: $1.205,00',
-          ],
+          code: 'OFICIAL',
+          name: 'Dólar Oficial (BNA)',
+          buy: '$1.150,00',
+          sell: '$1.210,00',
+          spread: '$60,00',
+          breach: '0.00%',
+          variation: '+0.15%',
+          isPositive: true,
         },
         {
-          title: '📊 Macroeconomía & Inflación INDEC',
-          highlight: 'IPC proyectado a la baja',
-          bullets: [
-            'Último IPC mensual: 2.1% m/m (INDEC)',
-            'Riesgo País EMBI+: 505 bps (J.P. Morgan)',
-            'Tasa de Política Monetaria: 30.0% TNA',
-          ],
+          code: 'BLUE',
+          name: 'Dólar Libre (Blue)',
+          buy: '$1.195,00',
+          sell: '$1.220,00',
+          spread: '$25,00',
+          breach: '+0.83%',
+          variation: '-0.45%',
+          isPositive: false,
         },
         {
-          title: '🌎 Panorama Internacional & Commodities',
-          highlight: 'Fed & Soja en Chicago',
-          bullets: [
-            'Tasas Fed: 4.25% - 4.50% (Estabilidad)',
-            'Soja Chicago: USD 385/Tn (+0.8%)',
-            'Petróleo Brent: USD 78.40/barril',
-          ],
+          code: 'MEP',
+          name: 'Dólar MEP (Bolsa AL30)',
+          buy: '$1.199,00',
+          sell: '$1.205,00',
+          spread: '$6,00',
+          breach: '-0.41%',
+          variation: '+0.10%',
+          isPositive: true,
+        },
+        {
+          code: 'CCL',
+          name: 'Contado con Liquidación',
+          buy: '$1.209,00',
+          sell: '$1.215,00',
+          spread: '$6,00',
+          breach: '+14.08%',
+          variation: '+0.25%',
+          isPositive: true,
+        },
+        {
+          code: 'MAYORISTA',
+          name: 'Dólar Mayorista (A3500)',
+          buy: '$1.063,50',
+          sell: '$1.065,00',
+          spread: '$1,50',
+          breach: 'Ref. BCRA',
+          variation: '+0.05%',
+          isPositive: true,
+        },
+        {
+          code: 'CRIPTO',
+          name: 'Dólar Cripto (USDT)',
+          buy: '$1.203,00',
+          sell: '$1.212,00',
+          spread: '$9,00',
+          breach: '+13.80%',
+          variation: '-0.10%',
+          isPositive: false,
+        },
+      ],
+      macroIndicators: [
+        {
+          label: 'Inflación Mensual IPC',
+          value: '2.1% m/m',
+          trend: 'Proyección a la baja',
+          period: 'Julio 2026',
+          source: 'INDEC',
+          status: 'positive',
+        },
+        {
+          label: 'Reservas Internacionales',
+          value: 'USD 30.412 M',
+          trend: '+USD 45M en el día',
+          period: 'En vivo',
+          source: 'BCRA',
+          status: 'positive',
+        },
+        {
+          label: 'Riesgo País EMBI+',
+          value: '505 bps',
+          trend: '-12 bps vs ayer',
+          period: 'Jornada',
+          source: 'J.P. Morgan',
+          status: 'positive',
+        },
+        {
+          label: 'Tasa LEFI Política Monetaria',
+          value: '30.0% TNA',
+          trend: '2.47% TEM Efectiva',
+          period: 'Vigente',
+          source: 'BCRA',
+          status: 'neutral',
+        },
+        {
+          label: 'Plazo Fijo Tradicional',
+          value: '37.0% TNA',
+          trend: '3.04% TEM BNA',
+          period: 'Promedio 32 Bancos',
+          source: 'ArgentinaDatos',
+          status: 'neutral',
+        },
+        {
+          label: 'Superávit Financiero SPN',
+          value: '+$518.000 M',
+          trend: 'Consolidado positivo',
+          period: 'Acumulado',
+          source: 'MECON',
+          status: 'positive',
+        },
+      ],
+      sovereignBonds: [
+        {
+          ticker: 'AL30D',
+          name: 'Bono Bonar 2030 (Ley Arg)',
+          priceUsd: '$58,40',
+          tirPercent: '16.20%',
+          parityPercent: '58.4%',
+          variation24h: '+1.45%',
+        },
+        {
+          ticker: 'GD30D',
+          name: 'Bono Global 2030 (Ley NY)',
+          priceUsd: '$61,20',
+          tirPercent: '15.80%',
+          parityPercent: '61.2%',
+          variation24h: '+1.10%',
+        },
+        {
+          ticker: 'S15O4',
+          name: 'Lecap Tesoro Octubre 2026',
+          priceUsd: '$124,50',
+          tirPercent: '3.25% TEM',
+          parityPercent: '100.2%',
+          variation24h: '+0.15%',
+        },
+      ],
+      globalMarkets: [
+        {
+          asset: 'S&P 500 (Wall Street)',
+          value: '5.620,50 pts',
+          variation: '+0.65%',
+          takeaway: 'Impulsado por balances tecnológicos y expectativas de recorte de tasas.',
+        },
+        {
+          asset: 'Treasury EE.UU. 10Y',
+          value: '3.88% Yield',
+          variation: '-4 bps',
+          takeaway: 'Mayor apetito por riesgo y compresión de rendimientos soberanos.',
+        },
+        {
+          asset: 'Soja Chicago (CBOT)',
+          value: 'USD 385,20 / Tn',
+          variation: '+0.80%',
+          takeaway: 'Favorable para el ingreso de divisas de la cosecha argentina.',
+        },
+        {
+          asset: 'Petróleo Brent',
+          value: 'USD 78,40 / barril',
+          variation: '+1.20%',
+          takeaway: 'Impulso a los ingresos exportadores de Vaca Muerta.',
+        },
+      ],
+      upcomingAgenda: [
+        {
+          dateOrTime: 'Mañana 11:00 hs',
+          event: 'Licitación de Letras del Tesoro (Lecaps & Boncaps) - Secretaría de Finanzas',
+          impactLevel: 'high',
+        },
+        {
+          dateOrTime: 'Jueves 16:00 hs',
+          event: 'Publicación de Informe Monetario Mensual del Banco Central (BCRA)',
+          impactLevel: 'medium',
+        },
+        {
+          dateOrTime: 'Próx. 10 de Septiembre',
+          event: 'Publicación oficial del Índice de Precios al Consumidor (IPC INDEC)',
+          impactLevel: 'high',
         },
       ],
     };
